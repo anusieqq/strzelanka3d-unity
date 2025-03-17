@@ -5,14 +5,21 @@ using UnityEngine;
 public class Moving : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float sprintSpeed = 30f; 
     [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float cameraDistance = 5f;
+    [SerializeField] private Transform headTransform; 
+
     private Rigidbody rb;
     private float rotationX = 0f;
+    private float rotationY = 0f;
     private bool isGrounded;
     private float originalHeight;
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Camera playerCamera;
+    private Vector3 cameraOffset;
+    private float currentSpeed; 
 
     void Start()
     {
@@ -23,35 +30,65 @@ public class Moving : MonoBehaviour
         }
         rb.freezeRotation = true;
         originalHeight = transform.localScale.y;
+        currentSpeed = moveSpeed;
+        
+        // Pobieranie kamery
         playerCamera = GetComponentInChildren<Camera>();
+        if (playerCamera == null)
+        {
+            Debug.LogError("Nie znaleziono kamery! Upewnij się, że jest dzieckiem gracza.");
+            return;
+        }
+
+        // Ustawienie kamery za postacią
+        cameraOffset = new Vector3(0, 2f, -cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
+        if (playerCamera == null) return; 
+
         // Obsługa rotacji myszką
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
         rotationX -= mouseY;
-        rotationX = Mathf.Clamp(rotationX, -90f, 90f);
+        rotationY += mouseX;
+        rotationX = Mathf.Clamp(rotationX, -45f, 45f);
 
-        transform.localRotation = Quaternion.Euler(rotationX, transform.localRotation.eulerAngles.y + mouseX, 0f);
+       
+        transform.rotation = Quaternion.Euler(0, rotationY, 0);
+        if (headTransform != null)
+        {
+            headTransform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        }
 
-        // Obsługa ruchu WSAD
+        // Ustawienie pozycji i rotacji kamery
+        Vector3 desiredPosition = transform.position + Quaternion.Euler(rotationX, rotationY, 0) * cameraOffset;
+        playerCamera.transform.position = desiredPosition;
+        playerCamera.transform.LookAt(transform.position + Vector3.up * 1.5f);
+
+       
+        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
+
+      
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 movement = transform.right * horizontalInput + transform.forward * verticalInput;
-        movement = movement.normalized * moveSpeed;
+        Vector3 forward = transform.forward;
+        Vector3 right = transform.right;
 
-        // Skakanie
+        Vector3 movement = (right * horizontalInput + forward * verticalInput).normalized * currentSpeed;
+
+        
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false; 
         }
 
-        // Kucanie
+        
         if (Input.GetKey(KeyCode.LeftControl))
         {
             transform.localScale = crouchScale;
@@ -61,16 +98,20 @@ public class Moving : MonoBehaviour
             transform.localScale = new Vector3(1, originalHeight, 1);
         }
 
-        // Zastosowanie ruchu
+        
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
     }
 
-    void OnCollisionStay(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        // Sprawdzanie czy postać jest na ziemi
-        if (collision.contacts[0].normal == Vector3.up)
+       
+        foreach (ContactPoint contact in collision.contacts)
         {
-            isGrounded = true;
+            if (contact.normal.y > 0.5f) 
+            {
+                isGrounded = true;
+                break;
+            }
         }
     }
 
