@@ -9,6 +9,7 @@ TagManager:
   - shield
   - hp
   - player
+  - wall
   layers:
   - Default
   - TransparentFX

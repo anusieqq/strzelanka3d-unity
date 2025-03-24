@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class TypingEffectWithTimedScroll : MonoBehaviour
 {
     public Text textComponent; // Referencja do komponentu tekstowego
     public string fullText;    // Tekst do wyświetlenia
-    private float typingSpeed = 0.07f; // Szybkość wypisywania liter (w sekundach)
+    private float typingSpeed = 0.005f; // Szybkość wypisywania liter (w sekundach)
     public ScrollRect scrollRect; // Referencja do Scroll Rect w Canvas
     private float scrollSpeed = 0.01f; // Prędkość przewijania scrolla (im mniejsza wartość, tym wolniej)
-    private float scrollDelay = 3.5f; // Odstęp czasu między kolejnymi przewinięciami
+    private float scrollDelay = 0.5f; // Odstęp czasu między kolejnymi przewinięciami
     public GameObject startButton; // Referencja do przycisku "Start"
 
     private void Start()
     {
         startButton.SetActive(false); // Ukryj przycisk na początku
+        startButton.GetComponent<Button>().onClick.AddListener(LoadGameScene); // Dodanie obsługi kliknięcia
         StartCoroutine(TypeText());
     }
 
@@ -78,5 +80,10 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
         }
 
         scrollRect.verticalNormalizedPosition = 0f; // Ustaw scroll na dole
+    }
+
+    void LoadGameScene()
+    {
+        SceneManager.LoadScene("Game"); // Załaduj scenę "Game"
     }
 }
