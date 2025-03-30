@@ -1,22 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI; // Do obs³ugi UI (Text, Slider)
+using UnityEngine.UI;
 
 public class Interaction : MonoBehaviour
 {
-    // Zmienne do przechowywania stanu gracza
+    public Gun gunScript; // Referencja do skryptu Gun
+
     private int playerHealth = 80; // Pocz¹tkowe zdrowie gracza
-    private int ammoCount = 10; // Na starcie gracz ma 10 amunicji
-    private float shieldStrength = 0;
+    private float shieldStrength = 0; // Pocz¹tkowa si³a tarczy
     private Coroutine shieldCoroutine;
 
-    // Referencje do komponentów UI
     public Text ammoText; // Tekst amunicji
     public Slider healthSlider; // Pasek zdrowia
     public Slider shieldSlider; // Pasek tarczy
 
-    // Start jest wywo³ywane na pocz¹tku gry
     void Start()
     {
         // Ustawienie maksymalnych wartoœci pasków
@@ -29,12 +27,16 @@ public class Interaction : MonoBehaviour
         shieldSlider.wholeNumbers = false;
         shieldSlider.value = shieldStrength;
 
-        // Pocz¹tkowe ustawienie zdrowia i paska zdrowia
+        
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
         UpdateHealthSlider();
 
-        // Wyœwietlenie pocz¹tkowej iloœci amunicji w UI
         UpdateAmmoText();
+    }
+
+    void Update()
+    {
+  
     }
 
     // Funkcja wywo³ywana przy kolizji z innymi obiektami
@@ -42,49 +44,59 @@ public class Interaction : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("heart"))
         {
-            // Dodaj zdrowie graczowi
             playerHealth += 10;
             playerHealth = Mathf.Clamp(playerHealth, 0, 100);
             Debug.Log("Health picked up! Current Health: " + playerHealth);
-
-            // Zaktualizuj pasek ¿ycia
             UpdateHealthSlider();
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("ammo"))
         {
-            // Dodaj amunicjê
-            ammoCount += 5;
-            Debug.Log("Ammo picked up! Current Ammo: " + ammoCount);
+            // Sprawdzamy, czy aktualny zapas jest mniejszy ni¿ maksymalny
+            if (gunScript.reserveAmmo < gunScript.maxReserveAmmo)
+            {
+                int ammoToAdd = 5; // Iloœæ dodawanej amunicji
 
-            // Zaktualizuj tekst na ekranie
-            UpdateAmmoText();
-            Destroy(collision.gameObject);
+                // Obliczamy now¹ wartoœæ i upewniamy siê, ¿e nie przekroczy limitu
+                gunScript.reserveAmmo += ammoToAdd;
+                if (gunScript.reserveAmmo > gunScript.maxReserveAmmo)
+                {
+                    gunScript.reserveAmmo = gunScript.maxReserveAmmo;
+                }
+
+                Debug.Log("Ammo picked up! Current Ammo in reserve: " + gunScript.reserveAmmo);
+
+                // Aktualizacja ammo
+                gunScript.UpdateAmmoText();
+
+                // Usuniêcie obiektu amunicji
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                Debug.Log("Ammo reserve is full!");
+            }
         }
         else if (collision.gameObject.CompareTag("shield"))
         {
-            // Ustaw tarczê na 100
             shieldStrength = 100;
             Debug.Log("Shield picked up! Current Shield: " + shieldStrength);
-
-            // Zaktualizuj pasek tarczy
             UpdateShieldSlider();
 
-            // Uruchom proces zmniejszania tarczy
             if (shieldCoroutine != null)
             {
                 StopCoroutine(shieldCoroutine);
             }
             shieldCoroutine = StartCoroutine(DecreaseShieldOverTime());
-
             Destroy(collision.gameObject);
         }
     }
 
+
     // Funkcja do aktualizowania tekstu z amunicj¹
     void UpdateAmmoText()
     {
-        ammoText.text = "Ammo: " + ammoCount.ToString();
+        ammoText.text = "Ammo: " + gunScript.ammoCount.ToString() + "/" + gunScript.reserveAmmo.ToString();
     }
 
     // Funkcja do aktualizowania paska zdrowia
@@ -119,7 +131,6 @@ public class Interaction : MonoBehaviour
         }
     }
 
-    // Korutyna do zmniejszania tarczy w czasie
     IEnumerator DecreaseShieldOverTime()
     {
         while (shieldStrength > 0)

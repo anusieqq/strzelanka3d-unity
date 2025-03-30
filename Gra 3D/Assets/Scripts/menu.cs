@@ -11,12 +11,12 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
     public ScrollRect scrollRect; // Referencja do Scroll Rect w Canvas
     private float scrollSpeed = 0.01f; // Prędkość przewijania scrolla (im mniejsza wartość, tym wolniej)
     private float scrollDelay = 0.5f; // Odstęp czasu między kolejnymi przewinięciami
-    public GameObject startButton; // Referencja do przycisku "Start"
+    public GameObject startButton; // Referencja do przycisku "Rozpocznij"
 
     private void Start()
     {
-        startButton.SetActive(false); // Ukryj przycisk na początku
-        startButton.GetComponent<Button>().onClick.AddListener(LoadGameScene); // Dodanie obsługi kliknięcia
+        startButton.SetActive(false); 
+        startButton.GetComponent<Button>().onClick.AddListener(LoadGameScene); 
         StartCoroutine(TypeText());
     }
 
@@ -27,13 +27,13 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
 
         foreach (char letter in fullText)
         {
-            textComponent.text += letter; // Dodawanie litery do tekstu
+            textComponent.text += letter; 
 
             // Aktualizacja scrolla w regularnych odstępach czasu
             timer += typingSpeed;
             if (scrollRect != null && timer >= scrollDelay)
             {
-                timer = 0f; // Reset timer
+                timer = 0f; 
                 StartCoroutine(SmoothScroll());
             }
 
@@ -52,7 +52,7 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
 
     IEnumerator SmoothScroll()
     {
-        float targetPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition - scrollSpeed, 0f, 1f); // Obliczenie pozycji docelowej
+        float targetPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition - scrollSpeed, 0f, 1f); 
         float duration = 0.5f; // Czas animacji przewijania
         float elapsedTime = 0f;
 
@@ -63,12 +63,12 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
             yield return null;
         }
 
-        scrollRect.verticalNormalizedPosition = targetPosition; // Ustawienie pozycji docelowej
+        scrollRect.verticalNormalizedPosition = targetPosition; 
     }
 
     IEnumerator SmoothScrollToEnd()
     {
-        // Upewnij się, że scroll ustawi się na sam dół na końcu
+        // Sprawdzenie czy scroll ustawi się na sam dół na końcu
         float duration = 0.5f;
         float elapsedTime = 0f;
 
@@ -84,6 +84,6 @@ public class TypingEffectWithTimedScroll : MonoBehaviour
 
     void LoadGameScene()
     {
-        SceneManager.LoadScene("Game"); // Załaduj scenę "Game"
+        SceneManager.LoadScene("BUILDING"); // Załaduj scenę "BUILDING"
     }
 }

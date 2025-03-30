@@ -5,11 +5,12 @@ using UnityEngine;
 public class Moving : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float sprintSpeed = 30f; 
+    [SerializeField] private float sprintSpeed = 30f;
     [SerializeField] private float mouseSensitivity = 2f;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float cameraDistance = 5f;
-    [SerializeField] private Transform headTransform; 
+    [SerializeField] private Transform headTransform;
+    [SerializeField] private Camera thirdPersonCamera;
 
     private Rigidbody rb;
     private float rotationX = 0f;
@@ -17,39 +18,49 @@ public class Moving : MonoBehaviour
     private bool isGrounded;
     private float originalHeight;
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
-    private Camera playerCamera;
     private Vector3 cameraOffset;
-    private float currentSpeed; 
+    private float currentSpeed;
+    private Vector3 lastPosition;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody>();
-        }
         rb.freezeRotation = true;
+        rb.mass = 2f;
         originalHeight = transform.localScale.y;
         currentSpeed = moveSpeed;
-        
-        // Pobieranie kamery
-        playerCamera = GetComponentInChildren<Camera>();
-        if (playerCamera == null)
+        lastPosition = transform.position;
+
+        if (thirdPersonCamera == null)
         {
-            Debug.LogError("Nie znaleziono kamery! Upewnij się, że jest dzieckiem gracza.");
-            return;
+            thirdPersonCamera = Camera.main;
+            if (thirdPersonCamera == null)
+            {
+                Debug.LogError("Nie znaleziono kamery!");
+                return;
+            }
         }
 
-        // Ustawienie kamery za postacią
         cameraOffset = new Vector3(0, 2f, -cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
-        if (playerCamera == null) return; 
+        HandleMouseLook();
+        HandleMovement();
+        HandleJump();
+        HandleCrouch();
+        HandleCameraPosition();
+    }
 
-        // Obsługa rotacji myszką
+    void FixedUpdate()
+    {
+        CheckStairs();
+    }
+
+    void HandleMouseLook()
+    {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
@@ -57,38 +68,37 @@ public class Moving : MonoBehaviour
         rotationY += mouseX;
         rotationX = Mathf.Clamp(rotationX, -45f, 45f);
 
-       
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         if (headTransform != null)
         {
             headTransform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         }
+    }
 
-        // Ustawienie pozycji i rotacji kamery
-        Vector3 desiredPosition = transform.position + Quaternion.Euler(rotationX, rotationY, 0) * cameraOffset;
-        playerCamera.transform.position = desiredPosition;
-        playerCamera.transform.LookAt(transform.position + Vector3.up * 1.5f);
-
-       
+    void HandleMovement()
+    {
         currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
 
-      
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 forward = transform.forward;
-        Vector3 right = transform.right;
+        Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
+        moveDirection.Normalize();
 
-        Vector3 movement = (right * horizontalInput + forward * verticalInput).normalized * currentSpeed;
+        rb.velocity = new Vector3(moveDirection.x * currentSpeed, rb.velocity.y, moveDirection.z * currentSpeed);
+    }
 
-        
+    void HandleJump()
+    {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false; 
+            isGrounded = false;
         }
+    }
 
-        
+    void HandleCrouch()
+    {
         if (Input.GetKey(KeyCode.LeftControl))
         {
             transform.localScale = crouchScale;
@@ -97,22 +107,59 @@ public class Moving : MonoBehaviour
         {
             transform.localScale = new Vector3(1, originalHeight, 1);
         }
-
-        
-        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
     }
 
-    void OnCollisionEnter(Collision collision)
+    void CheckStairs()
     {
-       
+        if (!isGrounded || rb.velocity.magnitude < 0.1f) return;
+
+        float detectionDistance = 0.5f;
+        float stepHeight = 0.5f;
+        Vector3 moveDirection = transform.forward;
+
+        Vector3 rayStartLow = transform.position + Vector3.up * 0.1f;
+        Vector3 rayStartHigh = transform.position + Vector3.up * stepHeight;
+
+        bool lowHit = Physics.Raycast(rayStartLow, moveDirection, detectionDistance, LayerMask.GetMask("Default"));
+        bool highHit = Physics.Raycast(rayStartHigh, moveDirection, detectionDistance, LayerMask.GetMask("Default"));
+
+        if (lowHit && !highHit)
+        {
+            rb.position += Vector3.up * 0.1f;  
+        }
+
+        lastPosition = transform.position;
+    }
+
+    void HandleCameraPosition()
+    {
+        Vector3 desiredPosition = transform.position + Quaternion.Euler(rotationX, rotationY, 0) * cameraOffset;
+        Vector3 direction = (desiredPosition - transform.position).normalized;
+        float distance = cameraOffset.magnitude;
+
+        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, distance))
+        {
+            thirdPersonCamera.transform.position = hit.point + hit.normal * 0.2f;
+        }
+        else
+        {
+            thirdPersonCamera.transform.position = desiredPosition;
+        }
+
+        thirdPersonCamera.transform.LookAt(transform.position + Vector3.up * 1.5f);
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
         foreach (ContactPoint contact in collision.contacts)
         {
-            if (contact.normal.y > 0.5f) 
+            if (contact.normal.y > 0.5f)
             {
                 isGrounded = true;
-                break;
+                return;
             }
         }
+        isGrounded = false;
     }
 
     void OnCollisionExit(Collision collision)

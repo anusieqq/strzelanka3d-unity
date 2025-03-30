@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class UFOAnimation : MonoBehaviour
 {
-    private float floatSpeed = 1.5f; // Prêdkoœæ oscylacji
-    private float floatHeight = 1f; // Wysokoœæ oscylacji
+    public float floatSpeed = 1.5f; // Prêdkoœæ oscylacji
+    public float floatHeight = 0.5f; // Wysokoœæ oscylacji
     private Vector3 startPos;
 
     void Start()
     {
-        startPos = transform.position; // Zapamiêtaj pocz¹tkow¹ pozycjê UFO
+        startPos = transform.position; // Pocz¹tkowa pozycja ufo
     }
 
     void Update()

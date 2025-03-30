@@ -25,7 +25,7 @@ public class UFOMovement : MonoBehaviour
             playerTransform = player.transform;
         }
 
-        // Nadaj losowy początkowy kierunek ruchu
+        // Losowy początkowy kierunek ruchu
         moveDirection = GetRandomDirection();
     }
 
@@ -36,10 +36,7 @@ public class UFOMovement : MonoBehaviour
             CheckPlayerDistance();
         }
 
-        // Używamy Raycasta, aby unikać ścian
         AvoidWalls();
-
-        // Poruszaj UFO
         MoveAndRotate();
     }
 
@@ -116,12 +113,11 @@ public class UFOMovement : MonoBehaviour
     {
         RaycastHit hit;
 
-        // Wykonaj raycast w kierunku ruchu UFO
         if (Physics.Raycast(transform.position, moveDirection, out hit, raycastDistance))
         {
             if (hit.collider.CompareTag("wall"))
             {
-                // Jeśli ściana zostanie wykryta, zmień kierunek ruchu
+                // Jeśli ściana zostanie wykryta, zmienia kierunek ruchu
                 moveDirection = GetRandomDirection();
                 Debug.Log("UFO unika ściany, zmiana kierunku");
             }
