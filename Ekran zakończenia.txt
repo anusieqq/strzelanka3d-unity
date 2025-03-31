@@ -1,0 +1,24 @@
+Ekran zakończenia
+
+Udało Ci się!
+
+Po kilku chwilach intensywnej pracy komputer zamilkł, a ekran zamigotał na czarno.
+Kompilacja została zatrzymana, a serwer gry wyłączony.
+
+Zaczynasz czuć, jak rzeczywistość powraca. Świat gry zanika wokół ciebie,
+a ty budzisz się z powrotem w akademiku, przy swoim biurku, przed komputerem.
+
+Na ekranie widzisz jedynie komunikat:
+
+„Kompilacja zakończona. Program został zamknięty.”
+
+Choć wróciłeś do rzeczywistości, nie jesteś pewny, czy to wszystko to był tylko sen,
+czy może twoja gra naprawdę zyskała własną świadomość.
+
+
+
+Na komputerze pojawiła się nowa notatka w pliku:
+
+„Naprawdę musiałeś zapytać ChatGPT o wszystko? Zanim znów wciśniesz 'uruchom', pomyśl dwa razy! Może następnym razem spróbuj pisać kod samodzielnie, zamiast szukać skrótów. Nie chcesz znów utknąć w swojej grze, prawda?”
+
+[Zakończ]

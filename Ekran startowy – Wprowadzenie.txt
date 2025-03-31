@@ -1,0 +1,32 @@
+Ekran startowy – Wprowadzenie
+
+Jesteś studentem informatyki.
+Od kilku tygodni pracujesz nad swoim projektem – dynamiczną strzelanką science-fiction.
+Twoja gra miała być twoim największym osiągnięciem – szybka akcja, starcia z obcymi, epicka walka o przetrwanie na planecie.
+
+Długo testowałeś kod, dopracowywałeś mechaniki walki, dodawałeś inteligencję przeciwników…
+Ale dzisiaj coś poszło nie tak.
+
+Gdy uruchomiłeś kompilację, ekran zamigotał, a ty poczułeś dziwne szarpnięcie.
+Próbowałeś wstać od biurka, ale… nie było biurka.
+
+Otwierasz oczy. Nie jesteś już w swoim pokoju.
+Wokół ciebie znajdują się surowe betonowe ściany –
+to jeden z poziomów, które sam stworzyłeś do testów.
+
+Przez błąd w kodzie znalazłeś się wewnątrz własnej gry.
+
+To jeszcze nie wszystko. Po korytarzach budynku poruszają się postacie,
+które miały być tylko przeciwnikami sterowanymi przez AI – obcy, których zaprogramowałeś do ataku na gracza.
+Teraz jednak to ty jesteś tym graczem… i musisz przetrwać.
+
+Twoim pierwszym celem jest wydostać się z tego miejsca.
+Aby otworzyć drzwi, musisz zdobyć kod, rozwiązując ukryte w budynku zagadki.
+Uważaj jednak – obcy nie zamierzają ci na to pozwolić.
+
+Pamiętaj – twoje życie nie jest nieograniczone. Musisz szukać znajdziek, które pomogą ci przetrwać.
+Jeśli umrzesz, na zawsze pozostaniesz w świecie gry.
+
+Przetrwaj. Znajdź kod. Ucieknij z budynku.
+
+[Rozpocznij]
