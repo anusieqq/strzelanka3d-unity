@@ -1,0 +1,175 @@
+1.Liczby pierwsze  
+
+Na ścianie widzisz sekwencję liczb: 
+ 2, 3, 5, 7, 11, ? 
+
+Wyświetlają się cztery przyciski: 
+
+13 
+
+12 
+
+14 
+
+10 
+
+Wskazówka: 
+ „Tylko liczby, których nie można podzielić na mniejsze części, są kluczem do przejścia.” 
+
+Rozwiązanie: Brakującą liczbą jest 13, ponieważ jest kolejną liczbą pierwszą – nie da się jej podzielić na mniejsze składniki (poza 1 i nią samą). 
+__________________________________________________________________________________________________________________________________________________________________________________
+2. Gdzie ukrył się serwer? 
+
+Na ekranie pojawia się komunikat: 
+ „Serwer zniknął! Analizuję ślad danych... Gdzie on może być?” 
+
+Na ścianie widzisz cztery symbole: 
+
+🏜️ Pustynia  
+
+🌊 Rzeka 
+
+🏔️ Góry  
+
+🛸 Statek UFO  
+
+Dodatkowa wskazówka wyświetla się na terminalu: 
+ „Serwer ostatnio był widziany w chmurze” 
+
+Rozwiązanie: Serwer znajduje się na statku UFO, ponieważ UFO lata w chmurach. 
+
+ __________________________________________________________________________________________________________________________________________________________________________________
+
+3. Zagubiona ścieżka – Jak wrócić? 
+
+Terminal wyświetla komunikat: 
+ „Plik serwera został przeniesiony. Oto dostępne lokalizacje:” 
+
+C:\Users\Alien\Documents\Server.exe 
+
+C:\Users\Guest\Desktop\Server.exe 
+
+C:\System32\Server.exe 
+
+/home/student/projekt/server.exe 
+
+Wskazówka: 
+ „Nie ufaj nieznanym gościom, systemowe pliki bywają złudne, a kosmici są podejrzani.” 
+
+Rozwiązanie: Odpowiedź to /home/student/projekt/server.exe, ponieważ katalog "home" wskazuje na katalog domowy użytkownika  
+
+ __________________________________________________________________________________________________________________________________________________________________________________
+
+4.Na stole leżą różne artefakty i przy nich zagadka: 
+
+ "Coś, przed czym w świecie nic nie uciecze, 
+co gnie żelazo, przegryza miecze, 
+pożera ptaki, zwierzęta, ziele, 
+najtwardszy kamień na mąkę miele, 
+królów nie szczędzi, rozwala mury, 
+poniża nawet najwyższe góry. 
+
+Artefakty to – zegar lub jakas klepsydra( symbol czasu) i jakies losowe rzeczy 
+
+(wskazówka ukryta gdzieś: Wybierz symbol, który najlepiej przypomina ci coś co przed sesją czas staje się najważniejszym zasobem.) 
+
+Rozwiązanie: Gracz musi wybrać zegar bo odpowiedz na zagadke to - czas 
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+5. Zagadkowa scena: "Zagadka Baba Jagi" 
+
+Gracz otwiera  skrzynkę, w której znajduje się kartka z napisem: 
+
+„Raz, dwa, trzy, Baba Jaga patrzy! 
+ Światło zapali się na zielono – ruszaj do przodu. 
+ Lecz kiedy zapali się na czerwono – musisz stanąć nieruchomo. 
+ W przeciwnym razie wrócisz na początek ścieżki i czeka cię powtórka… tak jak niektórych zajęć w semestrze.” 
+
+Po otwarciu skrzynki na ścieżce zapala się zielone światło, wskazując drogę, którą należy podążać. 
+Gracz zaczyna iść, ale co chwilę światło zmienia się na czerwone – wtedy gracz musi natychmiast stanąć w miejscu, inaczej zostanie cofnięty do początku ścieżki. 
+
+ __________________________________________________________________________________________________________________________________________________________________________________
+
+6.Zagadkowa scena: "Most nad Rzeką" 
+
+Gracz stoi na brzegu rzeki, przed nim znajduje się most składający się z kwadratowych pól. Most jest podzielony na np. 5 wierszy i 2 kolumny (10 kwadratów). 
+Gracz musi przejść przez most, wybierając odpowiednie pola. Początkowo musi wybrać losowo,
+ a później zapamiętać, które pola są bezpieczne, ponieważ zły wybór cofa go na początek mostu. 
+
+Przykładowy wstęp: 
+ Na ekranie pojawia się napis: 
+ „Musisz odgadnąć, które kwadraty są prawidłowe, a które nie, i zapamiętać to dokładnie. Na początku musisz wybrać losowo,
+ tak jak często bywa z twoimi odpowiedziami na egzaminie – bez pewności, ale z nadzieją, że dobrze trafiłeś. 
+Z czasem będziesz musiał zaufać swojej pamięci, bo jeden zły wybór i wracasz na początek.” 
+
+Przykładowy układ mostu: 
+ [1] [2] 
+ [3] [4] 
+ [5] [6] 
+ [7] [8] 
+ [9] [10] 
+
+ 
+__________________________________________________________________________________________________________________________________________________________________________________
+ 
+
+7.Zagadkowa scena: "Sekwencja Światła" 
+
+Przykładowy wstęp: 
+ Na ekranie pojawia się napis: 
+ „Pamiętasz, jak na studiach, kiedy kolega wysłał ci swoje sprawozdanie, a ty zamiast zmieniać cokolwiek, po prostu odwzorowałeś je 1:1, 
+bo uznałeś, że to najprostsze rozwiązanie? Dziś możesz się wykazać bo masz dokładnie to samo zadanie. Musisz odwzorować sekwencję tak, jak ją widzisz, 
+w dokładnie tej samej kolejności. Żaden błąd nie jest do zaakceptowania. Bądź precyzyjny. Jeśli się pomylisz, wrócisz na sam początek.” 
+
+Zadanie: 
+
+ Gracz znajduje się w pokoju, na którym ścianie wisi tablica z kilkoma kwadratami. Po chwili zapalają się kwadraty w specyficznej kolejności. 
+Gracz musi zapamiętać, w jakiej dokładnie kolejności kwadraty zapalają się i odwzorować później tą sekwencje. 
+
+ __________________________________________________________________________________________________________________________________________________________________________________
+
+8. Zadanie: "Zagubiony Demon" 
+
+Opis: 
+ Gracz natrafia na małego smutnego demona (proces), który jest samotny i nie potrafi znaleźć swojego rodzica – procesu nadrzędnego, który go uruchomił. 
+Demon płacze, ponieważ nie rozumie, dlaczego został porzucony i nie może kontynuować swojej pracy. Mały proces jest zdezorientowany i nie wie, gdzie się udać. 
+Gracz musi odnaleźć proces rodzica, aby przekazać mu, że jego demon zaginął i potrzebuje pomocy, aby poprawnie działać. 
+
+ 
+
+Dialog z NPC (mały demon): 
+
+Demon: "Jestem taki samotny... Mam taką ciężką pracę do wykonania, ale zgubiłem swojego rodzica. Nie wiem, gdzie on jest. Zawsze mnie prowadził, a teraz… zostałem sam." 
+
+Gracz: "Skąd się wziąłeś? Kto cię uruchomił?" 
+
+Demon: "Mój rodzic… to proces, który mnie kontrolował. Bez niego nie mogę pracować. Jeśli go znajdziesz, może będę mógł wrócić do normalnego działania." 
+
+__________________________________________________________________________________________________________________________________________________________________________________
+
+9. Zagadkowa scena: "Eliminacja przeciwników" 
+
+W budynku początkowym 
+
+Zadanie: 
+ Gracz musi wyeliminować wszystkich przeciwników, aby oczyścić drogę do kolejnego etapu. Może działać po cichu, unikając wykrycia, lub wejść do akcji z pełną siłą. 
+
+ Wskazówka: "W kodzie czasem trzeba usunąć błędne fragmenty, aby całość działała poprawnie. Tak samo tutaj - wyeliminuj wszystkich przeciwników, pozbądź się problemu, a droga stanie się jasna." 
+
+ __________________________________________________________________________________________________________________________________________________________________________________
+
+10. "Serwerowy blackout" 
+
+Las, w którym utknąłeś, zaczyna tracić zasilanie. Co chwila zgasną wszystkie światła, a ty masz tylko kilka sekund, by ruszyć we właściwą stronę! 
+
+ Zadanie: Gracz widzi drogę tylko przez krótką chwilę, potem zapada ciemność. Musi zapamiętać trasę i poruszać się po omacku  aby dojść do przycisku który włączy naprawi zasilanie.  
+ Wskazówka: "Zapamiętaj ścieżkę, zanim system ją wyłączy!" 
+
+ 
+
+ 
+
+ 
+
+ 
