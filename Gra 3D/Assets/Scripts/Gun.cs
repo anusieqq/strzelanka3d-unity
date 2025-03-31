@@ -14,11 +14,11 @@ public class Gun : MonoBehaviour
     public int reserveAmmo = 20;         // Iloœæ zapasowej amunicji (zaczyna siê od maxReserveAmmo)
     private bool isReloading = false; // Flaga, która sprawdza, czy trwa prze³adowanie
 
-    public Text ammoText; 
+    public Text ammoText;
 
     void Start()
     {
-        reserveAmmo = 20; 
+        reserveAmmo = 20;
         UpdateAmmoText();
     }
 
@@ -68,7 +68,7 @@ public class Gun : MonoBehaviour
 
             // Prze³aduj 10 amunicji z zapasów
             int ammoNeeded = maxAmmo - ammoCount;
-            int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo); 
+            int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
             ammoCount += ammoToReload;
             reserveAmmo -= ammoToReload;
 
