@@ -3,7 +3,7 @@ using UnityEngine;
 public class UFOAnimation : MonoBehaviour
 {
     public float floatSpeed = 1.5f; // Prêdkoœæ oscylacji
-    public float floatHeight = 0.5f; // Wysokoœæ oscylacji
+    public float floatHeight = 2.5f; // Wysokoœæ oscylacji
     private Vector3 startPos;
 
     void Start()

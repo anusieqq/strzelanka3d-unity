@@ -12,12 +12,12 @@ public class Interaction : MonoBehaviour
     private Coroutine shieldCoroutine;
 
     public Text ammoText; // Tekst amunicji
+    public Text enemyCountText; // Tekst licznika przeciwników
     public Slider healthSlider; // Pasek zdrowia
     public Slider shieldSlider; // Pasek tarczy
 
     void Start()
     {
-        // Ustawienie maksymalnych wartoœci pasków
         healthSlider.maxValue = 100;
         healthSlider.minValue = 0;
         healthSlider.wholeNumbers = false;
@@ -27,19 +27,17 @@ public class Interaction : MonoBehaviour
         shieldSlider.wholeNumbers = false;
         shieldSlider.value = shieldStrength;
 
-        
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
         UpdateHealthSlider();
-
         UpdateAmmoText();
+        UpdateEnemyCount();
     }
 
     void Update()
     {
-  
+        UpdateEnemyCount();
     }
 
-    // Funkcja wywo³ywana przy kolizji z innymi obiektami
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("heart"))
@@ -52,24 +50,13 @@ public class Interaction : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("ammo"))
         {
-            // Sprawdzamy, czy aktualny zapas jest mniejszy ni¿ maksymalny
             if (gunScript.reserveAmmo < gunScript.maxReserveAmmo)
             {
-                int ammoToAdd = 5; // Iloœæ dodawanej amunicji
-
-                // Obliczamy now¹ wartoœæ i upewniamy siê, ¿e nie przekroczy limitu
+                int ammoToAdd = 5;
                 gunScript.reserveAmmo += ammoToAdd;
-                if (gunScript.reserveAmmo > gunScript.maxReserveAmmo)
-                {
-                    gunScript.reserveAmmo = gunScript.maxReserveAmmo;
-                }
-
+                gunScript.reserveAmmo = Mathf.Clamp(gunScript.reserveAmmo, 0, gunScript.maxReserveAmmo);
                 Debug.Log("Ammo picked up! Current Ammo in reserve: " + gunScript.reserveAmmo);
-
-                // Aktualizacja ammo
                 gunScript.UpdateAmmoText();
-
-                // Usuniêcie obiektu amunicji
                 Destroy(collision.gameObject);
             }
             else
@@ -82,7 +69,6 @@ public class Interaction : MonoBehaviour
             shieldStrength = 100;
             Debug.Log("Shield picked up! Current Shield: " + shieldStrength);
             UpdateShieldSlider();
-
             if (shieldCoroutine != null)
             {
                 StopCoroutine(shieldCoroutine);
@@ -92,27 +78,22 @@ public class Interaction : MonoBehaviour
         }
     }
 
-
-    // Funkcja do aktualizowania tekstu z amunicj¹
     void UpdateAmmoText()
     {
         ammoText.text = "Ammo: " + gunScript.ammoCount.ToString() + "/" + gunScript.reserveAmmo.ToString();
     }
 
-    // Funkcja do aktualizowania paska zdrowia
     void UpdateHealthSlider()
     {
         healthSlider.value = playerHealth;
         Debug.Log("Health Slider Updated: " + healthSlider.value);
     }
 
-    // Funkcja do aktualizowania paska tarczy
     void UpdateShieldSlider()
     {
         shieldSlider.value = shieldStrength;
     }
 
-    // Funkcja do zadawania obra¿eñ graczowi
     public void TakeDamage(int damage)
     {
         if (shieldStrength > 0)
@@ -135,11 +116,17 @@ public class Interaction : MonoBehaviour
     {
         while (shieldStrength > 0)
         {
-            shieldStrength -= 5; // Zmniejsza tarczê co sekundê
+            shieldStrength -= 5;
             shieldStrength = Mathf.Clamp(shieldStrength, 0, 100);
             UpdateShieldSlider();
             Debug.Log("Shield decreasing... Current Shield: " + shieldStrength);
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    void UpdateEnemyCount()
+    {
+        int enemyCount = GameObject.FindGameObjectsWithTag("ufo").Length;
+        enemyCountText.text = "Enemies: " + enemyCount.ToString();
     }
 }

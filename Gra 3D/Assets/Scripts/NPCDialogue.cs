@@ -56,7 +56,7 @@ public class NPCDialog : MonoBehaviour
             indeksDialogu++;
 
             // Ustawienie kursora w polu tekstowym i odblokowanie wpisywania
-            Invoke("AktywujPoleTekstowe", 0.1f);
+            Invoke("AktywujPoleTekstowe", 0f);
         }
     }
 

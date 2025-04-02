@@ -8,13 +8,17 @@ public class Gun : MonoBehaviour
     public float fireRate = 0.1f;
     public Camera fpsCam;
     private float nextTimeToFire = 0f;
-    public int ammoCount = 10;      // Pocz¹tkowa iloœæ amunicji w pistolecie (max 10)
-    public int maxAmmo = 10;         // Maksymalna iloœæ amunicji w magazynku (maksymalnie 10)
-    public int maxReserveAmmo = 50;  // Zapasy amunicji (max 50)
-    public int reserveAmmo = 20;         // Iloœæ zapasowej amunicji (zaczyna siê od maxReserveAmmo)
-    private bool isReloading = false; // Flaga, która sprawdza, czy trwa prze³adowanie
+    public int ammoCount = 10;
+    public int maxAmmo = 10;
+    public int maxReserveAmmo = 50;
+    public int reserveAmmo = 20;
+    private bool isReloading = false;
 
     public Text ammoText;
+    public GameObject muzzleFlashPrefab;
+    public GameObject bulletHolePrefab;
+
+    public Transform crosshairTransform;
 
     void Start()
     {
@@ -27,8 +31,7 @@ public class Gun : MonoBehaviour
         if (isReloading)
             return;
 
-        // Sprawdzanie, czy mo¿emy strzelaæ
-        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire && ammoCount > 0)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && ammoCount > 0)
         {
             nextTimeToFire = Time.time + fireRate;
             Shoot();
@@ -40,11 +43,19 @@ public class Gun : MonoBehaviour
                 Reload();
             }
         }
+
+        UpdateCrosshair();
         UpdateAmmoText();
     }
 
     void Shoot()
     {
+        if (muzzleFlashPrefab != null)
+        {
+            GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, fpsCam.transform.position + fpsCam.transform.forward * 0.5f, Quaternion.LookRotation(fpsCam.transform.forward));
+            Destroy(muzzleFlash, 0.1f);
+        }
+
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
@@ -55,10 +66,15 @@ public class Gun : MonoBehaviour
             {
                 enemy.TakeDamage(damage);
             }
+
+            if (bulletHolePrefab != null && hit.collider.gameObject.CompareTag("wall"))
+            {
+                GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                Destroy(bulletHole, 5f);
+            }
         }
     }
 
-    // Funkcja do prze³adowania
     void Reload()
     {
         if (reserveAmmo > 0)
@@ -66,24 +82,49 @@ public class Gun : MonoBehaviour
             isReloading = true;
             Debug.Log("Reloading...");
 
-            // Prze³aduj 10 amunicji z zapasów
             int ammoNeeded = maxAmmo - ammoCount;
             int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
             ammoCount += ammoToReload;
             reserveAmmo -= ammoToReload;
 
-            Invoke("FinishReload", 2f); // Czas prze³adowania: 2 sekundy
+            Invoke("FinishReload", 2f);
         }
     }
 
-    // Funkcja, która koñczy prze³adowanie
     void FinishReload()
     {
         isReloading = false;
         Debug.Log("Reload finished.");
     }
+
     public void UpdateAmmoText()
     {
         ammoText.text = "Ammo: " + ammoCount.ToString() + "/" + reserveAmmo.ToString();
     }
+
+    void UpdateCrosshair()
+    {
+        if (crosshairTransform != null)
+        {
+            Ray ray = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, range, ~LayerMask.GetMask("Crosshair"))) // Ignorujemy kolizjê celownika
+            {
+                // Ustaw celownik na miejscu trafienia, ale trochê cofniêty, by unikn¹æ kolizji
+                crosshairTransform.position = hit.point - (fpsCam.transform.forward * 0.05f);
+
+                // Ustaw celownik tak, aby patrzy³ w stronê kamery
+                crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
+            }
+            else
+            {
+                // Jeœli nic nie trafiono, ustaw celownik w maksymalnej odleg³oœci
+                crosshairTransform.position = fpsCam.transform.position + fpsCam.transform.forward * range;
+                crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
+            }
+        }
+    }
+
+
 }
