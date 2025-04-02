@@ -1,0 +1,17 @@
+Ekran fabularny po dotarciu do statku
+
+To tutaj znajduje się serwer gry. Jeśli chcesz wrócić do rzeczywistości, musisz dostać się do środka i znaleźć główny komputer.
+
+Wchodzisz na pokład, a w jego wnętrzu widzisz znajomy widok – ekran pełen linijek kodu.
+To system, który kontroluje cały świat gry. Wystarczy jedno polecenie, by go zamknąć… ale coś jest nie tak.
+
+Kompilacja wciąż trwa. Kod generuje się na nowo, samoczynnie zmieniając struktury świata.
+Nie wystarczy go po prostu wyłączyć – musisz wyłączyć serwer, by zatrzymać ten proces.
+
+Czas działa na twoją niekorzyść.
+
+Usiądź przy komputerze i wyłącz serwer, zanim świat gry pochłonie cię na zawsze.
+
+
+
+
