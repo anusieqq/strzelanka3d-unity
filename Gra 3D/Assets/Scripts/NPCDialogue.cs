@@ -10,6 +10,7 @@ public class NPCDialog : MonoBehaviour
     public TMP_InputField poleOdpowiedzi; // Pole tekstowe na odpowiedü
     public string poprawnaOdpowiedz; // Poprawna odpowiedü
     public Gun gunScript; // Referencja do skryptu Gun.cs
+    public Animator boxAnimator;
 
     private int indeksDialogu = 0;
     private bool wKolizji = false;
@@ -104,6 +105,11 @@ public class NPCDialog : MonoBehaviour
         {
             Debug.Log("Poprawna odpowiedü!");
             tekstDymka.text = "Brawo! To poprawna odpowiedü!";
+
+            if (boxAnimator != null)
+            {
+                boxAnimator.SetTrigger("Open Box");
+            }
         }
         else
         {

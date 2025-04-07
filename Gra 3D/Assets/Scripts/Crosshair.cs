@@ -19,6 +19,8 @@ public class Crosshair : MonoBehaviour
         rightStart = right.localPosition;
     }
 
+
+
     void Update()
     {
         // Sprawdzamy, czy klikniêto prawy przycisk myszy 

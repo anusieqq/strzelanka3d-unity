@@ -12,6 +12,10 @@ public class Moving : MonoBehaviour
     [SerializeField] private Transform headTransform;
     [SerializeField] private Camera thirdPersonCamera;
 
+    [SerializeField] private GameObject bulletPrefab;  // Prefab pocisku
+    [SerializeField] private Transform shootingPoint;  // Punkt, z którego strzelamy (np. przed kamer¹)
+    [SerializeField] private float bulletSpeed = 20f;  // Prêdkoœæ pocisku
+
     private Rigidbody rb;
     private float rotationX = 0f;
     private float rotationY = 0f;
@@ -20,7 +24,6 @@ public class Moving : MonoBehaviour
     private Vector3 crouchScale = new Vector3(1, 0.5f, 1);
     private Vector3 cameraOffset;
     private float currentSpeed;
-    private Vector3 lastPosition;
 
     void Start()
     {
@@ -29,7 +32,6 @@ public class Moving : MonoBehaviour
         rb.mass = 2f;
         originalHeight = transform.localScale.y;
         currentSpeed = moveSpeed;
-        lastPosition = transform.position;
 
         if (thirdPersonCamera == null)
         {
@@ -52,6 +54,7 @@ public class Moving : MonoBehaviour
         HandleJump();
         HandleCrouch();
         HandleCameraPosition();
+        HandleShooting();  // Dodajemy obs³ugê strzelania
     }
 
     void FixedUpdate()
@@ -85,7 +88,10 @@ public class Moving : MonoBehaviour
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
         moveDirection.Normalize();
 
-        rb.velocity = new Vector3(moveDirection.x * currentSpeed, rb.velocity.y, moveDirection.z * currentSpeed);
+        Vector3 velocity = rb.velocity;
+        velocity.x = moveDirection.x * currentSpeed;
+        velocity.z = moveDirection.z * currentSpeed;
+        rb.velocity = velocity;
     }
 
     void HandleJump()
@@ -125,19 +131,22 @@ public class Moving : MonoBehaviour
 
         if (lowHit && !highHit)
         {
-            rb.position += Vector3.up * 0.1f;  
+            rb.position += Vector3.up * 0.1f;
         }
-
-        lastPosition = transform.position;
     }
 
     void HandleCameraPosition()
     {
-        Vector3 desiredPosition = transform.position + Quaternion.Euler(rotationX, rotationY, 0) * cameraOffset;
-        Vector3 direction = (desiredPosition - transform.position).normalized;
+        Vector3 pivot = transform.position + Vector3.up * 1.5f;
+
+        Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
+        Vector3 desiredOffset = rotation * cameraOffset;
+        Vector3 desiredPosition = pivot + desiredOffset;
+
+        Vector3 direction = (desiredPosition - pivot).normalized;
         float distance = cameraOffset.magnitude;
 
-        if (Physics.Raycast(transform.position, direction, out RaycastHit hit, distance))
+        if (Physics.Raycast(pivot, direction, out RaycastHit hit, distance))
         {
             thirdPersonCamera.transform.position = hit.point + hit.normal * 0.2f;
         }
@@ -146,7 +155,36 @@ public class Moving : MonoBehaviour
             thirdPersonCamera.transform.position = desiredPosition;
         }
 
-        thirdPersonCamera.transform.LookAt(transform.position + Vector3.up * 1.5f);
+        thirdPersonCamera.transform.position = new Vector3(
+            thirdPersonCamera.transform.position.x,
+            Mathf.Max(thirdPersonCamera.transform.position.y, pivot.y),
+            thirdPersonCamera.transform.position.z
+        );
+
+        thirdPersonCamera.transform.LookAt(pivot);
+    }
+
+    void HandleShooting()
+    {
+        if (Input.GetMouseButtonDown(0)) // Lewy przycisk myszy
+        {
+            Shoot();
+        }
+    }
+
+    void Shoot()
+    {
+        if (bulletPrefab != null && shootingPoint != null)
+        {
+            // Tworzymy pocisk
+            GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);
+            Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+
+            if (bulletRb != null)
+            {
+                bulletRb.velocity = shootingPoint.forward * bulletSpeed;  // Pocisk leci w kierunku kamery
+            }
+        }
     }
 
     void OnCollisionStay(Collision collision)

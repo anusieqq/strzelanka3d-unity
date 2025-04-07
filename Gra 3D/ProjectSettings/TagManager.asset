@@ -12,6 +12,10 @@ TagManager:
   - wall
   - ufo
   - Crooshair
+  - kompas
+  - zegarek
+  - szklanka
+  - floor
   layers:
   - Default
   - TransparentFX
