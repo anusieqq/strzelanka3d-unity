@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;  // Dodajemy przestrzeñ nazw EventSystems
 
 public class Gun : MonoBehaviour
 {
@@ -28,9 +29,11 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (isReloading)
+        // Jeœli kursor jest nad interfejsem UI, nie wykonuj strza³u
+        if (isReloading || EventSystem.current.IsPointerOverGameObject())
             return;
 
+        // G³ówna logika strzelania
         if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && ammoCount > 0)
         {
             nextTimeToFire = Time.time + fireRate;
@@ -109,7 +112,8 @@ public class Gun : MonoBehaviour
             Ray ray = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, range, ~LayerMask.GetMask("Crosshair"))) // Ignorujemy kolizjê celownika
+            // Sprawdzamy, czy raycast nie trafia w UI
+            if (Physics.Raycast(ray, out hit, range, ~LayerMask.GetMask("UI"))) // U¿ywamy maski, aby zignorowaæ UI
             {
                 // Ustaw celownik na miejscu trafienia, ale trochê cofniêty, by unikn¹æ kolizji
                 crosshairTransform.position = hit.point - (fpsCam.transform.forward * 0.05f);
@@ -125,6 +129,4 @@ public class Gun : MonoBehaviour
             }
         }
     }
-
-
 }
