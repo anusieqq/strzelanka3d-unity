@@ -16,6 +16,7 @@ TagManager:
   - zegarek
   - szklanka
   - floor
+  - Enemy
   layers:
   - Default
   - TransparentFX

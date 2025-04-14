@@ -12,7 +12,7 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
     public Canvas canvas;
     public TextMeshProUGUI zagadkaText;
     public TextMeshProUGUI feedbackText;
-    public TextMeshProUGUI podpowiedŸText;
+    //public TextMeshProUGUI podpowiedŸText;
     private string[] answers =
     {
             "kompas",
@@ -22,8 +22,8 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
     private string correctAnswer = "zegarek";
     public Gun gunscript;
     public Animator boxanimator;
-    private string riddle = "Coœ, przed czym w œwiecie nic nie uciecze,\r\nco gnie ¿elazo, przegryza miecze,\r\npo¿era ptaki, zwierzêta, ziele,\r\nnajtwardszy kamieñ na m¹kê miele,\r\nkrólów nie szczêdzi, rozwala mury,\r\nponi¿a nawet najwy¿sze góry.";
-    private string wskazówka = "Wybierz symbol, który najlepiej przypomina ci coœ co przed sesj¹ czas staje siê najwa¿niejszym zasobem.";
+    private string riddle = "Coœ, przed czym w œwiecie nic nie uciecze,\r\nco gnie ¿elazo, przegryza miecze,\r\npo¿era ptaki, zwierzêta, ziele,\r\nnajtwardszy kamieñ na m¹kê miele,\r\nkrólów nie szczêdzi, rozwala mury,\r\nponi¿a nawet najwy¿sze góry.\nWybierz symbol, który najlepiej przypomina ci coœ co przed sesj¹ czas staje siê najwa¿niejszym zasobem.";
+    //private string wskazówka = "Wybierz symbol, który najlepiej przypomina ci coœ co przed sesj¹ czas staje siê najwa¿niejszym zasobem.";
 
     private void Start()
     {
@@ -40,7 +40,7 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
             if (canvas != null && zagadkaText != null)
             {
                 zagadkaText.text = riddle;
-                podpowiedŸText.text = wskazówka;
+                //podpowiedŸText.text = wskazówka;
                 feedbackText.text = "";
                 canvas.gameObject.SetActive(true);
 
@@ -52,7 +52,7 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                Debug.Log("Kursor zosta³ w³¹czony");
+                Debug.Log("Kursor zosta³ wy¹czony");
 
             }
         }

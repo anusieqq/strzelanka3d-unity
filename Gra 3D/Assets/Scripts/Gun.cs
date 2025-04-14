@@ -21,29 +21,49 @@ public class Gun : MonoBehaviour
 
     public Transform crosshairTransform;
 
+    public AudioClip gunShotSound;
+    public AudioClip gunreloadSound;
+    public AudioClip gunemptySound;
+    private AudioSource audioSource;
+
+
     void Start()
     {
         reserveAmmo = 20;
         UpdateAmmoText();
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     void Update()
     {
-        // Jeœli kursor jest nad interfejsem UI, nie wykonuj strza³u
         if (isReloading || EventSystem.current.IsPointerOverGameObject())
             return;
 
-        // G³ówna logika strzelania
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && ammoCount > 0)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire)
         {
-            nextTimeToFire = Time.time + fireRate;
-            Shoot();
-            ammoCount--;
-            Debug.Log("Ammo left in pistol: " + ammoCount);
-
-            if (ammoCount <= 0 && reserveAmmo > 0 && !isReloading)
+            if (ammoCount > 0)
             {
-                Reload();
+                nextTimeToFire = Time.time + fireRate;
+                Shoot();
+                ammoCount--;
+                Debug.Log("Ammo left in pistol: " + ammoCount);
+
+                if (ammoCount <= 0 && reserveAmmo > 0 && !isReloading)
+                {
+                    Reload(); // Automatyczne prze³adowanie
+                }
+            }
+            else
+            {
+                if (reserveAmmo > 0 && !isReloading)
+                {
+                    Reload(); // Prze³aduj automatycznie
+                }
+                else
+                {
+                    PlayEmptyGunSound(); // DŸwiêk pustego magazynka
+                }
             }
         }
 
@@ -51,8 +71,15 @@ public class Gun : MonoBehaviour
         UpdateAmmoText();
     }
 
+
     void Shoot()
     {
+        if (gunShotSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(gunShotSound);
+        }
+
+
         if (muzzleFlashPrefab != null)
         {
             GameObject muzzleFlash = Instantiate(muzzleFlashPrefab, fpsCam.transform.position + fpsCam.transform.forward * 0.5f, Quaternion.LookRotation(fpsCam.transform.forward));
@@ -85,20 +112,29 @@ public class Gun : MonoBehaviour
             isReloading = true;
             Debug.Log("Reloading...");
 
-            int ammoNeeded = maxAmmo - ammoCount;
-            int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
-            ammoCount += ammoToReload;
-            reserveAmmo -= ammoToReload;
+            // DŸwiêk prze³adowania
+            if (gunreloadSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(gunreloadSound);
+            }
 
+            // Wywo³aj zakoñczenie prze³adowania po 2 sekundach
             Invoke("FinishReload", 2f);
         }
     }
 
+
     void FinishReload()
     {
+        int ammoNeeded = maxAmmo - ammoCount;
+        int ammoToReload = Mathf.Min(ammoNeeded, reserveAmmo);
+        ammoCount += ammoToReload;
+        reserveAmmo -= ammoToReload;
+
         isReloading = false;
         Debug.Log("Reload finished.");
     }
+
 
     public void UpdateAmmoText()
     {
@@ -129,4 +165,14 @@ public class Gun : MonoBehaviour
             }
         }
     }
+
+    void PlayEmptyGunSound()
+    {
+        if (gunemptySound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(gunemptySound);
+        }
+        Debug.Log("Click! No ammo.");
+    }
+
 }

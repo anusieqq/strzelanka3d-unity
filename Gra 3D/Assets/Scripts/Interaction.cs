@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Interaction : MonoBehaviour
@@ -15,9 +16,21 @@ public class Interaction : MonoBehaviour
     public Text enemyCountText; // Tekst licznika przeciwników
     public Slider healthSlider; // Pasek zdrowia
     public Slider shieldSlider; // Pasek tarczy
+    public GameObject gameOverPanel; // Panel koñca gry
+    public GameObject Jeszczerazbutton;
+    public GameObject WyjdŸbutton;
+    public Text Przegra³eœ;
+
+    public AudioClip bonusSound;
+    private AudioSource audioSource;
 
     void Start()
     {
+        // Ukrywamy panel i tekst na pocz¹tku gry
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+        
+
         healthSlider.maxValue = 100;
         healthSlider.minValue = 0;
         healthSlider.wholeNumbers = false;
@@ -46,6 +59,7 @@ public class Interaction : MonoBehaviour
             playerHealth = Mathf.Clamp(playerHealth, 0, 100);
             Debug.Log("Health picked up! Current Health: " + playerHealth);
             UpdateHealthSlider();
+            PlayBonusSound();
             Destroy(collision.gameObject);
         }
         else if (collision.gameObject.CompareTag("ammo"))
@@ -57,6 +71,7 @@ public class Interaction : MonoBehaviour
                 gunScript.reserveAmmo = Mathf.Clamp(gunScript.reserveAmmo, 0, gunScript.maxReserveAmmo);
                 Debug.Log("Ammo picked up! Current Ammo in reserve: " + gunScript.reserveAmmo);
                 gunScript.UpdateAmmoText();
+                PlayBonusSound();
                 Destroy(collision.gameObject);
             }
             else
@@ -74,6 +89,7 @@ public class Interaction : MonoBehaviour
                 StopCoroutine(shieldCoroutine);
             }
             shieldCoroutine = StartCoroutine(DecreaseShieldOverTime());
+            PlayBonusSound();
             Destroy(collision.gameObject);
         }
     }
@@ -107,8 +123,61 @@ public class Interaction : MonoBehaviour
         {
             playerHealth -= damage;
             playerHealth = Mathf.Clamp(playerHealth, 0, 100);
-            Debug.Log("Player damaged! Current Health: " + playerHealth);
             UpdateHealthSlider();
+            Debug.Log("Player damaged! Current Health: " + playerHealth);
+
+            if (playerHealth <= 0 && gameOverPanel != null)
+            {
+                gameOverPanel.SetActive(true);
+                Jeszczerazbutton.SetActive(true);
+                WyjdŸbutton.SetActive(true);
+                Przegra³eœ.gameObject.SetActive(true); // Poka¿ napis "Przegra³eœ"
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                Debug.Log("Kursor zosta³ wy³¹czony");
+                Time.timeScale = 0;
+            }
+            else
+            {
+                StartCoroutine(FlashDamagePanel()); // Poka¿ panel na chwilê
+            }
+        }
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("BUILDING");
+        
+    }
+
+    public void QuitGame()
+    {
+        // Mo¿esz tu dodaæ kod do wyjœcia z gry, np.:
+        Application.Quit(); // Zamkniêcie gry
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+
+    IEnumerator FlashDamagePanel()
+    {
+        // Poka¿ panel z miganiem
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(true);
+            Jeszczerazbutton.SetActive(false);
+            WyjdŸbutton.SetActive(false);
+            Przegra³eœ.gameObject.SetActive(false); // Poka¿ napis "Przegra³eœ"
+        }
+
+        yield return new WaitForSeconds(0.3f); // Czas trwania efektu migania
+
+        // Ukryj panel, jeœli gracz nie zgin¹³
+        if (playerHealth > 0 && gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
         }
     }
 
@@ -128,5 +197,17 @@ public class Interaction : MonoBehaviour
     {
         int enemyCount = GameObject.FindGameObjectsWithTag("ufo").Length;
         enemyCountText.text = "Enemies: " + enemyCount.ToString();
+    }
+
+    void PlayBonusSound()
+    {
+        if (bonusSound != null)
+        {
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+
+            if (audioSource != null)
+                audioSource.PlayOneShot(bonusSound);
+        }
     }
 }
