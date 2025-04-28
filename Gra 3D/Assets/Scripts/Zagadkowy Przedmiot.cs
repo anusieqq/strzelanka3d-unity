@@ -3,27 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Runtime.CompilerServices;
 
 public class ZagadkowyPrzedmiot : MonoBehaviour
-
-
 {
     public Canvas canvas;
     public TextMeshProUGUI zagadkaText;
     public TextMeshProUGUI feedbackText;
-    //public TextMeshProUGUI podpowiedŸText;
-    private string[] answers =
-    {
-            "kompas",
-            "zegarek",
-            "szklanka"
-    };
-    private string correctAnswer = "zegarek";
     public Gun gunscript;
     public Animator boxanimator;
+
+    private string[] answers = { "kompas", "zegarek", "szklanka" };
+    private string correctAnswer = "zegarek";
     private string riddle = "Coœ, przed czym w œwiecie nic nie uciecze,\r\nco gnie ¿elazo, przegryza miecze,\r\npo¿era ptaki, zwierzêta, ziele,\r\nnajtwardszy kamieñ na m¹kê miele,\r\nkrólów nie szczêdzi, rozwala mury,\r\nponi¿a nawet najwy¿sze góry.\nWybierz symbol, który najlepiej przypomina ci coœ co przed sesj¹ czas staje siê najwa¿niejszym zasobem.";
-    //private string wskazówka = "Wybierz symbol, który najlepiej przypomina ci coœ co przed sesj¹ czas staje siê najwa¿niejszym zasobem.";
+
+    private int liczba_prób = 0;
+    private int max_prób = 2;
+    private bool zagadkaAktywna = true;
 
     private void Start()
     {
@@ -35,25 +30,23 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("player") && this.gameObject.tag != "Finish")
         {
             if (canvas != null && zagadkaText != null)
             {
                 zagadkaText.text = riddle;
-                //podpowiedŸText.text = wskazówka;
                 feedbackText.text = "";
                 canvas.gameObject.SetActive(true);
+                liczba_prób = 0;
+                zagadkaAktywna = true;
 
                 if (gunscript != null)
                 {
                     gunscript.enabled = false;
-                    Debug.Log("Skrypt Gun zosta³ wy³¹czony");
                 }
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                Debug.Log("Kursor zosta³ wy¹czony");
-
             }
         }
     }
@@ -69,19 +62,18 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
                 if (gunscript != null)
                 {
                     gunscript.enabled = true;
-                    Debug.Log("Skrypt Gun zosta³ w³¹czony");
                 }
 
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                Debug.Log("Kursor zosta³ wy³¹czony");
-
             }
         }
     }
 
     void CheckAnswer(string selectedAnswer)
     {
+        if (!zagadkaAktywna) return;
+
         Debug.Log("Wybrano przedmiot " + selectedAnswer);
 
         if (feedbackText != null)
@@ -90,24 +82,59 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
             {
                 feedbackText.text = "Brawo! Poprawna odpowiedŸ";
                 feedbackText.color = Color.green;
-                Debug.Log("Poprawna odpowiedŸ");
 
                 if (boxanimator != null)
                 {
                     boxanimator.SetTrigger("Open Box");
-                    Debug.Log("Skrzynka otwarta");
                 }
 
+                ZakonczenieZagadki();
             }
+
+            
 
             else
             {
-                feedbackText.text = "Niestety b³êdna opdowiedŸ. Spróbuj jeszcze raz";
+                liczba_prób++;
+                feedbackText.text = "Niestety b³êdna odpowiedŸ. Spróbuj jeszcze raz \n Pozosta³a jedna próba";
                 feedbackText.color = Color.red;
-                Debug.Log("B³êdna odpowiedŸ");
+
+               
+            }
+
+            if (liczba_prób >= max_prób)
+            {
+                feedbackText.text = "Przekroczono limit prób.";
+                ZakonczenieZagadki();
             }
         }
     }
+
+    void ZakonczenieZagadki()
+    {
+        zagadkaAktywna = false;
+        this.gameObject.tag = "Finish";
+        StartCoroutine(DelayHide());
+    }
+
+    private IEnumerator DelayHide()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (canvas != null)
+        {
+            canvas.gameObject.SetActive(false);
+        }
+
+        if (gunscript != null)
+        {
+            gunscript.enabled = true;
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     void Update()
     {
         if (canvas != null && canvas.gameObject.activeSelf && Input.GetMouseButtonDown(0))
@@ -118,24 +145,17 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
             if (Physics.Raycast(ray, out hit, 100f))
             {
                 GameObject clickedObject = hit.collider.gameObject;
-
                 string tag = clickedObject.tag;
-
-                Debug.Log("Klikniêto: " + clickedObject.name + " z tagiem: " + tag);
-
 
                 foreach (string answer in answers)
                 {
                     if (tag == answer)
                     {
                         CheckAnswer(tag);
-
                         break;
                     }
                 }
             }
         }
     }
-
-
 }

@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class Terminal : MonoBehaviour
 {
-    public Canvas canvas; // Przypisz obiekt Canvas w Inspectorze
-    public TextMeshProUGUI terminalText; // Przypisz obiekt TextMeshProUGUI w Inspectorze
-    public TextMeshProUGUI feedbackText; // Komunikat zwrotny dla gracza
-    public Button[] answerButtons; // Przypisz przyciski odpowiedzi w Inspectorze
-    public TextMeshProUGUI[] buttonTexts; // Przypisz teksty przycisków w Inspectorze
+    public Canvas canvas;
+    public TextMeshProUGUI terminalText;
+    public TextMeshProUGUI feedbackText;
+    public Button[] answerButtons;
+    public TextMeshProUGUI[] buttonTexts;
 
-    private string correctAnswer = "/home/student/projekt/server.exe"; // Poprawna odpowiedŸ
+    private string correctAnswer = "/home/student/projekt/server.exe";
     private string[] answers =
     {
         "C:\\Users\\Alien\\Documents\\Server.exe",
@@ -25,55 +25,54 @@ public class Terminal : MonoBehaviour
                             "Wskazówka:\n" +
                             "Nie ufaj nieznanym goœciom, systemowe pliki bywaj¹ z³udne, a kosmici s¹ podejrzani.";
 
-    public Gun gunScript; // Referencja do skryptu Gun
-    public Animator boxAnimator; // Referencja do Animatora skrzynki
+    public Gun gunScript;
+    public Animator boxAnimator;
+
+    private int liczba_prób = 0;
+    private int max_prób = 2;
+    private bool zagadkaAktywna = true;
 
     void Start()
     {
-        // Jeœli canvas jest przypisany w inspectorze, ustaw go jako niewidoczny na pocz¹tku gry
         if (canvas != null)
         {
             canvas.gameObject.SetActive(false);
         }
 
-        // Sprawdzamy, czy wszystkie odpowiednie elementy s¹ przypisane w inspectorze
         if (answerButtons != null && answerButtons.Length >= 4 && buttonTexts.Length >= 4)
         {
             for (int i = 0; i < answerButtons.Length; i++)
             {
-                buttonTexts[i].text = answers[i]; // Ustawienie tekstu na przyciskach
-                int index = i; // Lokalna kopia zmiennej dla delegata
-                Debug.Log("Przypisano listener do przycisku: " + answers[i]); // Debugowanie
-
-                answerButtons[i].onClick.AddListener(() => CheckAnswer(answers[index])); // Dodanie listenera
+                buttonTexts[i].text = answers[i];
+                int index = i;
+                answerButtons[i].onClick.AddListener(() => CheckAnswer(answers[index]));
             }
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("player")) // Sprawdzenie, czy obiekt ma tag "Player"
+        if (other.CompareTag("player") && this.tag != "Finish")
         {
-            if (canvas != null && terminalText != null)
+            if (canvas != null && terminalText != null && zagadkaAktywna)
             {
                 terminalText.text = riddle;
-                feedbackText.text = ""; // Wyczyœæ poprzedni komunikat
-                canvas.gameObject.SetActive(true); // Aktywacja canvasa po kolizji
+                feedbackText.text = "";
+                canvas.gameObject.SetActive(true);
+                liczba_prób = 0;
+                zagadkaAktywna = true;
 
-                // Wy³¹czenie skryptu Gun
                 if (gunScript != null)
                 {
-                    gunScript.enabled = false; // Wy³¹czenie skryptu broni
-                    Debug.Log("Skrypt Gun zosta³ wy³¹czony.");
+                    gunScript.enabled = false;
                 }
 
-                // W³¹cz kursor myszy
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                Debug.Log("Kursor zosta³ w³¹czony.");
             }
         }
     }
+
 
     void OnTriggerExit(Collider other)
     {
@@ -81,48 +80,81 @@ public class Terminal : MonoBehaviour
         {
             if (canvas != null)
             {
-                canvas.gameObject.SetActive(false); // Dezaktywacja canvasa po opuszczeniu strefy
+                canvas.gameObject.SetActive(false);
 
-                // W³¹czenie skryptu Gun
                 if (gunScript != null)
                 {
-                    gunScript.enabled = true; // W³¹czenie skryptu broni
-                    Debug.Log("Skrypt Gun zosta³ w³¹czony.");
+                    gunScript.enabled = true;
                 }
 
-                // Ukryj kursor myszy i zablokuj go ponownie
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
-                Debug.Log("Kursor zosta³ ukryty.");
             }
         }
     }
 
     void CheckAnswer(string selectedAnswer)
     {
-        Debug.Log("Klikniêto odpowiedŸ: " + selectedAnswer); // Debugowanie, która odpowiedŸ zosta³a klikniêta
+        if (!zagadkaAktywna) return;
 
-        if (feedbackText != null)
+        Debug.Log("Klikniêto odpowiedŸ: " + selectedAnswer);
+
+        // Jeœli odpowiedŸ poprawna:
+        if (selectedAnswer == correctAnswer)
         {
-            if (selectedAnswer == correctAnswer)
-            {
-                feedbackText.text = "Brawo! Poprawna odpowiedŸ!";
-                feedbackText.color = Color.green;
-                Debug.Log("Poprawna odpowiedŸ!"); // Debugowanie poprawnej odpowiedzi
+            feedbackText.text = "Brawo! Poprawna odpowiedŸ!";
+            feedbackText.color = Color.green;
 
-                // Uruchomienie animacji otwierania skrzynki
-                if (boxAnimator != null)
-                {
-                    boxAnimator.SetTrigger("Open Box");
-                    Debug.Log("Animacja otwierania skrzynki zosta³a uruchomiona.");
-                }
-            }
-            else
+            if (boxAnimator != null)
             {
-                feedbackText.text = "Niestety, b³êdna odpowiedŸ. Spróbuj jeszcze raz!";
-                feedbackText.color = Color.red;
-                Debug.Log("B³êdna odpowiedŸ!"); // Debugowanie b³êdnej odpowiedzi
+                boxAnimator.SetTrigger("Open Box");
             }
+
+            ZakonczenieZagadki();
+            return; // Zatrzymaj dalsze sprawdzanie
         }
+
+        
+
+        // Sprawdzamy, czy liczba prób nie przekroczy³a limitu
+        if (liczba_prób >= max_prób)
+        {
+            feedbackText.text = "Przekroczono limit prób!";
+            feedbackText.color = Color.red;
+            ZakonczenieZagadki();
+        }
+
+        else
+        {
+            liczba_prób++;
+            feedbackText.text = "Niestety b³êdna odpowiedŸ. Spróbuj jeszcze raz \n Pozosta³a jedna próba";
+            feedbackText.color = Color.red;
+
+
+        }
+    }
+    void ZakonczenieZagadki()
+    {
+        zagadkaAktywna = false;
+        this.tag = "Finish";
+        StartCoroutine(DelayHide());
+    }
+
+    private IEnumerator DelayHide()
+    {
+        yield return new WaitForSeconds(2f);
+
+        if (canvas != null)
+        {
+            canvas.gameObject.SetActive(false);
+        }
+
+        if (gunScript != null)
+        {
+            gunScript.enabled = true;
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

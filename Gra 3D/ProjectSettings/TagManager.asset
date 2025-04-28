@@ -17,6 +17,9 @@ TagManager:
   - szklanka
   - floor
   - Enemy
+  - Box
+  - Numbers
+  - Forest
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Moving : MonoBehaviour
 {
@@ -12,9 +13,14 @@ public class Moving : MonoBehaviour
     [SerializeField] private Transform headTransform;
     [SerializeField] private Camera thirdPersonCamera;
 
-    [SerializeField] private GameObject bulletPrefab;  // Prefab pocisku
-    [SerializeField] private Transform shootingPoint;  // Punkt, z którego strzelamy (np. przed kamer¹)
-    [SerializeField] private float bulletSpeed = 20f;  // Prêdkoœæ pocisku
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform shootingPoint;
+    [SerializeField] private float bulletSpeed = 20f;
+
+    [SerializeField] private float maxStamina = 5f;
+    [SerializeField] private float staminaDrainRate = 1f;
+    [SerializeField] private float staminaRegenRate = 0.5f;
+    [SerializeField] private Slider staminaSlider;
 
     private Rigidbody rb;
     private float rotationX = 0f;
@@ -25,6 +31,9 @@ public class Moving : MonoBehaviour
     private Vector3 cameraOffset;
     private float currentSpeed;
 
+    private float currentStamina;
+    private bool isSprinting;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,6 +41,7 @@ public class Moving : MonoBehaviour
         rb.mass = 2f;
         originalHeight = transform.localScale.y;
         currentSpeed = moveSpeed;
+        currentStamina = maxStamina;
 
         if (thirdPersonCamera == null)
         {
@@ -45,6 +55,12 @@ public class Moving : MonoBehaviour
 
         cameraOffset = new Vector3(0, 2f, -cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
+
+        if (staminaSlider != null)
+        {
+            staminaSlider.maxValue = maxStamina;
+            staminaSlider.value = currentStamina;
+        }
     }
 
     void Update()
@@ -54,7 +70,8 @@ public class Moving : MonoBehaviour
         HandleJump();
         HandleCrouch();
         HandleCameraPosition();
-        HandleShooting();  // Dodajemy obs³ugê strzelania
+        HandleShooting();
+        HandleStamina();
     }
 
     void FixedUpdate()
@@ -80,7 +97,12 @@ public class Moving : MonoBehaviour
 
     void HandleMovement()
     {
-        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : moveSpeed;
+        bool sprintKeyHeld = Input.GetKey(KeyCode.LeftShift);
+        bool isMoving = Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0;
+
+        isSprinting = sprintKeyHeld && isMoving && currentStamina > 0;
+
+        currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
 
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
@@ -166,7 +188,7 @@ public class Moving : MonoBehaviour
 
     void HandleShooting()
     {
-        if (Input.GetMouseButtonDown(0)) // Lewy przycisk myszy
+        if (Input.GetMouseButtonDown(0))
         {
             Shoot();
         }
@@ -176,14 +198,35 @@ public class Moving : MonoBehaviour
     {
         if (bulletPrefab != null && shootingPoint != null)
         {
-            // Tworzymy pocisk
             GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
 
             if (bulletRb != null)
             {
-                bulletRb.velocity = shootingPoint.forward * bulletSpeed;  // Pocisk leci w kierunku kamery
+                bulletRb.velocity = shootingPoint.forward * bulletSpeed;
             }
+        }
+    }
+
+    void HandleStamina()
+    {
+        bool sprintKeyHeld = Input.GetKey(KeyCode.LeftShift);
+        bool isMoving = Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0;
+
+        if (sprintKeyHeld && isMoving && currentStamina > 0)
+        {
+            currentStamina -= staminaDrainRate * Time.deltaTime;
+            currentStamina = Mathf.Max(0, currentStamina);
+        }
+        else
+        {
+            currentStamina += staminaRegenRate * Time.deltaTime;
+            currentStamina = Mathf.Min(maxStamina, currentStamina);
+        }
+
+        if (staminaSlider != null)
+        {
+            staminaSlider.value = currentStamina;
         }
     }
 

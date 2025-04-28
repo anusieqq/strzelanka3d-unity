@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &987707289515285490
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6498813093887645787}
+  - component: {fileID: 5896920481755712974}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6498813093887645787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987707289515285490}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 679.1, y: 556, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5896920481755712974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987707289515285490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a3d26fcc27dabd49b865bb92b5d055e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 0}
+  fullText: "Microsoft Windows [Version 10.0.22631.4890] (c) Microsoft Corporation.
+    Wszelkie prawa zastrze\u017Cone. C : te>l    Jeste\u015B studentem informatyki.
+    Od kilku tygodni pracujesz nad swoim projektem \u2013 dynamiczn\u0105 strzelank\u0105
+    science-fiction. Twoja gra mia\u0142a by\u0107 twoim najwi\u0119kszym osi\u0105gni\u0119ciem
+    \u2013 szybka akcja, starcia z obcymi, epicka walka o przetrwanie na planecie. 
+    D\u0142ugo testowa\u0142e\u015B kod, dopracowywa\u0142e\u015B mechaniki walki,
+    dodawa\u0142e\u015B inteligencj\u0119 przeciwnik\xF3w\u2026 Ale dzisiaj co\u015B
+    posz\u0142o nie tak.  Gdy uruchomi\u0142e\u015B kompilacj\u0119, ekran zamigota\u0142,
+    a ty poczu\u0142e\u015B dziwne szarpni\u0119cie. Pr\xF3bowa\u0142e\u015B wsta\u0107
+    od biurka, ale\u2026 nie by\u0142o biurka.  Otwierasz oczy. Nie jeste\u015B ju\u017C
+    w swoim pokoju. Wok\xF3\u0142 ciebie znajduj\u0105 si\u0119 surowe betonowe \u015Bciany
+    \u2013 to jeden z poziom\xF3w, kt\xF3re sam stworzy\u0142e\u015B do test\xF3w. 
+    Przez b\u0142\u0105d w kodzie znalaz\u0142e\u015B si\u0119 wewn\u0105trz w\u0142asnej
+    gry.  To jeszcze nie wszystko. Po korytarzach budynku poruszaj\u0105 si\u0119
+    postacie, kt\xF3re mia\u0142y by\u0107 tylko przeciwnikami sterowanymi przez
+    AI \u2013 obcy, kt\xF3rych zaprogramowa\u0142e\u015B do ataku na gracza. Teraz
+    jednak to ty jeste\u015B tym graczem\u2026 i musisz przetrwa\u0107.  Twoim pierwszym
+    celem jest wydosta\u0107 si\u0119 z tego miejsca. Aby otworzy\u0107 drzwi, musisz
+    zdoby\u0107 kod, rozwi\u0105zuj\u0105c ukryte w budynku zagadki. Uwa\u017Caj
+    jednak \u2013 obcy nie zamierzaj\u0105 ci na to pozwoli\u0107.  Pami\u0119taj
+    \u2013 twoje \u017Cycie nie jest nieograniczone. Musisz szuka\u0107 znajdziek,
+    kt\xF3re pomog\u0105 ci przetrwa\u0107. Je\u015Bli umrzesz, na zawsze pozostaniesz
+    w \u015Bwiecie gry.  Przetrwaj. Znajd\u017A kod. Ucieknij z budynku. "
+  scrollRect: {fileID: 0}
+  Rozpocznij: {fileID: 0}
+  StartButton: {fileID: 0}
+  Opcje: {fileID: 0}
+  Wczytaj: {fileID: 0}
+  Wyjdz: {fileID: 0}
+  menu: {fileID: 0}
+  fabula: {fileID: 0}
+  opcjePanel: {fileID: 0}

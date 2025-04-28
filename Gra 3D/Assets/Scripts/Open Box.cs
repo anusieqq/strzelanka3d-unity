@@ -15,11 +15,11 @@ public class OpenBox : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            anim.SetBool("Open Box", true);
+            anim.SetBool("Open Door", true);
         }
         if (Input.GetButtonDown("Fire2"))
         {
-            anim.SetBool("Open Box", false);
+            anim.SetBool("Open Door", false);
         }
     }
 }

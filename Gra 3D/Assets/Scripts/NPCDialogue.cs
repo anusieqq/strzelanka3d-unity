@@ -14,6 +14,8 @@ public class NPCDialog : MonoBehaviour
 
     private int indeksDialogu = 0;
     private bool wKolizji = false;
+    private int liczba_prób = 0;
+    private int max_prób = 2;
 
     void Start()
     {
@@ -70,13 +72,15 @@ public class NPCDialog : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("player") && this.gameObject.tag != "Finish")
         {
             wKolizji = true;
             indeksDialogu = 0;
+            liczba_prób = 0; // Reset prób
             PokazNastepnyDialog();
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -98,8 +102,18 @@ public class NPCDialog : MonoBehaviour
 
     public void SprawdzOdpowiedz()
     {
+        if (liczba_prób >= max_prób)
+        {
+            tekstDymka.text = "Przekroczono limit prób.";
+            poleOdpowiedzi.interactable = false;
+            poleOdpowiedzi.gameObject.SetActive(false);
+            this.gameObject.tag = "Finish"; // Ustawienie tagu po niepowodzeniu
+            Invoke("ZakonczenieDialogu", 2f);
+            return;
+        }
+
         Debug.Log("Sprawdzana odpowiedŸ: " + poleOdpowiedzi.text);
-        poleOdpowiedzi.interactable = false; // Blokuje pole po wpisaniu odpowiedzi
+        poleOdpowiedzi.interactable = false;
 
         if (poleOdpowiedzi.text.Trim().ToUpper() == poprawnaOdpowiedz.ToUpper())
         {
@@ -110,16 +124,35 @@ public class NPCDialog : MonoBehaviour
             {
                 boxAnimator.SetTrigger("Open Box");
             }
+
+            this.gameObject.tag = "Finish"; // Ustawienie tagu po sukcesie
+            poleOdpowiedzi.gameObject.SetActive(false);
+            Invoke("ZakonczenieDialogu", 2f);
         }
         else
         {
+            liczba_prób++;
             Debug.Log("Z³a odpowiedŸ!");
-            tekstDymka.text = "Niestety, to b³êdna odpowiedŸ.";
-        }
 
-        poleOdpowiedzi.gameObject.SetActive(false);
-        Invoke("ZakonczenieDialogu", 2f);
+            if (liczba_prób < max_prób)
+            {
+                tekstDymka.text = "Niestety, to b³êdna odpowiedŸ. Spróbuj jeszcze raz.\n Pozosta³a jeszcze jedna próba";
+                poleOdpowiedzi.interactable = true;
+                poleOdpowiedzi.text = "";
+                poleOdpowiedzi.ActivateInputField();
+                poleOdpowiedzi.Select();
+            }
+            else
+            {
+                tekstDymka.text = "To by³a ostatnia próba.";
+                poleOdpowiedzi.gameObject.SetActive(false);
+                this.gameObject.tag = "Finish"; // Ustawienie tagu po niepowodzeniu
+                Invoke("ZakonczenieDialogu", 2f);
+            }
+        }
     }
+
+
 
     private void ZakonczenieDialogu()
     {

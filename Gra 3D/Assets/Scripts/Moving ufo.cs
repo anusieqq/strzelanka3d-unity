@@ -110,7 +110,7 @@ public class UFOMovement : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, moveDirection, out hit, raycastDistance))
         {
-            if (hit.collider.CompareTag("wall"))
+            if (hit.collider.CompareTag("wall") || (hit.collider.CompareTag("floor")))
             {
                 moveDirection = GetRandomDirection();
                 Debug.Log("UFO unika ściany, zmiana kierunku");
