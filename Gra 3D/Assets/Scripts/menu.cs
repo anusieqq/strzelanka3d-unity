@@ -12,11 +12,13 @@ public class Menu : MonoBehaviour
     public ScrollRect scrollRect;
     private float typingSpeed = 0.005f;
     private float scrollSpeed = 0.065f;
-    private float scrollDelay = 0.5f;
+    private float scrollDelay = 1.0f;
     private bool isTyping = false;
+    private bool skipRequested = false;
 
     [Header("UI Elements")]
     public GameObject Rozpocznij;
+    public GameObject Pomiñ;
     public GameObject StartButton;
     public GameObject Opcje;
     public GameObject Wczytaj;
@@ -28,6 +30,7 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         InitializeUI();
+        Pomiñ.SetActive(false);
     }
 
     private void InitializeUI()
@@ -37,11 +40,14 @@ public class Menu : MonoBehaviour
         opcjePanel.gameObject.SetActive(false);
         Rozpocznij.SetActive(false);
 
+
+        // Przypisanie metod do przycisków
         Rozpocznij.GetComponent<Button>().onClick.AddListener(StartNewGame);
         StartButton.GetComponent<Button>().onClick.AddListener(StartGame);
         Opcje.GetComponent<Button>().onClick.AddListener(OptionsGame);
         Wczytaj.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadGameAndScene()));
         Wyjdz.GetComponent<Button>().onClick.AddListener(ExitGame);
+        Pomiñ.GetComponent<Button>().onClick.AddListener(SkipTyping); // Dodane przypisanie metody SkipTyping
     }
 
     public void StartNewGame()
@@ -58,9 +64,17 @@ public class Menu : MonoBehaviour
         if (fabula != null)
         {
             fabula.gameObject.SetActive(true);
-            StartCoroutine(DelayedTypingStart());
             menu.gameObject.SetActive(false);
+            skipRequested = false; // Reset flagi przed rozpoczêciem
+            StartCoroutine(TypeText());
+            StartCoroutine(ShowSkipButtonAfterDelay());
         }
+    }
+
+    IEnumerator ShowSkipButtonAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        Pomiñ.SetActive(true);
     }
 
     IEnumerator LoadGameAndScene()
@@ -80,11 +94,15 @@ public class Menu : MonoBehaviour
             PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
             PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
             PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
+            PlayerPrefs.SetString("SavedScene", data.levelName);
             PlayerPrefs.Save();
 
-            SceneManager.LoadScene(data.levelName);
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(data.levelName);
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
         }
-        yield return null;
     }
 
     public void ExitGame()
@@ -107,18 +125,6 @@ public class Menu : MonoBehaviour
         menu.gameObject.SetActive(true);
     }
 
-    IEnumerator DelayedTypingStart()
-    {
-        yield return new WaitForEndOfFrame();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
-        yield return new WaitForEndOfFrame();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
-
-        scrollRect.verticalNormalizedPosition = 1f;
-        yield return new WaitForSeconds(0.1f);
-        StartCoroutine(TypeText());
-    }
-
     IEnumerator TypeText()
     {
         if (isTyping) yield break;
@@ -127,27 +133,53 @@ public class Menu : MonoBehaviour
         textComponent.text = "";
         float timer = 0f;
 
+        scrollRect.verticalNormalizedPosition = 1f;
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
+
         foreach (char letter in fullText)
         {
+            if (skipRequested)
+            {
+                textComponent.text = fullText;
+                break;
+            }
+
             textComponent.text += letter;
             timer += typingSpeed;
 
             if (scrollRect != null && timer >= scrollDelay)
             {
                 timer = 0f;
-                StartCoroutine(SmoothScroll());
+                yield return SmoothScroll();
             }
 
             yield return new WaitForSeconds(typingSpeed);
         }
 
-        if (scrollRect != null)
-        {
-            yield return StartCoroutine(SmoothScrollToEnd());
-        }
+        yield return SmoothScrollToEnd();
 
         Rozpocznij.SetActive(true);
+        Pomiñ.SetActive(false);
         isTyping = false;
+        skipRequested = false; // Reset flagi po zakoñczeniu
+    }
+
+    public void SkipTyping()
+    {
+        Debug.Log("SkipTyping called");
+        if (!isTyping) Debug.Log("But not typing now!");
+        skipRequested = true;
+
+        // Natychmiastowa wizualna odpowiedŸ
+        Pomiñ.GetComponent<Image>().color = Color.red;
+        StartCoroutine(ResetButtonColor());
+    }
+
+    IEnumerator ResetButtonColor()
+    {
+        yield return new WaitForSeconds(0.3f);
+        Pomiñ.GetComponent<Image>().color = Color.white;
     }
 
     IEnumerator SmoothScroll()

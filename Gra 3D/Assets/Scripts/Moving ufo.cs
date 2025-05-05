@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UFOMovement : MonoBehaviour
 {
@@ -29,12 +28,27 @@ public class UFOMovement : MonoBehaviour
         }
 
         moveDirection = GetRandomDirection();
-        audioSource = GetComponent<AudioSource>();  // Sprawdź, czy przypisano komponent AudioSource
+        audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
         {
-            Debug.LogWarning("AudioSource not found on UFO. Adding one.");
-            audioSource = gameObject.AddComponent<AudioSource>(); // Dodajemy AudioSource, jeśli go nie ma
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Dodaj Rigidbody, jeśli go nie ma
+        if (GetComponent<Rigidbody>() == null)
+        {
+            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+
+        // Dodaj Collider, jeśli go nie ma
+        if (GetComponent<Collider>() == null)
+        {
+            SphereCollider col = gameObject.AddComponent<SphereCollider>();
+            col.isTrigger = true;
+            col.radius = 1.5f;
         }
     }
 
@@ -59,7 +73,6 @@ public class UFOMovement : MonoBehaviour
                 playerInteraction.TakeDamage(damage);
                 Debug.Log("UFO zadało obrażenia graczowi!");
 
-                // Dźwięk uderzenia
                 PlayAttackSound();
 
                 ignorePlayerUntil = Time.time + ignorePlayerTime;
@@ -81,11 +94,79 @@ public class UFOMovement : MonoBehaviour
         isChasing = distanceToPlayer <= detectionRange;
     }
 
+    void AvoidWalls()
+    {
+        RaycastHit hit;
+
+        // Kolizja przed ruchem (ściany)
+        if (Physics.Raycast(transform.position, moveDirection, out hit, raycastDistance))
+        {
+            if (hit.collider.CompareTag("wall") || hit.collider.CompareTag("floor"))
+            {
+                // Ślizganie się po ścianie
+                moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal).normalized;
+
+                // Delikatnie odepchnij UFO od ściany
+                transform.position += hit.normal * 0.05f;
+            }
+        }
+
+        // Sprawdzenie podłogi pod UFO
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance))
+        {
+            if (hit.collider.CompareTag("floor"))
+            {
+                float desiredHeight = hit.point.y + 0.5f; // dostosuj 0.5f jeśli UFO ma inną wysokość
+                if (transform.position.y < desiredHeight)
+                {
+                    transform.position = new Vector3(transform.position.x, desiredHeight, transform.position.z);
+                }
+            }
+        }
+
+        // Sprawdzenie sufitu nad UFO
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, raycastDistance))
+        {
+            if (hit.collider.CompareTag("floor"))
+            {
+                float ceilingLimit = hit.point.y - 0.5f; // odstęp od sufitu
+                if (transform.position.y > ceilingLimit)
+                {
+                    transform.position = new Vector3(transform.position.x, ceilingLimit, transform.position.z);
+                }
+            }
+        }
+    }
+
+
     void MoveAndRotate()
     {
+        Vector3 targetDirection;
+
         if (isChasing)
         {
-            moveDirection = (playerTransform.position - transform.position).normalized;
+            targetDirection = (playerTransform.position - transform.position).normalized;
+
+            // Jeśli coś blokuje ruch, spróbuj przesunąć się wzdłuż przeszkody
+            if (Physics.Raycast(transform.position, targetDirection, out RaycastHit hit, raycastDistance))
+            {
+                if (hit.collider.CompareTag("wall"))
+                {
+                    // Ślizganie się po ścianie
+                    moveDirection = Vector3.ProjectOnPlane(targetDirection, hit.normal).normalized;
+
+                    // Delikatnie odepchnij UFO od ściany, by nie utknęło
+                    transform.position += hit.normal * 0.05f;
+                }
+                else
+                {
+                    moveDirection = targetDirection;
+                }
+            }
+            else
+            {
+                moveDirection = targetDirection;
+            }
         }
         else
         {
@@ -96,8 +177,10 @@ public class UFOMovement : MonoBehaviour
             }
         }
 
+        // Ruch
         transform.position += moveDirection * speed * Time.deltaTime;
 
+        // Rotacja
         if (moveDirection.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -105,22 +188,25 @@ public class UFOMovement : MonoBehaviour
         }
     }
 
-    void AvoidWalls()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, moveDirection, out hit, raycastDistance))
-        {
-            if (hit.collider.CompareTag("wall") || (hit.collider.CompareTag("floor")))
-            {
-                moveDirection = GetRandomDirection();
-                Debug.Log("UFO unika ściany, zmiana kierunku");
-            }
-        }
-    }
+
 
     Vector3 GetRandomDirection()
     {
-        return new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+        Vector3 newDirection;
+        int attempts = 0;
+        do
+        {
+            newDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+            attempts++;
+            if (attempts > 10)
+            {
+                newDirection = -moveDirection;
+                break;
+            }
+        }
+        while (Physics.Raycast(transform.position, newDirection, raycastDistance));
+
+        return newDirection;
     }
 
     void PlayAttackSound()

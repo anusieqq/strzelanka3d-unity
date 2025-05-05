@@ -36,11 +36,11 @@ public class Interaction : MonoBehaviour
 
         healthSlider.maxValue = 100;
         healthSlider.minValue = 0;
-        healthSlider.wholeNumbers = false;
+        healthSlider.wholeNumbers = true;
 
         shieldSlider.maxValue = 100;
         shieldSlider.minValue = 0;
-        shieldSlider.wholeNumbers = false;
+        shieldSlider.wholeNumbers = true;
 
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
         UpdateHealthSlider();
@@ -81,7 +81,7 @@ public class Interaction : MonoBehaviour
             PlayerController pc = FindObjectOfType<PlayerController>();
             if (pc != null)
             {
-                pc.SetShield(100, pc.maxShield);
+                pc.SetShield(100f, pc.maxShield);
             }
 
             PlayBonusSound();
@@ -101,9 +101,30 @@ public class Interaction : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        playerHealth -= damage;
+        PlayerController pc = FindObjectOfType<PlayerController>();
+
+        if (pc != null && pc.currentShield > 0)
+        {
+            // Najpierw obra¿enia s¹ absorbowane przez tarczê
+            float remainingDamage = Mathf.Max(0f, damage - pc.currentShield);
+            pc.currentShield = Mathf.Max(0f, pc.currentShield - damage);
+            shieldSlider.value = pc.currentShield;
+
+            // Jeœli pozosta³y jakieœ obra¿enia po absorpcji przez tarczê, zadaj je zdrowiu
+            if (remainingDamage > 0)
+            {
+                playerHealth -= (int)remainingDamage;
+                UpdateHealthSlider();
+            }
+        }
+        else
+        {
+            // Brak tarczy - obra¿enia trafiaj¹ bezpoœrednio w zdrowie
+            playerHealth -= damage;
+            UpdateHealthSlider();
+        }
+
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
-        UpdateHealthSlider();
 
         if (playerHealth <= 0 && gameOverPanel != null)
         {

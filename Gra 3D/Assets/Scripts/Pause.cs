@@ -6,40 +6,66 @@ using System.IO;
 public class Pause : MonoBehaviour
 {
     [Header("UI Elements")]
-    public Canvas PauseCanvas;
-    public GameObject opcjePanel;
-    public GameObject StartButton;
+    public GameObject PauseCanvas;
     public Slider healthSlider;
     public Slider shieldSlider;
     public Slider enemyHealthSlider;
 
+    private GameObject Opcje;
     private bool isPaused = false;
+    private CharacterController characterController;
+    private bool isLoading = false;
 
     private void Start()
     {
+        characterController = GetComponent<CharacterController>();
         InitializeUI();
+
+        if (AudioManager.Instance != null && AudioManager.Instance.uiOpcje != null)
+        {
+            Opcje = AudioManager.Instance.uiOpcje;
+            Opcje.SetActive(false);
+        }
+
+        Invoke("DelayedLoad", 0.1f);
+    }
+
+    private void DelayedLoad()
+    {
+        isLoading = true;
         LoadPlayerData();
+        isLoading = false;
     }
 
     private void InitializeUI()
     {
         PauseCanvas.gameObject.SetActive(false);
-        opcjePanel.gameObject.SetActive(false);
-        StartButton.gameObject.SetActive(false);
     }
 
     private void LoadPlayerData()
     {
+        if (characterController != null)
+            characterController.enabled = false;
+
         float hp = PlayerPrefs.GetFloat("PlayerHealth", 100f);
         float maxHp = PlayerPrefs.GetFloat("MaxHealth", 100f);
         float shield = PlayerPrefs.GetFloat("PlayerShield", 0f);
         float maxShield = PlayerPrefs.GetFloat("MaxShield", 0f);
 
-        transform.position = new Vector3(
+        Vector3 savedPosition = new Vector3(
             PlayerPrefs.GetFloat("PlayerPosX", transform.position.x),
             PlayerPrefs.GetFloat("PlayerPosY", transform.position.y),
             PlayerPrefs.GetFloat("PlayerPosZ", transform.position.z)
         );
+
+        if (Physics.Raycast(savedPosition + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 10f))
+        {
+            transform.position = hit.point + Vector3.up * 0.2f;
+        }
+        else
+        {
+            transform.position = savedPosition + Vector3.up * 1f;
+        }
 
         PlayerController playerController = GetComponent<PlayerController>();
         if (playerController != null)
@@ -47,21 +73,26 @@ public class Pause : MonoBehaviour
             playerController.SetHealth(hp, maxHp);
             playerController.SetShield(shield, maxShield);
         }
+
+        if (characterController != null)
+            characterController.enabled = true;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isLoading)
         {
-            if (isPaused) Resume();
-            else PauseGame();
+            if (isPaused)
+                Resume();
+            else
+                PauseGame();
         }
     }
 
     public void PauseGame()
     {
-        PauseCanvas.gameObject.SetActive(true);
-        Time.timeScale = 0;
+        PauseCanvas.SetActive(true);
+        Time.timeScale = 0f;
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -69,8 +100,11 @@ public class Pause : MonoBehaviour
 
     public void Resume()
     {
+        if (Opcje != null)
+            Opcje.SetActive(false);
+
         PauseCanvas.gameObject.SetActive(false);
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -78,28 +112,33 @@ public class Pause : MonoBehaviour
 
     public void OptionsGame()
     {
-        opcjePanel.gameObject.SetActive(!opcjePanel.gameObject.activeSelf);
-        StartButton.gameObject.SetActive(!StartButton.gameObject.activeSelf);
-        PauseCanvas.gameObject.SetActive(false);
+        if (Opcje != null)
+        {
+            Opcje.SetActive(true);
+            PauseCanvas.SetActive(false);
+        }
     }
 
     public void HideOptions()
     {
-        opcjePanel.gameObject.SetActive(false);
-        StartButton.gameObject.SetActive(false);
-        PauseCanvas.gameObject.SetActive(true);
+        if (Opcje != null)
+        {
+            Opcje.SetActive(false);
+            PauseCanvas.SetActive(true);
+        }
     }
 
     public void SaveGame()
     {
         GameData data = new GameData();
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject player = GameObject.FindGameObjectWithTag("player");
 
         if (player != null)
         {
-            data.playerPosX = player.transform.position.x;
-            data.playerPosY = player.transform.position.y;
-            data.playerPosZ = player.transform.position.z;
+            Vector3 safePosition = player.transform.position + Vector3.up * 1f;
+            data.playerPosX = safePosition.x;
+            data.playerPosY = safePosition.y;
+            data.playerPosZ = safePosition.z;
         }
 
         data.levelName = SceneManager.GetActiveScene().name;
@@ -118,6 +157,9 @@ public class Pause : MonoBehaviour
         PlayerPrefs.SetFloat("MaxHealth", data.maxHP);
         PlayerPrefs.SetFloat("PlayerShield", data.currentShield);
         PlayerPrefs.SetFloat("MaxShield", data.maxShield);
+        PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
+        PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
+        PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
         PlayerPrefs.SetFloat("EnemyHealth", data.ufoHP);
         PlayerPrefs.SetFloat("EnemyMaxHealth", data.ufoMaxHP);
         PlayerPrefs.SetString("SavedScene", data.levelName);

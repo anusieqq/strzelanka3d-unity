@@ -88,7 +88,6 @@ public class PanelCollision : MonoBehaviour
 
                 if (rozwiazaneZagadki.Length < 4)
                 {
-                    // Jeœli nie wszystkie zagadki rozwi¹zane
                     if (displayText != null)
                     {
                         displayText.gameObject.SetActive(true);
@@ -100,11 +99,29 @@ public class PanelCollision : MonoBehaviour
                         inputFieldPanel.SetActive(false);
                     }
 
-                    return; 
+                    return;
                 }
             }
 
-            // Jeœli wszystkie zagadki rozwi¹zane
+            // Sprawdzenie przeciwników
+            GameObject[] przeciwnicy = GameObject.FindGameObjectsWithTag("Enemy");
+            if (przeciwnicy.Length > 0)
+            {
+                if (displayText != null)
+                {
+                    displayText.gameObject.SetActive(true);
+                    displayText.text = "<b><color=red>Zabij wszystkich przeciwników, aby kontynuowaæ!</color></b>";
+                }
+
+                if (inputFieldPanel != null)
+                {
+                    inputFieldPanel.SetActive(false);
+                }
+
+                return;
+            }
+
+            // Wszystkie warunki spe³nione
             if (inputFieldPanel != null)
             {
                 inputFieldPanel.SetActive(true);
@@ -126,6 +143,7 @@ public class PanelCollision : MonoBehaviour
             PokazZebraneCyfry();
         }
     }
+
 
     private void OnTriggerExit(Collider other)
     {
@@ -164,12 +182,30 @@ public class PanelCollision : MonoBehaviour
 
         UpdateCaretColor();
 
-        if (rawText.Length == correctCode.Length && rawText == correctCode)
+        if (rawText.Length == correctCode.Length)
         {
-            Debug.Log("Poprawny kod!");
-            OnCorrectCode();
+            if (rawText == correctCode)
+            {
+                Debug.Log("Poprawny kod!");
+                OnCorrectCode();
+            }
+            else
+            {
+                Debug.Log("Niepoprawny kod!");
+                if (displayText != null)
+                {
+                    displayText.text = "<b><color=red>Niepoprawny kod, spróbuj ponownie.</color></b>";
+                }
+
+                // Wyczyœæ pole i pozwól u¿ytkownikowi wpisaæ ponownie
+                inputField.text = "";
+                rawText = "";
+                inputField.ActivateInputField();
+                UpdateCaretColor();
+            }
         }
     }
+
     private string GetColoredText(string text)
     {
         string result = "";

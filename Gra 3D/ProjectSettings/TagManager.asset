@@ -24,14 +24,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Parter
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - FirstFloor
+  - Static
+  - MinimapIconParter
+  - MinimapIconFirst
   - 
   - 
   - 

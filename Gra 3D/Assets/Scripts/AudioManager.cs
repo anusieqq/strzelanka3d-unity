@@ -1,11 +1,13 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
     public AudioMixer audioMixer;
+    public GameObject uiOpcje;
 
     private const string MIXER_Shoot = "ShootVolume";
 
@@ -16,6 +18,13 @@ public class AudioManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             InitializeVolumeSettings();
+
+            if (uiOpcje != null)
+            {
+                DontDestroyOnLoad(uiOpcje);
+            }
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -40,6 +49,20 @@ public class AudioManager : MonoBehaviour
             audioMixer.SetFloat(MIXER_Shoot, volume);
             PlayerPrefs.SetFloat(MIXER_Shoot, value);
             PlayerPrefs.Save();
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (uiOpcje == null)
+        {
+            uiOpcje = GameObject.Find("Opcje"); 
+            if (uiOpcje != null)
+            {
+                uiOpcje.transform.SetParent(null);
+                DontDestroyOnLoad(uiOpcje);
+                uiOpcje.SetActive(false); 
+            }
         }
     }
 }
