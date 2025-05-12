@@ -1,0 +1,65 @@
+Zagadki w lesie: 
+1. Zagadkowa scena: "Zagadka Baba Jagi"  
+Gracz otwiera skrzynkę, w której znajduje się kartka z napisem:  
+„Raz, dwa, trzy, Baba Jaga patrzy!  
+Światło zapali się na zielono – ruszaj do przodu.  
+Lecz kiedy zapali się na czerwono – musisz stanąć nieruchomo.  
+W przeciwnym razie wrócisz na początek ścieżki i czeka cię powtórka… tak jak niektórych zajęć w semestrze.”  
+Po otwarciu skrzynki na ścieżce zapala się zielone światło, wskazując drogę, którą należy podążać.  
+Gracz zaczyna iść, ale co chwilę światło zmienia się na czerwone – wtedy gracz musi natychmiast stanąć w miejscu, 
+inaczej zostanie cofnięty do początku ścieżki. 
+2. Zagadkowa scena: "Most nad Rzeką"  
+Gracz stoi na brzegu rzeki, przed nim znajduje się most składający się z kwadratowych pól. Most jest podzielony 
+na np. 5 wierszy i 2 kolumny (10 kwadratów).  
+Gracz musi przejść przez most, wybierając odpowiednie pola. Początkowo musi wybrać losowo, 
+a później zapamiętać, które pola są bezpieczne, ponieważ zły wybór cofa go na początek mostu.  
+Przykładowy wstęp:  
+Na ekranie pojawia się napis:  
+„Musisz odgadnąć, które kwadraty są prawidłowe, a które nie, i zapamiętać to dokładnie. Na początku musisz 
+wybrać losowo, 
+tak jak często bywa z twoimi odpowiedziami na egzaminie – bez pewności, ale z nadzieją, że dobrze trafiłeś.  
+Z czasem będziesz musiał zaufać swojej pamięci, bo jeden zły wybór i wracasz na początek.”  
+Przykładowy układ mostu:  
+[1] [2]  
+[3] [4]  
+[5] [6]  
+[7] [8]  
+[9] [10] 
+3. Zadanie: "Zagubiony Demon"  
+Opis:  
+Gracz natrafia na małego smutnego demona (proces), który jest samotny i nie potrafi znaleźć swojego rodzica – 
+procesu nadrzędnego, który go uruchomił.  
+Demon płacze, ponieważ nie rozumie, dlaczego został porzucony i nie może kontynuować swojej pracy. Mały 
+proces jest zdezorientowany i nie wie, gdzie się udać.  
+Gracz musi odnaleźć proces rodzica, aby przekazać mu, że jego demon zaginął i potrzebuje pomocy, aby 
+poprawnie działać.  
+Dialog z NPC (mały demon):  
+Demon: "Jestem taki samotny... Mam taką ciężką pracę do wykonania, ale zgubiłem swojego rodzica. Nie wiem, 
+gdzie on jest. Zawsze mnie prowadził, a teraz… zostałem sam."  
+Gracz: "Skąd się wziąłeś? Kto cię uruchomił?"  
+Demon: "Mój rodzic… to proces, który mnie kontrolował. Bez niego nie mogę pracować. Jeśli go znajdziesz, może 
+będę mógł wrócić do normalnego działania." 
+4.  
+Opis: 
+Na 
+Zagadkowa scena: „Leśna Sekwencja Świateł” 
+ekranie 
+pojawia 
+się 
+napis: 
+„Pamiętasz, jak na studiach, kiedy kolega wysłał ci swoje sprawozdanie, a ty zamiast zmieniać cokolwiek, po 
+prostu odwzorowałeś je 1:1, bo uznałeś, że to najprostsze rozwiązanie? Dziś możesz się wykazać, bo masz 
+dokładnie to samo zadanie.  
+Musisz odwzorować sekwencję tak, jak ją widzisz – żadnego błędu. Jeśli się pomylisz, zaczynasz od nowa.” 
+Zadanie: 
+Gracz znajduje się w lesie, gdzie w kręgu ustawione są kamienne obeliski. Po chwili kilka z nich rozbłyska światłem 
+w określonej kolejności. Gracz musi zapamiętać tę sekwencję i następnie odtworzyć ją, aktywując obeliski we 
+właściwej kolejności. Błąd powoduje reset i konieczność rozpoczęcia od początku. 
+Zagadka “Most nad Rzeką”: 
+W projekcie zaimplementowaliśmy zagadkę logiczną polegającą na przejściu przez most zbudowany z 
+kwadratowych pól (5 rzędów × 2 kolumny). Gracz musi odnaleźć bezpieczną ścieżkę, krok po kroku odkrywając, 
+które pola są poprawne. Początkowo wybór odbywa się losowo – każdy zły ruch powoduje zresetowanie postaci 
+na początek mostu. Zadanie wymaga od gracza zapamiętywania właściwej kolejności pól i stopniowego 
+odkrywania całej ścieżki. Dzięki temu łączy ono elementy ryzyka, zapamiętywania i logicznego myślenia. 
+Mechanika została w pełni zaimplementowana i działa zgodnie z założeniami – gracz przechodzi most tylko wtedy, 
+gdy nauczy się poprawnej sekwencji ruchów.
