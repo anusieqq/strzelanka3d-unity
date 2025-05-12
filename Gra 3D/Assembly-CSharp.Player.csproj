@@ -87,10 +87,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\Open Box.cs" />
     <Compile Include="Assets\Scripts\Ufo animation.cs" />
+    <Compile Include="Assets\Scripts\Forest\KolorŚcieżki.cs" />
     <Compile Include="Assets\Megapoly.Art\Vintage Controls\Scripts\ControlAnimateLights.cs" />
     <Compile Include="Assets\Scripts\PlayerShield.cs" />
     <Compile Include="Assets\Scripts\Crosshair.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
+    <Compile Include="Assets\Scripts\Day.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Numbers.cs" />
@@ -128,17 +130,21 @@
     <Compile Include="Assets\Scripts\Opcje.cs" />
     <Compile Include="Assets\Scripts\Pause.cs" />
     <Compile Include="Assets\ScifiOfficeLite\Scripts\DemoFirstPersonController.cs" />
+    <Compile Include="Assets\Scripts\Light.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\WorldMaterialsFree\Shaders\WorldMatHDRPFree.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />
     <None Include="Assets\Scripts\Znajdźki.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\WorldMaterialsFree\Shaders\WorldMatLiteFree.shader" />
+    <None Include="Assets\Materials\Pochodnia.shader" />
     <None Include="Assets\WorldMaterialsFree\Shaders\WorldMatFree.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Water_Shader.shader" />
     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Plants_Shader.shader" />
     <None Include="Assets\Fantasy Skybox FREE\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
@@ -146,12 +152,16 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\Materials\Materials\NewSurfaceShader.shader" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader.shader" />
     <None Include="Assets\Fantasy Skybox FREE\ReleaseNotes.txt" />
     <None Include="Assets\Polytope Studio\Lowpoly_Village\Sources\Shaders\PT_Buildings_Shader_PBR.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Opaque_Shader.shader" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Rock_Shader.shader" />
     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Opaque_Shader.shader" />
     <None Include="Assets\Polytope Studio\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Foliage_Shader.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Lowpoly_Environments\Sources\Shaders\PT_Vegetation_Flowers_Shader.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
@@ -939,6 +949,10 @@
       <Project>{703F2734-FAF3-3FD1-9169-55F421B1B553}</Project>
       <Name>Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.Player</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.VisualEffectGraph.Runtime.Player.csproj">
+      <Project>{91DDA6AC-F09B-EDA0-D672-E0A84AB2939A}</Project>
+      <Name>Unity.VisualEffectGraph.Runtime.Player</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Core.Runtime.Player.csproj">
       <Project>{49054D8A-53F1-9277-6D44-F85AE254B20B}</Project>
       <Name>Unity.RenderPipelines.Core.Runtime.Player</Name>
@@ -983,6 +997,10 @@
       <Project>{B51B608E-EC8A-8DF3-2B1B-6A23E8E55561}</Project>
       <Name>Unity.InputSystem.ForUI.Player</Name>
     </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.HighDefinition.Config.Runtime.Player.csproj">
+      <Project>{3D1A8B52-24B8-2ED8-A79A-6962D5F6D0AA}</Project>
+      <Name>Unity.RenderPipelines.HighDefinition.Config.Runtime.Player</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.RenderPipelines.Core.ShaderLibrary.Player.csproj">
       <Project>{B8FCEAAD-786A-6F6D-620C-85A44A328933}</Project>
       <Name>Unity.RenderPipelines.Core.ShaderLibrary.Player</Name>
@@ -1006,6 +1024,10 @@
     <ProjectReference Include="Cinemachine.Player.csproj">
       <Project>{216F5A56-A3F8-73D6-30BF-2C00CEAE9185}</Project>
       <Name>Cinemachine.Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.RenderPipelines.HighDefinition.Runtime.Player.csproj">
+      <Project>{079ABC70-7685-55B9-F298-18017D521A98}</Project>
+      <Name>Unity.RenderPipelines.HighDefinition.Runtime.Player</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
