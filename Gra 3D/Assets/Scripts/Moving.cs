@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class Moving : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float sprintSpeed = 30f;
+    [SerializeField] private float sprintSpeed = 10f;
     [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpForce = 10f;
     [SerializeField] private float cameraDistance = 5f;
     [SerializeField] private Transform headTransform;
     [SerializeField] private Camera thirdPersonCamera;
@@ -38,7 +38,10 @@ public class Moving : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        rb.mass = 2f;
+        rb.mass = 30f;
+        rb.drag = 0f;
+        rb.angularDrag = 0.05f;
+
         originalHeight = transform.localScale.y;
         currentSpeed = moveSpeed;
         currentStamina = maxStamina;
@@ -46,11 +49,6 @@ public class Moving : MonoBehaviour
         if (thirdPersonCamera == null)
         {
             thirdPersonCamera = Camera.main;
-            if (thirdPersonCamera == null)
-            {
-                Debug.LogError("Nie znaleziono kamery!");
-                return;
-            }
         }
 
         cameraOffset = new Vector3(0, 2f, -cameraDistance);
@@ -97,22 +95,28 @@ public class Moving : MonoBehaviour
 
     void HandleMovement()
     {
-        bool sprintKeyHeld = Input.GetKey(KeyCode.LeftShift);
-        bool isMoving = Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0;
-
-        isSprinting = sprintKeyHeld && isMoving && currentStamina > 0;
-
-        currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
-
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 moveDirection = transform.forward * verticalInput + transform.right * horizontalInput;
         moveDirection.Normalize();
 
+        bool sprintKeyHeld = Input.GetKey(KeyCode.LeftShift);
+        bool isMoving = horizontalInput != 0 || verticalInput != 0;
+
+        isSprinting = sprintKeyHeld && isMoving && currentStamina > 0;
+        currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
+
         Vector3 velocity = rb.velocity;
         velocity.x = moveDirection.x * currentSpeed;
         velocity.z = moveDirection.z * currentSpeed;
+
+        // Przyklejanie do ziemi, gdy postaæ jest na niej
+        if (isGrounded && !Input.GetKeyDown(KeyCode.Space))
+        {
+            velocity.y = -5f;
+        }
+
         rb.velocity = velocity;
     }
 
@@ -120,6 +124,7 @@ public class Moving : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); // reset pionowej prêdkoœci
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
         }

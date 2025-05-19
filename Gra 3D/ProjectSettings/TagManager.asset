@@ -20,6 +20,7 @@ TagManager:
   - Box
   - Numbers
   - Forest
+  - Bridge
   layers:
   - Default
   - TransparentFX
@@ -32,7 +33,7 @@ TagManager:
   - Static
   - MinimapIconParter
   - MinimapIconFirst
-  - 
+  - Colider
   - 
   - 
   - 
