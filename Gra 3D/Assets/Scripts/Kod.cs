@@ -170,16 +170,36 @@ public class PanelCollision : MonoBehaviour
     }
     private void OnInputChanged(string displayedText)
     {
-        rawText = "";
+        string newRawText = "";
+        bool zawieraNieprawidloweZnaki = false;
 
         foreach (char c in displayedText)
         {
-            if (char.IsDigit(c) && rawText.Length < 4)
+            if (char.IsDigit(c) && newRawText.Length < 4)
             {
-                rawText += c;
+                newRawText += c;
+            }
+            else if (!char.IsDigit(c))
+            {
+                zawieraNieprawidloweZnaki = true;
             }
         }
 
+        if (zawieraNieprawidloweZnaki)
+        {
+            if (displayText != null)
+            {
+                displayText.text = "<b><color=red>Wpisuj tylko cyfry!</color></b>";
+            }
+
+            // Wyczyœæ pole i pozwól u¿ytkownikowi wpisaæ ponownie
+            inputField.text = rawText; // Przywróæ poprzedni poprawny stan
+            inputField.ActivateInputField();
+            UpdateCaretColor();
+            return;
+        }
+
+        rawText = newRawText;
         UpdateCaretColor();
 
         if (rawText.Length == correctCode.Length)
@@ -205,6 +225,7 @@ public class PanelCollision : MonoBehaviour
             }
         }
     }
+
 
     private string GetColoredText(string text)
     {

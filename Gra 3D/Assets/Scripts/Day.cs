@@ -115,8 +115,12 @@ public class Day : MonoBehaviour
             proceduralSkybox.SetColor("_SkyTint", skyTintGradient.Evaluate(timeOfDay));
             proceduralSkybox.SetFloat("_Exposure", skyExposureCurve.Evaluate(timeOfDay));
         }
+    }
 
-        // === Debug (opcjonalnie) ===
-        //Debug.Log($"Godzina: {formattedTime} | x{gameMinutesPerSecond:F1} | K¹t s³oñca: {sunAngle:F1}°");
+    public void ResetTime()
+    {
+        gameTimeInMinutes = 6f * 60f;  // 6:00 rano
+        gameMinutesPerSecond = 0.1f;   // Domyœlna prêdkoœæ
+        timeOfDay = 0.25f;             // Odpowiada 6:00 rano
     }
 }

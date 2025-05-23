@@ -13,13 +13,13 @@ public class Most : MonoBehaviour
     [SerializeField] private int[] correctPath = new int[9];
 
     [Header("UI Settings")]
-    [SerializeField] private Canvas bridgeCanvas; // UI z przyciskami lewy/prawy
+    [SerializeField] private Canvas bridgeCanvas;
     [SerializeField] private Button leftButton;
     [SerializeField] private Button rightButton;
     [SerializeField] private TextMeshProUGUI leftButtonText;
     [SerializeField] private TextMeshProUGUI rightButtonText;
 
-    [SerializeField] private Canvas startCanvas; // UI tylko z przyciskiem Start
+    [SerializeField] private Canvas startCanvas;
     [SerializeField] private Button startButton;
 
     [Header("Position Settings")]
@@ -30,10 +30,18 @@ public class Most : MonoBehaviour
     [Header("Player Height Offset")]
     [SerializeField] private float playerYOffset = 0.5f;
 
+    [Header("Start Settings")]
+    [SerializeField] private Transform startTile;
+
+
     private int currentStep = 0;
     private Transform[,] tilePositions = new Transform[9, 2];
     private bool bridgeActive = false;
     private Collider bridgeCollider;
+    private bool hasStarted = false;
+
+    private Vector3 startPos;
+    private Quaternion startRot;
 
     void Awake()
     {
@@ -58,8 +66,11 @@ public class Most : MonoBehaviour
         InitializeTiles();
         SetupButtons();
 
-        bridgeCanvas.gameObject.SetActive(false); // Ukryj UI mostu
-        startCanvas.gameObject.SetActive(false);  // Ukryj UI startowe
+        startPos = transform.position;
+        startRot = transform.rotation;
+
+        bridgeCanvas.gameObject.SetActive(false);
+        startCanvas.gameObject.SetActive(false);
 
         if (startButton != null)
             startButton.onClick.AddListener(OnStartButtonClicked);
@@ -129,25 +140,28 @@ public class Most : MonoBehaviour
         rightButton.onClick.AddListener(() => SelectTile(1));
 
         UpdateButtonLabels();
-        Debug.Log("Przyciski zainicjalizowane", this);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("player")) return;
 
-        Debug.Log("Gracz wszed³ w obszar mostu: " + other.name, this);
-        startCanvas.gameObject.SetActive(true);
-
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        if (hasStarted)
+        {
+            ActivateBridge();
+        }
+        else
+        {
+            startCanvas.gameObject.SetActive(true);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("player")) return;
 
-        Debug.Log("Gracz opuœci³ obszar mostu: " + other.name, this);
         DeactivateBridge();
         startCanvas.gameObject.SetActive(false);
 
@@ -157,17 +171,16 @@ public class Most : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        ActivateBridge(); // w³¹cz przyciski
-        startCanvas.gameObject.SetActive(false); // schowaj przycisk Start
+        ActivateBridge();
+        startCanvas.gameObject.SetActive(false);
+        hasStarted = true;
     }
 
     void ActivateBridge()
     {
         if (bridgeActive) return;
 
-        Debug.Log("Aktywacja mostu", this);
         bridgeActive = true;
-
         SetBridgeUI(true);
         PositionUI();
 
@@ -179,9 +192,7 @@ public class Most : MonoBehaviour
     {
         if (player == null || playerCamera == null || bridgeCanvas == null) return;
 
-        Vector3 uiPosition = player.position
-                           + player.forward * uiDistance
-                           + player.right * uiRightOffset;
+        Vector3 uiPosition = player.position + player.forward * uiDistance + player.right * uiRightOffset;
         uiPosition.y = player.position.y + uiHeight;
 
         bridgeCanvas.transform.position = uiPosition;
@@ -202,73 +213,102 @@ public class Most : MonoBehaviour
     {
         if (!bridgeActive) return;
 
-        // SprawdŸ czy wybrano poprawny kafelek
         if (choice == correctPath[currentStep])
         {
+            // Poprawny wybór
             Vector3 tilePos = tilePositions[currentStep, choice].position;
 
             Collider tileCollider = tilePositions[currentStep, choice].GetComponent<Collider>();
-            float tileTopY = tilePos.y;
-
-            if (tileCollider != null)
-            {
-                tileTopY = tileCollider.bounds.max.y;
-            }
+            float tileTopY = tileCollider != null ? tileCollider.bounds.max.y : tilePos.y;
 
             Collider playerCollider = player.GetComponent<Collider>();
-            float playerBottomOffset = 0f;
-
-            if (playerCollider != null)
-            {
-                playerBottomOffset = playerCollider.bounds.min.y - player.position.y;
-            }
+            float playerBottomOffset = playerCollider != null ? playerCollider.bounds.min.y - player.position.y : 0f;
 
             Vector3 playerTargetPos = new Vector3(tilePos.x, tileTopY - playerBottomOffset, tilePos.z);
             player.position = playerTargetPos;
 
-            // Przesuñ most
-            transform.position = new Vector3(tilePos.x, 117f, tilePos.z);
+            // zatrzymaj fizykê
+            Rigidbody rb = player.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.velocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+
+            // przesuñ most
+            transform.position = new Vector3(tilePos.x, tileTopY + 0.2f, tilePos.z);
 
             currentStep++;
 
             if (currentStep >= correctPath.Length)
             {
+                // Ukoñczono most
                 CompleteBridge();
             }
             else
             {
-                UpdateButtonLabels(); // <- AKTUALIZUJEMY NUMERY
+                UpdateButtonLabels();
             }
         }
         else
         {
-            ResetBridge();
+            // B³¹d przy 17 kafelku (ostatni krok przed koñcem)
+            if (currentStep == correctPath.Length - 1)
+            {
+                Debug.Log("Z³y wybór na koñcu! Restart mostu.");
+
+                currentStep = 0;
+
+                // Teleportuj na pocz¹tek
+                if (startTile != null)
+                {
+                    float tileTopY = startTile.GetComponent<Collider>().bounds.max.y;
+
+                    Collider playerCollider = player.GetComponent<Collider>();
+                    float playerBottomOffset = playerCollider != null ? playerCollider.bounds.min.y - player.position.y : 0f;
+
+                    Vector3 safePlayerPos = new Vector3(startTile.position.x, tileTopY - playerBottomOffset, startTile.position.z);
+                    TeleportPlayer(safePlayerPos);
+
+                    transform.position = new Vector3(startTile.position.x, tileTopY + 0.2f, startTile.position.z);
+                    transform.rotation = startRot;
+
+                    UpdateButtonLabels();
+                }
+            }
         }
     }
 
 
-
-
-    void ResetBridge()
+    void TeleportPlayer(Vector3 targetPosition)
     {
-        Debug.Log("Resetowanie mostu", this);
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
 
-        player.position = transform.position;
-        currentStep = 0;
-        UpdateButtonLabels();
+        player.position = targetPosition;
+
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
     }
 
     void CompleteBridge()
     {
         Debug.Log("Most ukoñczony pomyœlnie!", this);
-        DeactivateBridge();
+        DeactivateBridge(); 
     }
+
 
     void DeactivateBridge()
     {
         if (!bridgeActive) return;
 
-        Debug.Log("Deaktywacja mostu", this);
         bridgeActive = false;
         SetBridgeUI(false);
 
@@ -282,8 +322,6 @@ public class Most : MonoBehaviour
 
         leftButtonText.text = (currentStep * 2 + 1).ToString();
         rightButtonText.text = (currentStep * 2 + 2).ToString();
-
-        Debug.Log($"Zaktualizowano etykiety: L={leftButtonText.text}, R={rightButtonText.text}", this);
     }
 
     void SetBridgeUI(bool active)
@@ -296,8 +334,6 @@ public class Most : MonoBehaviour
         {
             child.gameObject.SetActive(active);
         }
-
-        Debug.Log("UI mostu: " + (active ? "aktywne" : "nieaktywne"), this);
     }
 
     void OnValidate()

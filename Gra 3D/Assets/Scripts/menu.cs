@@ -54,8 +54,13 @@ public class Menu : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
+
+        // Zapisz callback, który wykona siê po za³adowaniu sceny
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         SceneManager.LoadScene("BUILDING");
     }
+
 
     public void StartGame()
     {
@@ -212,6 +217,21 @@ public class Menu : MonoBehaviour
         }
         scrollRect.verticalNormalizedPosition = 0f;
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "BUILDING")
+        {
+            if (Day.Instance != null)
+            {
+                Day.Instance.ResetTime();
+            }
+
+            // Od³¹cz callback ¿eby nie odpala³ siê przy ka¿dej zmianie sceny
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+    }
+
 
     [System.Serializable]
     public class GameData
