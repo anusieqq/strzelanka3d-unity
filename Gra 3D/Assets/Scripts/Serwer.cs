@@ -12,6 +12,7 @@ public class Serwer : MonoBehaviour
     public TextMeshProUGUI feedbackText;
     public Button[] butons;
     public Animator boxAnimator;
+    public bool czyskrzyniaotwarta = false;
 
     private string correctAnswer = "ufo";
     private string riddle = "Serwer znikn¹³! Analizujê œlad danych...Gdzie on mo¿e byæ?\nSerwer ostatnio by³ widziany w chmurze";
@@ -48,7 +49,12 @@ public class Serwer : MonoBehaviour
             {
                 feedbackText.text = "Poprawna odpowiedŸ!";
                 feedbackText.color = Color.green;
-                boxAnimator.SetTrigger("Open Box");
+                czyskrzyniaotwarta = true;
+                if (boxAnimator != null)
+                {
+                    boxAnimator.SetTrigger("Open Box");
+
+                }
                 zakonczenieZagadki();
             }
             else

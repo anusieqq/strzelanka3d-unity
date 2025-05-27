@@ -77,7 +77,7 @@ public class PanelCollision : MonoBehaviour
     {
         Debug.Log($"Kolizja z: {other.name} (Tag: {other.tag}, Layer: {LayerMask.LayerToName(other.gameObject.layer)})");
 
-        if (other.CompareTag("player"))
+        if (other.CompareTag("player") || (other.CompareTag("pistol")))
         {
             Debug.Log("Wykryto gracza w strefie triggera");
 
@@ -147,7 +147,7 @@ public class PanelCollision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("player"))
+        if (other.CompareTag("player") || (other.CompareTag("pistol")))
         {
             Debug.Log("Gracz opuœci³ strefê triggera");
 

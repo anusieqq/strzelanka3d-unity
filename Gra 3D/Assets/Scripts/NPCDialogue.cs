@@ -11,6 +11,7 @@ public class NPCDialog : MonoBehaviour
     public string poprawnaOdpowiedz; // Poprawna odpowiedü
     public Gun gunScript; // Referencja do skryptu Gun.cs
     public Animator boxAnimator;
+    public bool czyskrzyniaotwarta = false;
 
     private int indeksDialogu = 0;
     private bool wKolizji = false;
@@ -123,6 +124,7 @@ public class NPCDialog : MonoBehaviour
             if (boxAnimator != null)
             {
                 boxAnimator.SetTrigger("Open Box");
+                czyskrzyniaotwarta = true;
             }
 
             this.gameObject.tag = "Finish"; // Ustawienie tagu po sukcesie

@@ -14,17 +14,31 @@ public class Enemy : MonoBehaviour
         UpdateHealthBar();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(string sourceTag)
     {
+        float damage = 0f;
+
+        if (sourceTag == "pistol")
+        {
+            damage = 20f;
+        }
+        else if (sourceTag == "Torch")
+        {
+            damage = 10f;
+        }
+
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UpdateHealthBar();
+
+        Debug.Log($"Enemy hit by {sourceTag}, damage: {damage}, HP left: {currentHealth}");
 
         if (currentHealth <= 0)
         {
             Die();
         }
     }
+
 
     void UpdateHealthBar()
     {

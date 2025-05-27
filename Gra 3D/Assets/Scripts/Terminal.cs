@@ -11,6 +11,7 @@ public class Terminal : MonoBehaviour
     public TextMeshProUGUI feedbackText;
     public Button[] answerButtons;
     public TextMeshProUGUI[] buttonTexts;
+    public bool czyskrzyniaotwarta = false;
 
     private string correctAnswer = "/home/student/projekt/server.exe";
     private string[] answers =
@@ -108,6 +109,7 @@ public class Terminal : MonoBehaviour
             if (boxAnimator != null)
             {
                 boxAnimator.SetTrigger("Open Box");
+                czyskrzyniaotwarta = true;
             }
 
             ZakonczenieZagadki();

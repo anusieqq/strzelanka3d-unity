@@ -9,6 +9,7 @@ public class KolorŚcieżki : MonoBehaviour
     public GameObject buttonOpen;
     public GameObject buttonStart;
     public GameObject CanvasPanel;
+    public GameObject OpenPanel;
     public Animator boxanimator;
     public Light[] signalLights;
     public Transform startPathPoint;
@@ -25,7 +26,6 @@ public class KolorŚcieżki : MonoBehaviour
     private Vector3 lastPosition;
     private int completedRounds = 0;
 
-    // Dodane dla debugowania
     public Text debugText;
     private string debugMessage = "";
 
@@ -33,6 +33,7 @@ public class KolorŚcieżki : MonoBehaviour
     {
         Debug.Log("Initializing KolorŚcieżki script...");
 
+        // Sprawdzenie przypisań
         if (buttonOpen == null || buttonStart == null || CanvasPanel == null || boxanimator == null)
         {
             Debug.LogError("Niektóre obiekty UI lub animator nie są przypisane w Inspectorze!");
@@ -40,53 +41,49 @@ public class KolorŚcieżki : MonoBehaviour
 
         if (EventSystem.current == null)
         {
-            Debug.LogError("Brakuje EventSystem w scenie! Dodaj GameObject -> UI -> EventSystem.");
-        }
-        else
-        {
-            Debug.Log("EventSystem found: " + EventSystem.current.gameObject.name);
+            Debug.LogError("Brakuje EventSystem w scenie!");
         }
 
+        // Wyłącz UI na start
         buttonOpen.SetActive(false);
         buttonStart.SetActive(false);
         CanvasPanel.SetActive(false);
+        OpenPanel.SetActive(false);
 
-        // Sprawdź czy przyciski mają komponenty Button
+        // Obsługa przycisków
         Button openButton = buttonOpen.GetComponent<Button>();
         Button startButton = buttonStart.GetComponent<Button>();
 
-        if (openButton == null || startButton == null)
-        {
-            Debug.LogError("Przyciski nie mają komponentu Button!");
-        }
-        else
+        if (openButton != null && startButton != null)
         {
             openButton.onClick.AddListener(ShowCanvasPanel);
             startButton.onClick.AddListener(StartPuzzle);
-            Debug.Log("Button listeners added successfully");
+        }
+        else
+        {
+            Debug.LogError("Brakuje komponentów Button!");
         }
 
+        // Znajdź gracza
         GameObject player = GameObject.FindGameObjectWithTag("player");
         if (player != null)
         {
             playerTransform = player.transform;
-            Debug.Log("Player found: " + player.name);
         }
         else
         {
             Debug.LogError("Nie znaleziono gracza z tagiem 'player'!");
         }
 
-        // Sprawdź collidery
-        Collider collider = GetComponent<Collider>();
-        if (collider == null)
+        // Ustaw trigger
+        Collider col = GetComponent<Collider>();
+        if (col != null)
         {
-            Debug.LogError("Brak collidera na obiekcie!");
+            col.isTrigger = true;
         }
         else
         {
-            Debug.Log("Collider found: " + collider + ", isTrigger: " + collider.isTrigger);
-            collider.isTrigger = true; // Upewnij się, że collider jest triggerem
+            Debug.LogError("Brak collidera na obiekcie!");
         }
 
         UpdateDebugText("Initialization complete");
@@ -94,15 +91,9 @@ public class KolorŚcieżki : MonoBehaviour
 
     void Update()
     {
-        // Debugowanie stanu UI
         if (Input.GetKeyDown(KeyCode.D))
         {
-            Debug.Log("Current UI state - buttonOpen: " + buttonOpen.activeSelf +
-                     ", buttonStart: " + buttonStart.activeSelf +
-                     ", CanvasPanel: " + CanvasPanel.activeSelf);
-
-            Debug.Log("EventSystem current selected: " + (EventSystem.current.currentSelectedGameObject != null ?
-                     EventSystem.current.currentSelectedGameObject.name : "null"));
+            Debug.Log("UI states: Open:" + buttonOpen.activeSelf + ", Start:" + buttonStart.activeSelf + ", Panel:" + CanvasPanel.activeSelf);
         }
     }
 
@@ -111,14 +102,15 @@ public class KolorŚcieżki : MonoBehaviour
         if (other.CompareTag("player"))
         {
             playerInTrigger = true;
+
             buttonOpen.SetActive(true);
             CanvasPanel.SetActive(false);
+            OpenPanel.SetActive(true);
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            StartCoroutine(ShowCursorWithDelay());
 
             Debug.Log("Player entered trigger");
-            UpdateDebugText("Player entered trigger - showing buttonOpen");
+            UpdateDebugText("Player in trigger – showing buttonOpen");
         }
     }
 
@@ -127,15 +119,16 @@ public class KolorŚcieżki : MonoBehaviour
         if (other.CompareTag("player"))
         {
             playerInTrigger = false;
+
             buttonOpen.SetActive(false);
             buttonStart.SetActive(false);
             CanvasPanel.SetActive(false);
+            OpenPanel.SetActive(false);
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            HideCursor();
 
             Debug.Log("Player exited trigger");
-            UpdateDebugText("Player exited trigger - hiding all UI");
+            UpdateDebugText("Player left trigger – hiding UI");
         }
     }
 
@@ -146,72 +139,35 @@ public class KolorŚcieżki : MonoBehaviour
         if (boxanimator != null)
         {
             boxanimator.SetTrigger("Open Box");
-            Debug.Log("Triggered 'Open Box' animation");
-        }
-        else
-        {
-            Debug.LogWarning("Animator nie został przypisany!");
         }
 
-        if (CanvasPanel != null)
-        {
-            CanvasPanel.SetActive(true);
-            Debug.Log("CanvasPanel activated");
-        }
-        else
-        {
-            Debug.LogWarning("CanvasPanel nie został przypisany!");
-        }
+        CanvasPanel.SetActive(true);
+        buttonStart.SetActive(true);
+        buttonOpen.SetActive(false);
 
-        if (buttonStart != null)
+        Button startButton = buttonStart.GetComponent<Button>();
+        if (startButton != null)
         {
-            buttonStart.SetActive(true);
-            Debug.Log("buttonStart activated");
-
-            // Upewnij się, że przycisk jest interaktywny
-            Button startButton = buttonStart.GetComponent<Button>();
-            if (startButton != null)
-            {
-                startButton.interactable = true;
-                Debug.Log("buttonStart is interactable");
-            }
+            startButton.interactable = true;
         }
 
-        if (buttonOpen != null)
-        {
-            buttonOpen.SetActive(false);
-            Debug.Log("buttonOpen deactivated");
-        }
-
-        UpdateDebugText("CanvasPanel shown - ready to start puzzle");
+        StartCoroutine(ShowCursorWithDelay());
+        UpdateDebugText("Canvas shown – ready to start puzzle");
     }
 
     public void StartPuzzle()
     {
-        Debug.Log("Start button clicked");
-
         if (!puzzleActive)
         {
             puzzleActive = true;
             completedRounds = 0;
 
-            if (buttonStart != null)
-            {
-                buttonStart.SetActive(false);
-                Debug.Log("buttonStart deactivated");
-            }
+            buttonStart.SetActive(false);
+            CanvasPanel.SetActive(false);
 
-            if (CanvasPanel != null)
-            {
-                CanvasPanel.SetActive(false);
-                Debug.Log("CanvasPanel deactivated");
-            }
+            HideCursor();
+            UpdateDebugText("Puzzle started");
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-            Debug.Log("Starting puzzle routine");
-            UpdateDebugText("Puzzle started - green light phase");
             StartCoroutine(LightPuzzleRoutine());
         }
     }
@@ -220,49 +176,38 @@ public class KolorŚcieżki : MonoBehaviour
     {
         while (puzzleActive)
         {
-            // Zielone światło
+            // GREEN light
             isGreenLight = true;
             SetLightsColor(Color.green);
-            Debug.Log("Zielone światło – możesz się poruszać.");
-            UpdateDebugText("Green light - you can move");
+            UpdateDebugText("Green light – move!");
             yield return new WaitForSeconds(greenDuration);
 
-            // Czerwone światło
+            // RED light
             isGreenLight = false;
             SetLightsColor(Color.red);
-            Debug.Log("Czerwone światło – NIE ruszaj się!");
-            UpdateDebugText("Red light - DON'T move!");
+            UpdateDebugText("Red light – STOP!");
             lastPosition = playerTransform.position;
-
             yield return new WaitForSeconds(redDuration);
 
             Vector3 currentPosition = playerTransform.position;
-
-            // Porównanie tylko po osi X
             if (Mathf.Abs(currentPosition.x - lastPosition.x) > 0.05f)
             {
-                Debug.Log("Gracz poruszył się podczas czerwonego światła! Cofnięcie na początek.");
-                UpdateDebugText("Player moved! Resetting position.");
+                UpdateDebugText("You moved! Resetting...");
                 playerTransform.position = startPathPoint.position;
                 playerTransform.rotation = startPathPoint.rotation;
-
-                yield return new WaitForSeconds(3f);
                 completedRounds = 0;
+                yield return new WaitForSeconds(3f);
                 continue;
             }
-            else
-            {
-                completedRounds++;
-                Debug.Log("Udało się! Przetrwałeś rundę: " + completedRounds);
-                UpdateDebugText("Round survived: " + completedRounds);
-            }
+
+            completedRounds++;
+            UpdateDebugText("Round survived: " + completedRounds);
 
             if (completedRounds >= requiredRoundsToWin)
             {
-                Debug.Log("Zagadkę rozwiązano poprawnie!");
-                UpdateDebugText("Puzzle completed successfully!");
-                puzzleActive = false;
+                UpdateDebugText("Puzzle completed!");
                 SetLightsColor(Color.white);
+                puzzleActive = false;
                 yield break;
             }
 
@@ -279,7 +224,6 @@ public class KolorŚcieżki : MonoBehaviour
         }
     }
 
-    // Metoda do aktualizacji tekstu debugowego
     private void UpdateDebugText(string message)
     {
         debugMessage = message;
@@ -290,12 +234,28 @@ public class KolorŚcieżki : MonoBehaviour
         Debug.Log(message);
     }
 
-    // Metoda do wyświetlania debug info w GUI
     void OnGUI()
     {
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 20;
-        style.normal.textColor = Color.white;
+        GUIStyle style = new GUIStyle
+        {
+            fontSize = 20,
+            normal = { textColor = Color.white }
+        };
         GUI.Label(new Rect(10, 10, 500, 30), debugMessage, style);
+    }
+
+    // Nowa metoda: pokazywanie kursora z delikatnym opóźnieniem
+    private IEnumerator ShowCursorWithDelay()
+    {
+        yield return null; // poczekaj jedną klatkę
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    // Nowa metoda: ukrywanie kursora
+    private void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 }

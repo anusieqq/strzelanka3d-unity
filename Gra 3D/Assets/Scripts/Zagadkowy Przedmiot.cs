@@ -11,6 +11,7 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
     public TextMeshProUGUI feedbackText;
     public Gun gunscript;
     public Animator boxanimator;
+    public bool czyskrzyniaotwarta = false;
 
     private string[] answers = { "kompas", "zegarek", "szklanka" };
     private string correctAnswer = "zegarek";
@@ -86,6 +87,7 @@ public class ZagadkowyPrzedmiot : MonoBehaviour
                 if (boxanimator != null)
                 {
                     boxanimator.SetTrigger("Open Box");
+                    czyskrzyniaotwarta = true;
                 }
 
                 ZakonczenieZagadki();

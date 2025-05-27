@@ -9,14 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 907ccf71bdfba3d4197ca4a392aeb247
   - enabled: 1
-    path: Assets/Scenes/BUILDINGdsa.unity
-    guid: f18af301b0edf5a40959c88fb196cae2
-  - enabled: 1
     path: Assets/Scenes/BUILDING.unity
     guid: 464e7f52b8910254099a94ae4eedb222
-  - enabled: 1
-    path: Assets/Scenes/Forest1.unity
-    guid: 35767995d903f2242a0e55d677982816
   - enabled: 1
     path: Assets/Scenes/Forest.unity
     guid: f1d700e9739958e4f80945ba603360bd

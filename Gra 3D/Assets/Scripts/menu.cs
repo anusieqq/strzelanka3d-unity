@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour
 
     [Header("UI Elements")]
     public GameObject Rozpocznij;
-    public GameObject Pomiñ;
+    public GameObject PomiÃ±;
     public GameObject StartButton;
     public GameObject Opcje;
     public GameObject Wczytaj;
@@ -30,7 +30,7 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         InitializeUI();
-        Pomiñ.SetActive(false);
+        PomiÃ±.SetActive(false);
     }
 
     private void InitializeUI()
@@ -41,13 +41,13 @@ public class Menu : MonoBehaviour
         Rozpocznij.SetActive(false);
 
 
-        // Przypisanie metod do przycisków
+        // Przypisanie metod do przyciskÃ³w
         Rozpocznij.GetComponent<Button>().onClick.AddListener(StartNewGame);
         StartButton.GetComponent<Button>().onClick.AddListener(StartGame);
         Opcje.GetComponent<Button>().onClick.AddListener(OptionsGame);
         Wczytaj.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadGameAndScene()));
         Wyjdz.GetComponent<Button>().onClick.AddListener(ExitGame);
-        Pomiñ.GetComponent<Button>().onClick.AddListener(SkipTyping); // Dodane przypisanie metody SkipTyping
+        PomiÃ±.GetComponent<Button>().onClick.AddListener(SkipTyping); // Dodane przypisanie metody SkipTyping
     }
 
     public void StartNewGame()
@@ -55,7 +55,7 @@ public class Menu : MonoBehaviour
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
 
-        // Zapisz callback, który wykona siê po za³adowaniu sceny
+        // Zapisz callback, ktÃ³ry wykona siÃª po zaÂ³adowaniu sceny
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         SceneManager.LoadScene("BUILDING");
@@ -70,7 +70,7 @@ public class Menu : MonoBehaviour
         {
             fabula.gameObject.SetActive(true);
             menu.gameObject.SetActive(false);
-            skipRequested = false; // Reset flagi przed rozpoczêciem
+            skipRequested = false; // Reset flagi przed rozpoczÃªciem
             StartCoroutine(TypeText());
             StartCoroutine(ShowSkipButtonAfterDelay());
         }
@@ -79,7 +79,7 @@ public class Menu : MonoBehaviour
     IEnumerator ShowSkipButtonAfterDelay()
     {
         yield return new WaitForSeconds(2f);
-        Pomiñ.SetActive(true);
+        PomiÃ±.SetActive(true);
     }
 
     IEnumerator LoadGameAndScene()
@@ -165,9 +165,9 @@ public class Menu : MonoBehaviour
         yield return SmoothScrollToEnd();
 
         Rozpocznij.SetActive(true);
-        Pomiñ.SetActive(false);
+        PomiÃ±.SetActive(false);
         isTyping = false;
-        skipRequested = false; // Reset flagi po zakoñczeniu
+        skipRequested = false; // Reset flagi po zakoÃ±czeniu
     }
 
     public void SkipTyping()
@@ -176,15 +176,15 @@ public class Menu : MonoBehaviour
         if (!isTyping) Debug.Log("But not typing now!");
         skipRequested = true;
 
-        // Natychmiastowa wizualna odpowiedŸ
-        Pomiñ.GetComponent<Image>().color = Color.red;
+        // Natychmiastowa wizualna odpowiedÅ¸
+        PomiÃ±.GetComponent<Image>().color = Color.red;
         StartCoroutine(ResetButtonColor());
     }
 
     IEnumerator ResetButtonColor()
     {
         yield return new WaitForSeconds(0.3f);
-        Pomiñ.GetComponent<Image>().color = Color.white;
+        PomiÃ±.GetComponent<Image>().color = Color.white;
     }
 
     IEnumerator SmoothScroll()
@@ -227,7 +227,7 @@ public class Menu : MonoBehaviour
                 Day.Instance.ResetTime();
             }
 
-            // Od³¹cz callback ¿eby nie odpala³ siê przy ka¿dej zmianie sceny
+            // OdÂ³Â¹cz callback Â¿eby nie odpalaÂ³ siÃª przy kaÂ¿dej zmianie sceny
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }

@@ -10,14 +10,28 @@ public class Crosshair : MonoBehaviour
     private Vector3 upStart, downStart, leftStart, rightStart;
     private bool isZoomedIn = false;     // Flaga sprawdzaj¹ca, czy PPM zosta³o wciœniête
 
+
+    void Awake()
+    {
+        if (FindObjectsOfType<Crosshair>().Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         // Pocz¹tkowa pozycja
         upStart = up.localPosition;
         downStart = down.localPosition;
         leftStart = left.localPosition;
         rightStart = right.localPosition;
     }
+
 
 
 

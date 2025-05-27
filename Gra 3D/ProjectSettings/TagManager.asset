@@ -21,6 +21,13 @@ TagManager:
   - Numbers
   - Forest
   - Bridge
+  - Bear
+  - Torch
+  - pistol
+  - "\u015Acie\u017Cka1"
+  - "\u015Acie\u017Cka2"
+  - "\u015Acie\u017Cka3"
+  - "\u015Acie\u017Cka"
   layers:
   - Default
   - TransparentFX

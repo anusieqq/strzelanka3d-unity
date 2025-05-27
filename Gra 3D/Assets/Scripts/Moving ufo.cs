@@ -10,14 +10,19 @@ public class UFOMovement : MonoBehaviour
     public float ignorePlayerTime = 2f;
     public float raycastDistance = 2f;
 
+    public float minY;
+    public float maxY;
+
+    public AudioClip ufoAttackSound;
+    private AudioSource audioSource;
+
     private Transform playerTransform;
     private Vector3 moveDirection;
     private bool isChasing = false;
     private float nextDirectionChangeTime = 0f;
     private float ignorePlayerUntil = 0f;
 
-    public AudioClip ufoAttackSound;
-    private AudioSource audioSource;
+    private Rigidbody rb;
 
     void Start()
     {
@@ -28,31 +33,54 @@ public class UFOMovement : MonoBehaviour
         }
 
         moveDirection = GetRandomDirection();
-        audioSource = GetComponent<AudioSource>();
 
+        audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // Dodaj Rigidbody, jeśli go nie ma
-        if (GetComponent<Rigidbody>() == null)
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
         {
-            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
-            rb.isKinematic = true;
-            rb.useGravity = false;
+            rb = gameObject.AddComponent<Rigidbody>();
         }
 
-        // Dodaj Collider, jeśli go nie ma
+        // ⬇️ Fizyczny ruch
+        rb.isKinematic = false;
+        rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.drag = 4f; // tłumienie ślizgania
+
         if (GetComponent<Collider>() == null)
         {
             SphereCollider col = gameObject.AddComponent<SphereCollider>();
             col.isTrigger = true;
             col.radius = 1.5f;
         }
+
+        // Warstwa - minY / maxY
+        string layerName = LayerMask.LayerToName(gameObject.layer);
+
+        if (layerName == "Parter")
+        {
+            minY = 2.0f;
+            maxY = 6.0f;
+        }
+        else if (layerName == "FirstFloor")
+        {
+            minY = 8.0f;
+            maxY = 13.0f;
+        }
+        else
+        {
+            Debug.LogWarning($"UFO ({gameObject.name}) ma nieznaną warstwę ({layerName}), używam domyślnych limitów.");
+            minY = 0.5f;
+            maxY = 5.0f;
+        }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (playerTransform != null)
         {
@@ -97,47 +125,14 @@ public class UFOMovement : MonoBehaviour
     void AvoidWalls()
     {
         RaycastHit hit;
-
-        // Kolizja przed ruchem (ściany)
         if (Physics.Raycast(transform.position, moveDirection, out hit, raycastDistance))
         {
             if (hit.collider.CompareTag("wall") || hit.collider.CompareTag("floor"))
             {
-                // Ślizganie się po ścianie
                 moveDirection = Vector3.ProjectOnPlane(moveDirection, hit.normal).normalized;
-
-                // Delikatnie odepchnij UFO od ściany
-                transform.position += hit.normal * 0.05f;
-            }
-        }
-
-        // Sprawdzenie podłogi pod UFO
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, raycastDistance))
-        {
-            if (hit.collider.CompareTag("floor"))
-            {
-                float desiredHeight = hit.point.y + 0.5f; // dostosuj 0.5f jeśli UFO ma inną wysokość
-                if (transform.position.y < desiredHeight)
-                {
-                    transform.position = new Vector3(transform.position.x, desiredHeight, transform.position.z);
-                }
-            }
-        }
-
-        // Sprawdzenie sufitu nad UFO
-        if (Physics.Raycast(transform.position, Vector3.up, out hit, raycastDistance))
-        {
-            if (hit.collider.CompareTag("floor"))
-            {
-                float ceilingLimit = hit.point.y - 0.5f; // odstęp od sufitu
-                if (transform.position.y > ceilingLimit)
-                {
-                    transform.position = new Vector3(transform.position.x, ceilingLimit, transform.position.z);
-                }
             }
         }
     }
-
 
     void MoveAndRotate()
     {
@@ -147,16 +142,11 @@ public class UFOMovement : MonoBehaviour
         {
             targetDirection = (playerTransform.position - transform.position).normalized;
 
-            // Jeśli coś blokuje ruch, spróbuj przesunąć się wzdłuż przeszkody
             if (Physics.Raycast(transform.position, targetDirection, out RaycastHit hit, raycastDistance))
             {
                 if (hit.collider.CompareTag("wall"))
                 {
-                    // Ślizganie się po ścianie
                     moveDirection = Vector3.ProjectOnPlane(targetDirection, hit.normal).normalized;
-
-                    // Delikatnie odepchnij UFO od ściany, by nie utknęło
-                    transform.position += hit.normal * 0.05f;
                 }
                 else
                 {
@@ -177,18 +167,24 @@ public class UFOMovement : MonoBehaviour
             }
         }
 
-        // Ruch
-        transform.position += moveDirection * speed * Time.deltaTime;
+        // Ruch fizyczny
+        Vector3 velocity = moveDirection * speed;
+        rb.velocity = new Vector3(velocity.x, 0f, velocity.z);
+
+        // Ograniczenie wysokości
+        float clampedY = Mathf.Clamp(transform.position.y, minY, maxY);
+        if (Mathf.Abs(transform.position.y - clampedY) > 0.01f)
+        {
+            transform.position = new Vector3(transform.position.x, clampedY, transform.position.z);
+        }
 
         // Rotacja
         if (moveDirection.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
         }
     }
-
-
 
     Vector3 GetRandomDirection()
     {
@@ -203,8 +199,7 @@ public class UFOMovement : MonoBehaviour
                 newDirection = -moveDirection;
                 break;
             }
-        }
-        while (Physics.Raycast(transform.position, newDirection, raycastDistance));
+        } while (Physics.Raycast(transform.position, newDirection, raycastDistance));
 
         return newDirection;
     }

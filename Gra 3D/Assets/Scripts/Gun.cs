@@ -37,10 +37,10 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        if (isReloading || EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire)
+        if (!isReloading && Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire)
         {
             if (ammoCount > 0)
             {
@@ -49,27 +49,29 @@ public class Gun : MonoBehaviour
                 ammoCount--;
                 Debug.Log("Ammo left in pistol: " + ammoCount);
 
-                if (ammoCount <= 0 && reserveAmmo > 0 && !isReloading)
+                if (ammoCount <= 0 && reserveAmmo > 0)
                 {
-                    Reload(); // Automatyczne prze³adowanie
+                    Reload();
                 }
             }
             else
             {
-                if (reserveAmmo > 0 && !isReloading)
+                if (reserveAmmo > 0)
                 {
-                    Reload(); // Prze³aduj automatycznie
+                    Reload();
                 }
                 else
                 {
-                    PlayEmptyGunSound(); // DŸwiêk pustego magazynka
+                    PlayEmptyGunSound();
                 }
             }
         }
 
-        UpdateCrosshair();
+        UpdateCrosshair(); // dzia³a zawsze
         UpdateAmmoText();
     }
+
+
 
 
     void Shoot()
@@ -94,8 +96,9 @@ public class Gun : MonoBehaviour
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(this.tag);  // przekazujemy tag broni zamiast damage
             }
+
 
             if (bulletHolePrefab != null && hit.collider.gameObject.CompareTag("wall"))
             {
@@ -121,6 +124,12 @@ public class Gun : MonoBehaviour
             // Wywo³aj zakoñczenie prze³adowania po 2 sekundach
             Invoke("FinishReload", 2f);
         }
+
+        if (crosshairTransform != null)
+        {
+            crosshairTransform.gameObject.SetActive(false);
+        }
+
     }
 
 
@@ -133,6 +142,12 @@ public class Gun : MonoBehaviour
 
         isReloading = false;
         Debug.Log("Reload finished.");
+
+        if (crosshairTransform != null)
+        {
+            crosshairTransform.gameObject.SetActive(true);
+        }
+
     }
 
 
@@ -145,26 +160,30 @@ public class Gun : MonoBehaviour
     {
         if (crosshairTransform != null)
         {
+            if (isReloading)
+            {
+                // Trzyma celownik w sta³ym punkcie, np. œrodku ekranu
+                crosshairTransform.position = fpsCam.transform.position + fpsCam.transform.forward * 2f;
+                crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
+                return;
+            }
+
             Ray ray = new Ray(fpsCam.transform.position, fpsCam.transform.forward);
             RaycastHit hit;
 
-            // Sprawdzamy, czy raycast nie trafia w UI
-            if (Physics.Raycast(ray, out hit, range, ~LayerMask.GetMask("UI"))) // U¿ywamy maski, aby zignorowaæ UI
+            if (Physics.Raycast(ray, out hit, range, ~LayerMask.GetMask("UI")))
             {
-                // Ustaw celownik na miejscu trafienia, ale trochê cofniêty, by unikn¹æ kolizji
                 crosshairTransform.position = hit.point - (fpsCam.transform.forward * 0.05f);
-
-                // Ustaw celownik tak, aby patrzy³ w stronê kamery
                 crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
             }
             else
             {
-                // Jeœli nic nie trafiono, ustaw celownik w maksymalnej odleg³oœci
                 crosshairTransform.position = fpsCam.transform.position + fpsCam.transform.forward * range;
                 crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
             }
         }
     }
+
 
     void PlayEmptyGunSound()
     {

@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,8 +15,8 @@ public class Interaction : MonoBehaviour
     public Slider shieldSlider;
     public GameObject gameOverPanel;
     public GameObject Jeszczerazbutton;
-    public GameObject Wyjdübutton;
-    public Text Przegra≥eú;
+    public GameObject Wyjd≈∫button;
+    public Text Przegra≈Çe≈õ;
 
     public AudioClip bonusSound;
     private AudioSource audioSource;
@@ -105,12 +105,12 @@ public class Interaction : MonoBehaviour
 
         if (pc != null && pc.currentShield > 0)
         {
-            // Najpierw obraøenia sπ absorbowane przez tarczÍ
+            // Najpierw obra¬øenia s¬π absorbowane przez tarcz√™
             float remainingDamage = Mathf.Max(0f, damage - pc.currentShield);
             pc.currentShield = Mathf.Max(0f, pc.currentShield - damage);
             shieldSlider.value = pc.currentShield;
 
-            // Jeúli pozosta≥y jakieú obraøenia po absorpcji przez tarczÍ, zadaj je zdrowiu
+            // Je≈ìli pozosta¬≥y jakie≈ì obra¬øenia po absorpcji przez tarcz√™, zadaj je zdrowiu
             if (remainingDamage > 0)
             {
                 playerHealth -= (int)remainingDamage;
@@ -119,7 +119,7 @@ public class Interaction : MonoBehaviour
         }
         else
         {
-            // Brak tarczy - obraøenia trafiajπ bezpoúrednio w zdrowie
+            // Brak tarczy - obra¬øenia trafiaj¬π bezpo≈ìrednio w zdrowie
             playerHealth -= damage;
             UpdateHealthSlider();
         }
@@ -130,8 +130,8 @@ public class Interaction : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
             Jeszczerazbutton.SetActive(true);
-            Wyjdübutton.SetActive(true);
-            Przegra≥eú.gameObject.SetActive(true);
+            Wyjd≈∫button.SetActive(true);
+            Przegra≈Çe≈õ.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0;
@@ -164,8 +164,8 @@ public class Interaction : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
             Jeszczerazbutton.SetActive(false);
-            Wyjdübutton.SetActive(false);
-            Przegra≥eú.gameObject.SetActive(false);
+            Wyjd≈∫button.SetActive(false);
+            Przegra≈Çe≈õ.gameObject.SetActive(false);
         }
 
         yield return new WaitForSeconds(0.3f);

@@ -5,15 +5,11 @@ using System.Collections;
 
 public class MinimapTextureSwitcher : MonoBehaviour
 {
-    public RenderTexture MinimapCamerabuilding;
-    public RenderTexture MinimapCameraForrest;
-
     private RawImage minimapImage;
     private static MinimapTextureSwitcher instance;
 
-    void Awake()
+    private void Awake()
     {
-        // Zapobiegaj duplikacji obiektu przy ³adowaniu nowej sceny
         if (instance == null)
         {
             instance = this;
@@ -28,17 +24,17 @@ public class MinimapTextureSwitcher : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         StartCoroutine(DelayedTextureSwitch(scene.name));
     }
 
-    IEnumerator DelayedTextureSwitch(string sceneName)
+    private IEnumerator DelayedTextureSwitch(string sceneName)
     {
-        yield return null; // Czekaj na koniec klatki
+        yield return null;
 
-        // Szukaj w³aœciwego obiektu minimapy
-        GameObject minimapObject = GameObject.Find("Minimap"); // Zmieñ na w³aœciw¹ nazwê
+        // ZnajdŸ komponent minimapy
+        GameObject minimapObject = GameObject.Find("Minimap");
         if (minimapObject == null)
         {
             Debug.LogWarning("Nie znaleziono obiektu minimapy w scenie!");
@@ -52,32 +48,23 @@ public class MinimapTextureSwitcher : MonoBehaviour
             yield break;
         }
 
-        // Prze³¹cz teksturê
-        SwitchTextureByScene(sceneName);
-    }
-
-    void SwitchTextureByScene(string sceneName)
-    {
-        if (minimapImage == null) return;
-
-        Debug.Log($"Prze³¹czanie minimapy dla sceny: {sceneName}");
-
-        switch (sceneName)
+        // ZnajdŸ now¹ kamerê minimapy w bie¿¹cej scenie
+        GameObject cameraObject = GameObject.Find("MinimapCamera");
+        if (cameraObject == null)
         {
-            case "BUILDING":
-                minimapImage.texture = MinimapCamerabuilding;
-                Debug.Log("Ustawiono minimapê na BUILDING.");
-                break;
-
-            case "FORREST":
-                minimapImage.texture = MinimapCameraForrest;
-                Debug.Log("Ustawiono minimapê na FORREST.");
-                break;
-
-            default:
-                Debug.LogWarning($"Brak przypisanej minimapy dla sceny: {sceneName}");
-                break;
+            Debug.LogWarning("Nie znaleziono kamery minimapy w scenie!");
+            yield break;
         }
+
+        Camera minimapCamera = cameraObject.GetComponent<Camera>();
+        if (minimapCamera == null || minimapCamera.targetTexture == null)
+        {
+            Debug.LogWarning("Kamera minimapy nie ma przypisanej RenderTexture!");
+            yield break;
+        }
+
+        minimapImage.texture = minimapCamera.targetTexture;
+        Debug.Log($"Ustawiono teksturê minimapy dla sceny: {sceneName}");
     }
 
     private void OnDestroy()

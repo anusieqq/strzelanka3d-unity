@@ -252,31 +252,29 @@ public class Most : MonoBehaviour
         }
         else
         {
-            // B³¹d przy 17 kafelku (ostatni krok przed koñcem)
-            if (currentStep == correctPath.Length - 1)
+            Debug.Log("Z³y wybór! Restart mostu.");
+
+            currentStep = 0;
+
+            if (startTile != null)
             {
-                Debug.Log("Z³y wybór na koñcu! Restart mostu.");
+                float tileTopY = startTile.GetComponent<Collider>().bounds.max.y;
 
-                currentStep = 0;
+                Collider playerCollider = player.GetComponent<Collider>();
+                float playerBottomOffset = playerCollider != null ? playerCollider.bounds.min.y - player.position.y : 0f;
 
-                // Teleportuj na pocz¹tek
-                if (startTile != null)
-                {
-                    float tileTopY = startTile.GetComponent<Collider>().bounds.max.y;
+                Vector3 safePlayerPos = new Vector3(startTile.position.x, tileTopY - playerBottomOffset, startTile.position.z);
+                TeleportPlayer(safePlayerPos);
 
-                    Collider playerCollider = player.GetComponent<Collider>();
-                    float playerBottomOffset = playerCollider != null ? playerCollider.bounds.min.y - player.position.y : 0f;
+                // Cofnij most na pozycjê startow¹
+                transform.position = startPos;
+                transform.rotation = startRot;
 
-                    Vector3 safePlayerPos = new Vector3(startTile.position.x, tileTopY - playerBottomOffset, startTile.position.z);
-                    TeleportPlayer(safePlayerPos);
-
-                    transform.position = new Vector3(startTile.position.x, tileTopY + 0.2f, startTile.position.z);
-                    transform.rotation = startRot;
-
-                    UpdateButtonLabels();
-                }
+                UpdateButtonLabels();
             }
         }
+
+
     }
 
 
