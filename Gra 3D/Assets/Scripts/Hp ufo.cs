@@ -5,8 +5,22 @@ public class Enemy : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
+    [SerializeField] public string enemyId; // Rêcznie przypisane ID w Inspectorze
 
     public Slider healthSlider; // Pasek zdrowia w Inspectorze
+
+    void Awake()
+    {
+        // Walidacja, czy enemyId jest ustawione
+        if (string.IsNullOrEmpty(enemyId))
+        {
+            Debug.LogError($"Wróg {gameObject.name} nie ma ustawionego enemyId w Inspectorze!");
+        }
+        else
+        {
+            Debug.Log($"Wróg {gameObject.name} ma ID: {enemyId}");
+        }
+    }
 
     void Start()
     {
@@ -14,24 +28,21 @@ public class Enemy : MonoBehaviour
         UpdateHealthBar();
     }
 
+    // Metoda dla Gun.cs (jeden argument)
     public void TakeDamage(string sourceTag)
     {
-        float damage = 0f;
+        float damage = sourceTag == "pistol" ? 20f : 10f; // Domyœlne obra¿enia dla innych tagów
+        TakeDamage(sourceTag, damage);
+    }
 
-        if (sourceTag == "pistol")
-        {
-            damage = 20f;
-        }
-        else if (sourceTag == "Torch")
-        {
-            damage = 10f;
-        }
-
+    // Metoda dla Torch.cs (dwa argumenty)
+    public void TakeDamage(string sourceTag, float damage)
+    {
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         UpdateHealthBar();
 
-        Debug.Log($"Enemy hit by {sourceTag}, damage: {damage}, HP left: {currentHealth}");
+        Debug.Log($"Wróg {enemyId} ({gameObject.name}) otrzyma³ obra¿enia od {sourceTag}, damage: {damage}, HP: {currentHealth}");
 
         if (currentHealth <= 0)
         {
@@ -39,17 +50,21 @@ public class Enemy : MonoBehaviour
         }
     }
 
-
     void UpdateHealthBar()
     {
         if (healthSlider != null)
         {
             healthSlider.value = currentHealth / maxHealth;
         }
+        else
+        {
+            Debug.LogWarning($"Brak przypisanego Slidera zdrowia dla wroga {gameObject.name}");
+        }
     }
 
     void Die()
     {
-        Destroy(gameObject); // Usuwa przeciwnika po œmierci
+        Debug.Log($"Wróg {enemyId} ({gameObject.name}) zosta³ zniszczony.");
+        Destroy(gameObject);
     }
 }

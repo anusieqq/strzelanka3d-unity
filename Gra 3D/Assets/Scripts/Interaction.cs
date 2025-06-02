@@ -24,8 +24,7 @@ public class Interaction : MonoBehaviour
     void OnEnable()
     {
         audioSource = GetComponent<AudioSource>();
-        playerHealth = 80;
-
+        playerHealth = PlayerPrefs.GetInt("PlayerHealth", 80); // Wczytaj zdrowie z PlayerPrefs
         UpdateHealthSlider();
     }
 
@@ -45,6 +44,8 @@ public class Interaction : MonoBehaviour
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
         UpdateHealthSlider();
 
+        // Wczytaj amunicję i liczbę przeciwników
+        InitializeAmmoAndEnemyCount();
         UpdateAmmoText();
         UpdateEnemyCount();
     }
@@ -52,6 +53,26 @@ public class Interaction : MonoBehaviour
     void Update()
     {
         UpdateEnemyCount();
+    }
+
+    void InitializeAmmoAndEnemyCount()
+    {
+        // Wczytaj amunicję z PlayerPrefs
+        if (gunScript != null)
+        {
+            int ammoCount = PlayerPrefs.GetInt("AmmoCount", 30);
+            int reserveAmmo = PlayerPrefs.GetInt("ReserveAmmo", 90);
+            gunScript.SetAmmo(ammoCount, reserveAmmo);
+        }
+        else
+        {
+            Debug.LogError("gunScript nie jest przypisany w skrypcie Interaction!");
+        }
+
+        // Liczba przeciwników jest aktualizowana w Pause.cs (AdjustEnemyCount),
+        // więc tutaj tylko aktualizujemy UI
+        int enemyCount = PlayerPrefs.GetInt("EnemyCount", 10);
+        enemyCountText.text = "Enemies: " + enemyCount.ToString();
     }
 
     void OnCollisionEnter(Collision collision)
@@ -71,7 +92,7 @@ public class Interaction : MonoBehaviour
                 int ammoToAdd = 5;
                 gunScript.reserveAmmo += ammoToAdd;
                 gunScript.reserveAmmo = Mathf.Clamp(gunScript.reserveAmmo, 0, gunScript.maxReserveAmmo);
-                gunScript.UpdateAmmoText();
+                UpdateAmmoText();
                 PlayBonusSound();
                 Destroy(collision.gameObject);
             }
@@ -83,7 +104,6 @@ public class Interaction : MonoBehaviour
             {
                 pc.SetShield(100f, pc.maxShield);
             }
-
             PlayBonusSound();
             Destroy(collision.gameObject);
         }
@@ -91,7 +111,14 @@ public class Interaction : MonoBehaviour
 
     void UpdateAmmoText()
     {
-        ammoText.text = "Ammo: " + gunScript.ammoCount.ToString() + "/" + gunScript.reserveAmmo.ToString();
+        if (gunScript != null)
+        {
+            ammoText.text = "Ammo: " + gunScript.ammoCount.ToString() + "/" + gunScript.reserveAmmo.ToString();
+        }
+        else
+        {
+            Debug.LogError("gunScript nie jest przypisany, nie można zaktualizować tekstu amunicji!");
+        }
     }
 
     void UpdateHealthSlider()
@@ -105,12 +132,10 @@ public class Interaction : MonoBehaviour
 
         if (pc != null && pc.currentShield > 0)
         {
-            // Najpierw obra¿enia s¹ absorbowane przez tarczê
             float remainingDamage = Mathf.Max(0f, damage - pc.currentShield);
             pc.currentShield = Mathf.Max(0f, pc.currentShield - damage);
             shieldSlider.value = pc.currentShield;
 
-            // Jeœli pozosta³y jakieœ obra¿enia po absorpcji przez tarczê, zadaj je zdrowiu
             if (remainingDamage > 0)
             {
                 playerHealth -= (int)remainingDamage;
@@ -119,7 +144,6 @@ public class Interaction : MonoBehaviour
         }
         else
         {
-            // Brak tarczy - obra¿enia trafiaj¹ bezpoœrednio w zdrowie
             playerHealth -= damage;
             UpdateHealthSlider();
         }
@@ -145,8 +169,13 @@ public class Interaction : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
-        playerHealth = 80;
-        UpdateHealthSlider();
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("EnemyCount", 10); // Reset do domyślnej liczby przeciwników
+        PlayerPrefs.SetInt("AmmoCount", 30);  // Reset amunicji w magazynku
+        PlayerPrefs.SetInt("ReserveAmmo", 90); // Reset zapasowej amunicji
+        PlayerPrefs.SetInt("PlayerHealth", 80); // Reset zdrowia
+        PlayerPrefs.SetString("KilledEnemyIds", "{\"killedEnemyIds\":[]}"); // Reset listy zabitych wrogów
+        PlayerPrefs.Save();
         SceneManager.LoadScene("BUILDING");
     }
 

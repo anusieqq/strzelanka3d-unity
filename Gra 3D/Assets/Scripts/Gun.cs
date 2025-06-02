@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;  // Dodajemy przestrzeñ nazw EventSystems
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Gun : MonoBehaviour
 {
@@ -26,6 +27,35 @@ public class Gun : MonoBehaviour
     public AudioClip gunemptySound;
     private AudioSource audioSource;
 
+    [Header("Input System")]
+    public InputActionAsset inputActions; // Referencja do InputActionAsset
+    private InputAction shootAction;
+
+    void Awake()
+    {
+        // SprawdŸ, czy InputActionAsset jest przypisany
+        if (inputActions == null)
+        {
+            Debug.LogError("InputActionAsset nie jest przypisany w Gun! Przypisz InputActionAsset w Inspectorze.");
+            return;
+        }
+
+        // ZnajdŸ akcjê Shoot
+        shootAction = inputActions.FindAction("Player/Shoot");
+
+        // SprawdŸ, czy akcja zosta³a znaleziona
+        if (shootAction == null)
+        {
+            Debug.LogError("Nie znaleziono akcji Player/Shoot w InputActionAsset! SprawdŸ nazwê akcji.");
+        }
+
+        // SprawdŸ, czy tag jest ustawiony
+        if (string.IsNullOrEmpty(gameObject.tag))
+        {
+            Debug.LogWarning("GameObject z Gun nie ma ustawionego tagu! Ustaw tag 'pistol' w Inspectorze.");
+            gameObject.tag = "pistol"; // Domyœlny tag
+        }
+    }
 
     void Start()
     {
@@ -33,6 +63,22 @@ public class Gun : MonoBehaviour
         UpdateAmmoText();
         audioSource = GetComponent<AudioSource>();
 
+        // W³¹cz akcje inputu
+        if (inputActions != null)
+        {
+            inputActions.Enable();
+            Debug.Log("InputActions w³¹czone w Gun.");
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Wy³¹cz akcje inputu
+        if (inputActions != null)
+        {
+            inputActions.Disable();
+            Debug.Log("InputActions wy³¹czone w Gun.");
+        }
     }
 
     void Update()
@@ -40,14 +86,14 @@ public class Gun : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (!isReloading && Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire)
+        if (!isReloading && shootAction != null && shootAction.WasPressedThisFrame() && Time.time >= nextTimeToFire)
         {
             if (ammoCount > 0)
             {
                 nextTimeToFire = Time.time + fireRate;
                 Shoot();
                 ammoCount--;
-                Debug.Log("Ammo left in pistol: " + ammoCount);
+                Debug.Log($"Gun: Ammo left in pistol: {ammoCount}");
 
                 if (ammoCount <= 0 && reserveAmmo > 0)
                 {
@@ -67,12 +113,9 @@ public class Gun : MonoBehaviour
             }
         }
 
-        UpdateCrosshair(); // dzia³a zawsze
+        UpdateCrosshair();
         UpdateAmmoText();
     }
-
-
-
 
     void Shoot()
     {
@@ -80,7 +123,6 @@ public class Gun : MonoBehaviour
         {
             audioSource.PlayOneShot(gunShotSound);
         }
-
 
         if (muzzleFlashPrefab != null)
         {
@@ -91,14 +133,14 @@ public class Gun : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
-            Debug.Log("Hit: " + hit.transform.name);
+            Debug.Log($"Gun: Hit: {hit.transform.name}");
 
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(this.tag);  // przekazujemy tag broni zamiast damage
+                enemy.TakeDamage(gameObject.tag, damage); // U¿ywa tagu i obra¿eñ
+                Debug.Log($"Gun: Zadano {damage} obra¿eñ wrogowi {hit.transform.name} z tagiem {gameObject.tag}");
             }
-
 
             if (bulletHolePrefab != null && hit.collider.gameObject.CompareTag("wall"))
             {
@@ -113,15 +155,13 @@ public class Gun : MonoBehaviour
         if (reserveAmmo > 0)
         {
             isReloading = true;
-            Debug.Log("Reloading...");
+            Debug.Log("Gun: Reloading...");
 
-            // DŸwiêk prze³adowania
             if (gunreloadSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(gunreloadSound);
             }
 
-            // Wywo³aj zakoñczenie prze³adowania po 2 sekundach
             Invoke("FinishReload", 2f);
         }
 
@@ -129,9 +169,7 @@ public class Gun : MonoBehaviour
         {
             crosshairTransform.gameObject.SetActive(false);
         }
-
     }
-
 
     void FinishReload()
     {
@@ -141,19 +179,20 @@ public class Gun : MonoBehaviour
         reserveAmmo -= ammoToReload;
 
         isReloading = false;
-        Debug.Log("Reload finished.");
+        Debug.Log("Gun: Reload finished.");
 
         if (crosshairTransform != null)
         {
             crosshairTransform.gameObject.SetActive(true);
         }
-
     }
-
 
     public void UpdateAmmoText()
     {
-        ammoText.text = "Ammo: " + ammoCount.ToString() + "/" + reserveAmmo.ToString();
+        if (ammoText != null)
+        {
+            ammoText.text = $"Ammo: {ammoCount}/{reserveAmmo}";
+        }
     }
 
     void UpdateCrosshair()
@@ -162,7 +201,6 @@ public class Gun : MonoBehaviour
         {
             if (isReloading)
             {
-                // Trzyma celownik w sta³ym punkcie, np. œrodku ekranu
                 crosshairTransform.position = fpsCam.transform.position + fpsCam.transform.forward * 2f;
                 crosshairTransform.rotation = Quaternion.LookRotation(-fpsCam.transform.forward);
                 return;
@@ -184,14 +222,19 @@ public class Gun : MonoBehaviour
         }
     }
 
-
     void PlayEmptyGunSound()
     {
         if (gunemptySound != null && audioSource != null)
         {
             audioSource.PlayOneShot(gunemptySound);
         }
-        Debug.Log("Click! No ammo.");
+        Debug.Log("Gun: Click! No ammo.");
     }
 
+    public void SetAmmo(int newAmmoCount, int newReserveAmmo)
+    {
+        ammoCount = Mathf.Clamp(newAmmoCount, 0, maxAmmo);
+        reserveAmmo = Mathf.Clamp(newReserveAmmo, 0, maxReserveAmmo);
+        UpdateAmmoText();
+    }
 }

@@ -10,13 +10,13 @@ public class KeyRebindInput : MonoBehaviour
     public class ActionBinding
     {
         public string actionName;
-        public int bindingIndex;
+        public int bindingIndex; // Indeks bindingu w akcji
         public Button rebindButton;
         public TextMeshProUGUI bindingDisplayText;
     }
 
     public InputActionAsset inputActions;
-    public ActionBinding[] actionsToRebind;
+    public ActionBinding[] actionsToRebind; // Tablica dla wszystkich akcji
 
     private const string RebindsKey = "Rebinds";
     private InputActionRebindingExtensions.RebindingOperation ongoingRebinding;
@@ -30,8 +30,14 @@ public class KeyRebindInput : MonoBehaviour
 
         foreach (var binding in actionsToRebind)
         {
-            // Utwórz lokaln¹ kopiê, aby unikn¹æ problemów z closure w lambdach
             var capturedBinding = binding;
+
+            // Pomiñ akcjê "Look"
+            if (capturedBinding.actionName == "Player/Look")
+            {
+                UpdateBindingDisplay(capturedBinding);
+                continue; // Nie przypisuj przycisku rebindingu dla akcji "Look"
+            }
 
             if (capturedBinding.rebindButton != null)
             {
@@ -44,12 +50,19 @@ public class KeyRebindInput : MonoBehaviour
             UpdateBindingDisplay(capturedBinding);
         }
 
-        // W³¹cz tylko po za³adowaniu
+        // W³¹cz akcje po za³adowaniu
         inputActions.Enable();
     }
 
     public void StartRebinding(ActionBinding bindingInfo)
     {
+        // Zablokuj rebinding dla akcji "Look"
+        if (bindingInfo.actionName == "Player/Look")
+        {
+            Debug.LogWarning("Akcja 'Look' jest zablokowana i nie mo¿na jej zmieniæ!");
+            return;
+        }
+
         var action = inputActions.FindAction(bindingInfo.actionName);
 
         if (action == null)
@@ -63,7 +76,7 @@ public class KeyRebindInput : MonoBehaviour
 
         bindingInfo.bindingDisplayText.text = "Naciœnij klawisz...";
 
-        // Anuluj wszelkie trwaj¹ce operacje rebindingu
+        // Anuluj trwaj¹ce operacje rebindingu
         if (ongoingRebinding != null)
             ongoingRebinding.Dispose();
 
@@ -74,14 +87,11 @@ public class KeyRebindInput : MonoBehaviour
             .OnMatchWaitForAnother(0.1f)
             .OnComplete(operation =>
             {
-                // Usuñ wszystkie inne bindingi dla tej akcji
-                for (int i = 0; i < action.bindings.Count; i++)
-                {
-                    if (i != bindingInfo.bindingIndex)
-                    {
-                        action.RemoveBindingOverride(i);
-                    }
-                }
+                // Usuñ wszystkie bindingi dla tej akcji
+                action.RemoveAllBindingOverrides();
+
+                // Ustaw nowy binding, u¿ywaj¹c œcie¿ki z operation.selectedControl
+                action.ApplyBindingOverride(bindingInfo.bindingIndex, operation.selectedControl.path);
 
                 operation.Dispose();
                 ongoingRebinding = null;
@@ -117,6 +127,13 @@ public class KeyRebindInput : MonoBehaviour
 
     public void SaveBindings()
     {
+        // Zapisz tylko bindingi dla akcji innych ni¿ "Look"
+        var lookAction = inputActions.FindAction("Player/Look");
+        if (lookAction != null)
+        {
+            lookAction.RemoveAllBindingOverrides(); // Upewnij siê, ¿e "Look" nie ma nadpisywanych bindingów
+        }
+
         string rebinds = inputActions.SaveBindingOverridesAsJson();
         PlayerPrefs.SetString(RebindsKey, rebinds);
         PlayerPrefs.Save();
@@ -128,24 +145,29 @@ public class KeyRebindInput : MonoBehaviour
         if (PlayerPrefs.HasKey(RebindsKey))
         {
             string rebinds = PlayerPrefs.GetString(RebindsKey);
+            inputActions.RemoveAllBindingOverrides(); // Usuñ wszystkie domyœlne bindingi
             inputActions.LoadBindingOverridesFromJson(rebinds);
             Debug.Log("[KeyRebindInput] Za³adowano zapisane bindingi");
         }
-        else
+
+        // Upewnij siê, ¿e akcja "Look" ma domyœlne bindingi
+        var lookAction = inputActions.FindAction("Player/Look");
+        if (lookAction != null)
         {
-            // Jeœli nie ma zapisanych bindingów, usuñ wszystkie domyœlne poza pierwszym
-            foreach (var binding in actionsToRebind)
+            lookAction.RemoveAllBindingOverrides(); // Resetuj bindingi dla "Look" do domyœlnych
+        }
+
+        foreach (var binding in actionsToRebind)
+        {
+            var action = inputActions.FindAction(binding.actionName);
+            if (action != null && binding.actionName != "Player/Look")
             {
-                var action = inputActions.FindAction(binding.actionName);
-                if (action != null)
+                // Usuñ wszystkie bindingi poza tym o okreœlonym indeksie, ale tylko dla akcji innych ni¿ "Look"
+                for (int i = 0; i < action.bindings.Count; i++)
                 {
-                    // Zostaw tylko binding pod wskazanym indeksem
-                    for (int i = 0; i < action.bindings.Count; i++)
+                    if (i != binding.bindingIndex)
                     {
-                        if (i != binding.bindingIndex)
-                        {
-                            action.RemoveBindingOverride(i);
-                        }
+                        action.RemoveBindingOverride(i);
                     }
                 }
             }
@@ -157,21 +179,8 @@ public class KeyRebindInput : MonoBehaviour
         inputActions.RemoveAllBindingOverrides();
         PlayerPrefs.DeleteKey(RebindsKey);
 
-        // Ponownie za³aduj domyœlne bindingi i usuñ niepotrzebne
         foreach (var binding in actionsToRebind)
         {
-            var action = inputActions.FindAction(binding.actionName);
-            if (action != null)
-            {
-                // Zostaw tylko binding pod wskazanym indeksem
-                for (int i = 0; i < action.bindings.Count; i++)
-                {
-                    if (i != binding.bindingIndex)
-                    {
-                        action.RemoveBindingOverride(i);
-                    }
-                }
-            }
             UpdateBindingDisplay(binding);
         }
         Debug.Log("[KeyRebindInput] Resetowano bindingi");

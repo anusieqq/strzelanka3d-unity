@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -48,7 +48,7 @@ public class Most : MonoBehaviour
         bridgeCollider = GetComponent<Collider>();
         if (bridgeCollider == null)
         {
-            Debug.LogError("Brak komponentu Collider na moœcie!", this);
+            Debug.LogError("Brak komponentu Collider na moÅ“cie!", this);
             enabled = false;
             return;
         }
@@ -111,7 +111,7 @@ public class Most : MonoBehaviour
     {
         if (tiles.Length != 18)
         {
-            Debug.LogError("Wymagane jest dok³adnie 18 kafelków! Obecnie: " + tiles.Length, this);
+            Debug.LogError("Wymagane jest dokÂ³adnie 18 kafelkÃ³w! Obecnie: " + tiles.Length, this);
             enabled = false;
             return;
         }
@@ -128,7 +128,7 @@ public class Most : MonoBehaviour
     {
         if (leftButton == null || rightButton == null)
         {
-            Debug.LogError("Przyciski nie s¹ przypisane!", this);
+            Debug.LogError("Przyciski nie sÂ¹ przypisane!", this);
             enabled = false;
             return;
         }
@@ -215,7 +215,7 @@ public class Most : MonoBehaviour
 
         if (choice == correctPath[currentStep])
         {
-            // Poprawny wybór
+            // Poprawny wybÃ³r
             Vector3 tilePos = tilePositions[currentStep, choice].position;
 
             Collider tileCollider = tilePositions[currentStep, choice].GetComponent<Collider>();
@@ -227,7 +227,7 @@ public class Most : MonoBehaviour
             Vector3 playerTargetPos = new Vector3(tilePos.x, tileTopY - playerBottomOffset, tilePos.z);
             player.position = playerTargetPos;
 
-            // zatrzymaj fizykê
+            // zatrzymaj fizykÃª
             Rigidbody rb = player.GetComponent<Rigidbody>();
             if (rb != null)
             {
@@ -235,14 +235,14 @@ public class Most : MonoBehaviour
                 rb.angularVelocity = Vector3.zero;
             }
 
-            // przesuñ most
+            // przesuÃ± most
             transform.position = new Vector3(tilePos.x, tileTopY + 0.2f, tilePos.z);
 
             currentStep++;
 
             if (currentStep >= correctPath.Length)
             {
-                // Ukoñczono most
+                // UkoÃ±czono most
                 CompleteBridge();
             }
             else
@@ -252,7 +252,7 @@ public class Most : MonoBehaviour
         }
         else
         {
-            Debug.Log("Z³y wybór! Restart mostu.");
+            Debug.Log("ZÂ³y wybÃ³r! Restart mostu.");
 
             currentStep = 0;
 
@@ -266,7 +266,7 @@ public class Most : MonoBehaviour
                 Vector3 safePlayerPos = new Vector3(startTile.position.x, tileTopY - playerBottomOffset, startTile.position.z);
                 TeleportPlayer(safePlayerPos);
 
-                // Cofnij most na pozycjê startow¹
+                // Cofnij most na pozycjÃª startowÂ¹
                 transform.position = startPos;
                 transform.rotation = startRot;
 
@@ -298,8 +298,8 @@ public class Most : MonoBehaviour
 
     void CompleteBridge()
     {
-        Debug.Log("Most ukoñczony pomyœlnie!", this);
-        DeactivateBridge(); 
+        Debug.Log("Most ukoÃ±czony pomyÅ“lnie!", this);
+        DeactivateBridge();
     }
 
 
@@ -339,7 +339,7 @@ public class Most : MonoBehaviour
         if (correctPath.Length != 9)
         {
             System.Array.Resize(ref correctPath, 9);
-            Debug.LogWarning("Poprawiono d³ugoœæ tablicy correctPath na 9", this);
+            Debug.LogWarning("Poprawiono dÂ³ugoÅ“Ã¦ tablicy correctPath na 9", this);
         }
     }
 }

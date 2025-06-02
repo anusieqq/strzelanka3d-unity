@@ -18,7 +18,7 @@ public class Menu : MonoBehaviour
 
     [Header("UI Elements")]
     public GameObject Rozpocznij;
-    public GameObject Pomiñ;
+    public GameObject Pomiń;
     public GameObject StartButton;
     public GameObject Opcje;
     public GameObject Wczytaj;
@@ -30,7 +30,7 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         InitializeUI();
-        Pomiñ.SetActive(false);
+        Pomiń.SetActive(false);
     }
 
     private void InitializeUI()
@@ -40,27 +40,24 @@ public class Menu : MonoBehaviour
         opcjePanel.gameObject.SetActive(false);
         Rozpocznij.SetActive(false);
 
-
-        // Przypisanie metod do przycisków
         Rozpocznij.GetComponent<Button>().onClick.AddListener(StartNewGame);
         StartButton.GetComponent<Button>().onClick.AddListener(StartGame);
         Opcje.GetComponent<Button>().onClick.AddListener(OptionsGame);
         Wczytaj.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadGameAndScene()));
         Wyjdz.GetComponent<Button>().onClick.AddListener(ExitGame);
-        Pomiñ.GetComponent<Button>().onClick.AddListener(SkipTyping); // Dodane przypisanie metody SkipTyping
     }
 
     public void StartNewGame()
     {
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt("EnemyCount", 10);
+        PlayerPrefs.SetInt("AmmoCount", 30);
+        PlayerPrefs.SetInt("ReserveAmmo", 90);
         PlayerPrefs.Save();
 
-        // Zapisz callback, który wykona siê po za³adowaniu sceny
         SceneManager.sceneLoaded += OnSceneLoaded;
-
         SceneManager.LoadScene("BUILDING");
     }
-
 
     public void StartGame()
     {
@@ -70,7 +67,7 @@ public class Menu : MonoBehaviour
         {
             fabula.gameObject.SetActive(true);
             menu.gameObject.SetActive(false);
-            skipRequested = false; // Reset flagi przed rozpoczêciem
+            skipRequested = false;
             StartCoroutine(TypeText());
             StartCoroutine(ShowSkipButtonAfterDelay());
         }
@@ -79,33 +76,148 @@ public class Menu : MonoBehaviour
     IEnumerator ShowSkipButtonAfterDelay()
     {
         yield return new WaitForSeconds(2f);
-        Pomiñ.SetActive(true);
+        Pomiń.SetActive(true);
     }
 
     IEnumerator LoadGameAndScene()
     {
         string path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "savegame.json");
-        if (File.Exists(path))
+        if (!File.Exists(path))
         {
-            string json = File.ReadAllText(path);
-            GameData data = JsonUtility.FromJson<GameData>(json);
+            Debug.LogWarning("Brak pliku zapisu gry: " + path);
+            yield break;
+        }
 
-            PlayerPrefs.SetFloat("PlayerHealth", data.currentHP);
-            PlayerPrefs.SetFloat("MaxHealth", data.maxHP);
-            PlayerPrefs.SetFloat("PlayerShield", data.currentShield);
-            PlayerPrefs.SetFloat("MaxShield", data.maxShield);
-            PlayerPrefs.SetFloat("EnemyHealth", data.ufoHP);
-            PlayerPrefs.SetFloat("EnemyMaxHealth", data.ufoMaxHP);
-            PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
-            PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
-            PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
-            PlayerPrefs.SetString("SavedScene", data.levelName);
-            PlayerPrefs.Save();
+        // Wczytaj dane z pliku JSON
+        string json = File.ReadAllText(path);
+        GameData data = JsonUtility.FromJson<GameData>(json);
+        if (data == null || string.IsNullOrEmpty(data.levelName))
+        {
+            Debug.LogError("Invalid or missing levelName in savegame.json, loading default scene.");
+            SceneManager.LoadScene("BUILDING");
+            yield break;
+        }
 
-            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(data.levelName);
-            while (!asyncLoad.isDone)
+        // Zapisz dane do PlayerPrefs
+        PlayerPrefs.SetFloat("PlayerHealth", data.currentHP);
+        PlayerPrefs.SetFloat("MaxHealth", data.maxHP);
+        PlayerPrefs.SetFloat("PlayerShield", data.currentShield);
+        PlayerPrefs.SetFloat("MaxShield", data.maxShield);
+        PlayerPrefs.SetFloat("EnemyHealth", data.ufoHP);
+        PlayerPrefs.SetFloat("EnemyMaxHP", data.ufoMaxHP);
+        PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
+        PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
+        PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
+        PlayerPrefs.SetString("SavedScene", data.levelName);
+        PlayerPrefs.SetInt("EnemyCount", data.enemyCount);
+        PlayerPrefs.SetInt("AmmoCount", data.ammoCount);
+        PlayerPrefs.SetInt("ReserveAmmo", data.reserveAmmo);
+        PlayerPrefs.SetString("KilledEnemyIds", JsonUtility.ToJson(new Pause.KilledEnemyIdsWrapper { killedEnemyIds = data.killedEnemyIds }));
+        PlayerPrefs.SetFloat("GameTimeInMinutes", data.gameTimeInMinutes);
+        PlayerPrefs.SetFloat("TimeOfDay", data.timeOfDay);
+        PlayerPrefs.SetFloat("TimeMultiplier", data.timeMultiplier);
+        PlayerPrefs.Save();
+
+        Debug.Log($"Wczytuję zapis gry dla sceny: {data.levelName}");
+
+        if (data.levelName == "BUILDING")
+        {
+            // Ładuj BUILDING bezpośrednio
+            AsyncOperation asyncLoadBuilding = SceneManager.LoadSceneAsync("BUILDING", LoadSceneMode.Single);
+            while (!asyncLoadBuilding.isDone)
             {
+                Debug.Log($"Loading BUILDING progress: {asyncLoadBuilding.progress}");
                 yield return null;
+            }
+
+            // Czekaj na pełne załadowanie sceny
+            yield return new WaitForEndOfFrame();
+
+            // Wywołaj LoadPlayerData
+            Pause pauseScript = FindObjectOfType<Pause>();
+            if (pauseScript != null)
+            {
+                Debug.Log("Znaleziono Pause.cs na scenie BUILDING, wywołuję LoadPlayerData.");
+                pauseScript.LoadPlayerData();
+            }
+            else
+            {
+                Debug.LogError("Nie znaleziono obiektu z Pause.cs na scenie BUILDING!");
+            }
+        }
+        else
+        {
+            // Ładuj BUILDING w tle
+            AsyncOperation asyncLoadBuilding = SceneManager.LoadSceneAsync("BUILDING", LoadSceneMode.Additive);
+            while (!asyncLoadBuilding.isDone)
+            {
+                Debug.Log($"Loading BUILDING in background progress: {asyncLoadBuilding.progress}");
+                yield return null;
+            }
+
+            // Upewnij się, że gracz i kamera są dostępne
+            GameObject playerObject = GameObject.FindGameObjectWithTag("player");
+            if (playerObject == null)
+            {
+                Debug.LogWarning("Player not found in BUILDING, creating new player.");
+                playerObject = new GameObject("Player");
+                playerObject.tag = "player";
+                playerObject.AddComponent<PlayerController>();
+                DontDestroyOnLoad(playerObject);
+            }
+
+            GameObject cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+            if (cameraObject == null)
+            {
+                Debug.LogWarning("MainCamera not found in BUILDING, creating new camera.");
+                cameraObject = new GameObject("MainCamera");
+                cameraObject.tag = "MainCamera";
+                cameraObject.AddComponent<Camera>().enabled = true;
+                DontDestroyOnLoad(cameraObject);
+            }
+
+            // Ładuj docelową scenę
+            AsyncOperation asyncLoadTarget = SceneManager.LoadSceneAsync(data.levelName, LoadSceneMode.Single);
+            while (!asyncLoadTarget.isDone)
+            {
+                Debug.Log($"Loading {data.levelName} progress: {asyncLoadTarget.progress}");
+                yield return null;
+            }
+
+            // Czekaj na pełne załadowanie sceny
+            yield return new WaitForEndOfFrame();
+
+            // Upewnij się, że gracz i kamera są nadal dostępne
+            playerObject = GameObject.FindGameObjectWithTag("player");
+            if (playerObject == null)
+            {
+                Debug.LogWarning("Player not found after loading target scene, creating new player.");
+                playerObject = new GameObject("Player");
+                playerObject.tag = "player";
+                playerObject.AddComponent<PlayerController>();
+                DontDestroyOnLoad(playerObject);
+            }
+
+            cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
+            if (cameraObject == null)
+            {
+                Debug.LogWarning("MainCamera not found after loading target scene, creating new camera.");
+                cameraObject = new GameObject("MainCamera");
+                cameraObject.tag = "MainCamera";
+                cameraObject.AddComponent<Camera>().enabled = true;
+                DontDestroyOnLoad(cameraObject);
+            }
+
+            // Wywołaj LoadPlayerData
+            Pause pauseScript = FindObjectOfType<Pause>();
+            if (pauseScript != null)
+            {
+                Debug.Log($"Znaleziono Pause.cs na scenie {data.levelName}, wywołuję LoadPlayerData.");
+                pauseScript.LoadPlayerData();
+            }
+            else
+            {
+                Debug.LogError($"Nie znaleziono obiektu z Pause.cs na scenie {data.levelName}!");
             }
         }
     }
@@ -165,9 +277,9 @@ public class Menu : MonoBehaviour
         yield return SmoothScrollToEnd();
 
         Rozpocznij.SetActive(true);
-        Pomiñ.SetActive(false);
+        Pomiń.SetActive(false);
         isTyping = false;
-        skipRequested = false; // Reset flagi po zakoñczeniu
+        skipRequested = false;
     }
 
     public void SkipTyping()
@@ -176,15 +288,14 @@ public class Menu : MonoBehaviour
         if (!isTyping) Debug.Log("But not typing now!");
         skipRequested = true;
 
-        // Natychmiastowa wizualna odpowiedŸ
-        Pomiñ.GetComponent<Image>().color = Color.red;
+        Pomiń.GetComponent<Image>().color = Color.red;
         StartCoroutine(ResetButtonColor());
     }
 
     IEnumerator ResetButtonColor()
     {
         yield return new WaitForSeconds(0.3f);
-        Pomiñ.GetComponent<Image>().color = Color.white;
+        Pomiń.GetComponent<Image>().color = Color.white;
     }
 
     IEnumerator SmoothScroll()
@@ -226,12 +337,9 @@ public class Menu : MonoBehaviour
             {
                 Day.Instance.ResetTime();
             }
-
-            // Od³¹cz callback ¿eby nie odpala³ siê przy ka¿dej zmianie sceny
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
-
 
     [System.Serializable]
     public class GameData
@@ -240,14 +348,18 @@ public class Menu : MonoBehaviour
         public float playerPosY;
         public float playerPosZ;
         public string levelName;
-
         public float currentHP;
         public float maxHP;
-
         public float currentShield;
         public float maxShield;
-
         public float ufoHP;
         public float ufoMaxHP;
+        public int enemyCount;
+        public int ammoCount;
+        public int reserveAmmo;
+        public string[] killedEnemyIds;
+        public float gameTimeInMinutes;
+        public float timeOfDay;
+        public float timeMultiplier;
     }
 }

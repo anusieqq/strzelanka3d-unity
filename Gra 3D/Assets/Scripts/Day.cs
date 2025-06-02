@@ -3,7 +3,7 @@ using TMPro;
 
 public class Day : MonoBehaviour
 {
-    public static Day Instance;  // Singleton
+    public static Day Instance;
 
     [Header("Sun Settings")]
     public Light sun;
@@ -23,9 +23,9 @@ public class Day : MonoBehaviour
 
     [Header("Game Clock Settings")]
     public float gameMinutesPerSecond = 0.1f;
-    private float gameTimeInMinutes = 6f * 60f;
+    public float gameTimeInMinutes = 6f * 60f;
 
-    private float timeOfDay = 0.25f;
+    public float timeOfDay = 0.25f;
 
     [Header("Time Speed Control")]
     private float minSpeed = 0.049f;
@@ -35,15 +35,61 @@ public class Day : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton: jeœli instancja ju¿ istnieje, zniszcz ten obiekt
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Zapobiegamy zniszczeniu przy zmianie sceny
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject);  // Zniszczenie duplikatu, jeœli ju¿ istnieje
+            Destroy(gameObject);
+            return;
+        }
+
+        // Wczytaj zapisane wartoœci z PlayerPrefs
+        gameTimeInMinutes = PlayerPrefs.GetFloat("GameTimeInMinutes", 6f * 60f);
+        timeOfDay = PlayerPrefs.GetFloat("TimeOfDay", 0.25f);
+        gameMinutesPerSecond = PlayerPrefs.GetFloat("TimeMultiplier", 0.1f);
+        gameMinutesPerSecond = Mathf.Clamp(Mathf.Round(gameMinutesPerSecond * 10f) / 10f, minSpeed, maxSpeed);
+
+        // Aktualizuj UI
+        if (timeDisplay != null)
+        {
+            int gameHours = Mathf.FloorToInt(gameTimeInMinutes / 60f);
+            int gameMinutes = Mathf.FloorToInt(gameTimeInMinutes % 60f);
+            timeDisplay.text = $"Godzina: {gameHours:00}:{gameMinutes:00}";
+            Debug.Log($"Zainicjowano czas gry w UI: {timeDisplay.text}");
+        }
+        else
+        {
+            Debug.LogError("timeDisplay nie jest przypisany!");
+        }
+
+        if (speedDisplay != null)
+        {
+            speedDisplay.text = $"x{gameMinutesPerSecond:F1}";
+            Debug.Log($"Zainicjowano mno¿nik czasu w UI: {speedDisplay.text}");
+        }
+        else
+        {
+            Debug.LogError("speedDisplay nie jest przypisany!");
+        }
+
+        // Ustaw pocz¹tkow¹ pozycjê s³oñca i skybox
+        UpdateSunAndSkybox();
+    }
+
+    private void UpdateSunAndSkybox()
+    {
+        float sunAngle = (timeOfDay * 360f) - 90f;
+        sun.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
+        sun.color = lightColorGradient.Evaluate(timeOfDay);
+        sun.intensity = lightIntensityCurve.Evaluate(timeOfDay);
+
+        if (proceduralSkybox != null)
+        {
+            proceduralSkybox.SetColor("_SkyTint", skyTintGradient.Evaluate(timeOfDay));
+            proceduralSkybox.SetFloat("_Exposure", skyExposureCurve.Evaluate(timeOfDay));
         }
     }
 
@@ -53,7 +99,6 @@ public class Day : MonoBehaviour
 
         bool speedChanged = false;
 
-        // Zwiêkszanie prêdkoœci
         if (Input.GetKey(KeyCode.Plus) || Input.GetKey(KeyCode.KeypadPlus))
         {
             if (changeTimer >= changeCooldown)
@@ -63,7 +108,6 @@ public class Day : MonoBehaviour
             }
         }
 
-        // Zmniejszanie prêdkoœci
         if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus))
         {
             if (changeTimer >= changeCooldown)
@@ -76,17 +120,20 @@ public class Day : MonoBehaviour
         if (speedChanged)
         {
             gameMinutesPerSecond = Mathf.Clamp(gameMinutesPerSecond, minSpeed, maxSpeed);
-            gameMinutesPerSecond = Mathf.Round(gameMinutesPerSecond * 10f) / 10f; // Zaokr¹glenie do 0.1
+            gameMinutesPerSecond = Mathf.Round(gameMinutesPerSecond * 10f) / 10f;
             changeTimer = 0f;
+
+            if (speedDisplay != null)
+            {
+                speedDisplay.text = $"x{gameMinutesPerSecond:F1}";
+            }
         }
 
-        // === Zapewnienie minimalnej prêdkoœci, gdy gameMinutesPerSecond jest bliskie 0 ===
         if (gameMinutesPerSecond == 0f)
         {
-            gameMinutesPerSecond = minSpeed;  // Ustaw minimaln¹ prêdkoœæ, gdy 0
+            gameMinutesPerSecond = minSpeed;
         }
 
-        // === Aktualizacja czasu gry ===
         gameTimeInMinutes += Time.deltaTime * gameMinutesPerSecond * 10;
         if (gameTimeInMinutes >= 1440f)
             gameTimeInMinutes -= 1440f;
@@ -98,29 +145,25 @@ public class Day : MonoBehaviour
         if (timeDisplay != null)
             timeDisplay.text = $"Godzina: {formattedTime}";
 
-        if (speedDisplay != null)
+        if (speedDisplay != null && !speedChanged)
             speedDisplay.text = $"x{gameMinutesPerSecond:F1}";
 
-        // === Obrót s³oñca ===
         timeOfDay = gameTimeInMinutes / 1440f;
-        float sunAngle = (timeOfDay * 360f) - 90f;
-        sun.transform.rotation = Quaternion.Euler(sunAngle, 170f, 0f);
-
-        // === Œwiat³o i skybox ===
-        sun.color = lightColorGradient.Evaluate(timeOfDay);
-        sun.intensity = lightIntensityCurve.Evaluate(timeOfDay);
-
-        if (proceduralSkybox != null)
-        {
-            proceduralSkybox.SetColor("_SkyTint", skyTintGradient.Evaluate(timeOfDay));
-            proceduralSkybox.SetFloat("_Exposure", skyExposureCurve.Evaluate(timeOfDay));
-        }
+        UpdateSunAndSkybox();
     }
 
     public void ResetTime()
     {
-        gameTimeInMinutes = 6f * 60f;  // 6:00 rano
-        gameMinutesPerSecond = 0.1f;   // Domyœlna prêdkoœæ
-        timeOfDay = 0.25f;             // Odpowiada 6:00 rano
+        gameTimeInMinutes = 6f * 60f;
+        gameMinutesPerSecond = 0.1f;
+        timeOfDay = 0.25f;
+
+        if (timeDisplay != null)
+            timeDisplay.text = $"Godzina: 06:00";
+
+        if (speedDisplay != null)
+            speedDisplay.text = $"x0.1";
+
+        UpdateSunAndSkybox();
     }
 }

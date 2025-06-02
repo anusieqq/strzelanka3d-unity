@@ -5,17 +5,17 @@ public class LoadForest : MonoBehaviour
 {
     private void Start()
     {
-        
+
     }
-    public bool canLoadScene = false; 
+    public bool canLoadScene = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!canLoadScene) return; 
+        if (!canLoadScene) return;
 
         if (other.CompareTag("player"))
         {
-            Debug.Log("Gracz dotkn¹³ drzwi. £adowanie sceny...");
+            Debug.Log("Gracz dotkn¹³ drzwi. ³adowanie sceny...");
             SceneManager.LoadScene("Forest");
         }
     }

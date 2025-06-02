@@ -1,0 +1,22 @@
+{
+    "playerPosX": -32.37128448486328,
+    "playerPosY": 12.731656074523926,
+    "playerPosZ": 3.2073564529418947,
+    "levelName": "BUILDING",
+    "currentHP": 100.0,
+    "maxHP": 100.0,
+    "currentShield": 0.0,
+    "maxShield": 50.0,
+    "ufoHP": 1.0,
+    "ufoMaxHP": 100.0,
+    "enemyCount": 8,
+    "killedEnemyIds": [
+        "4",
+        "7"
+    ],
+    "ammoCount": 10,
+    "reserveAmmo": 40,
+    "gameTimeInMinutes": 495.31707763671877,
+    "timeOfDay": 0.3439701795578003,
+    "timeMultiplier": 0.699999988079071
+}

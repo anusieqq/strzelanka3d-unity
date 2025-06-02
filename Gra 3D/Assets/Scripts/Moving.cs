@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -23,6 +21,18 @@ public class Moving : MonoBehaviour
     [SerializeField] private float staminaRegenRate = 0.5f;
     [SerializeField] private Slider staminaSlider;
 
+    [Header("Input System")]
+    public InputActionAsset inputActions; // Referencja do InputActionAsset
+    private InputAction upAction;
+    private InputAction downAction;
+    private InputAction leftAction;
+    private InputAction rightAction;
+    private InputAction lookAction;
+    private InputAction jumpAction;
+    private InputAction crouchAction;
+    private InputAction sprintAction;
+    private InputAction shootAction;
+
     private Rigidbody rb;
     private float rotationX = 0f;
     private float rotationY = 0f;
@@ -33,46 +43,34 @@ public class Moving : MonoBehaviour
     private float currentSpeed;
     private float currentStamina;
     private bool isSprinting;
-
-    private PlayerInputActions inputActions;
     private Vector2 movementInput;
 
     void Awake()
     {
-        inputActions = new PlayerInputActions();
-
-        if (PlayerPrefs.HasKey("inputBindings"))
+        // Sprawdü, czy InputActionAsset jest przypisany
+        if (inputActions == null)
         {
-            string rebinds = PlayerPrefs.GetString("inputBindings");
-            inputActions.asset.LoadBindingOverridesFromJson(rebinds);
+            Debug.LogError("InputActionAsset nie jest przypisany w Moving! Przypisz InputActionAsset w Inspectorze.");
+            return;
         }
 
-    }
+        // Znajdü akcje
+        upAction = inputActions.FindAction("Player/Moving Up");
+        downAction = inputActions.FindAction("Player/Moving Down");
+        leftAction = inputActions.FindAction("Player/Moving Left");
+        rightAction = inputActions.FindAction("Player/Moving Right");
+        lookAction = inputActions.FindAction("Player/Look");
+        jumpAction = inputActions.FindAction("Player/Jump");
+        crouchAction = inputActions.FindAction("Player/Crouch");
+        sprintAction = inputActions.FindAction("Player/Sprint");
+        shootAction = inputActions.FindAction("Player/Shoot");
 
-    void OnEnable()
-    {
-        inputActions.Enable();
-        inputActions.Player.MovingLeft.started += OnMovingLeft;
-        inputActions.Player.MovingLeft.canceled += OnMovingLeft;
-        inputActions.Player.MovingRight.started += OnMovingRight;
-        inputActions.Player.MovingRight.canceled += OnMovingRight;
-        inputActions.Player.MovingUp.started += OnMovingUp;
-        inputActions.Player.MovingUp.canceled += OnMovingUp;
-        inputActions.Player.MovingDown.started += OnMovingDown;
-        inputActions.Player.MovingDown.canceled += OnMovingDown;
-    }
-
-    void OnDisable()
-    {
-        inputActions.Player.MovingLeft.started -= OnMovingLeft;
-        inputActions.Player.MovingLeft.canceled -= OnMovingLeft;
-        inputActions.Player.MovingRight.started -= OnMovingRight;
-        inputActions.Player.MovingRight.canceled -= OnMovingRight;
-        inputActions.Player.MovingUp.started -= OnMovingUp;
-        inputActions.Player.MovingUp.canceled -= OnMovingUp;
-        inputActions.Player.MovingDown.started -= OnMovingDown;
-        inputActions.Player.MovingDown.canceled -= OnMovingDown;
-        inputActions.Disable();
+        // Sprawdü, czy akcje zosta≥y znalezione
+        if (upAction == null || downAction == null || leftAction == null || rightAction == null ||
+            lookAction == null || jumpAction == null || crouchAction == null || sprintAction == null || shootAction == null)
+        {
+            Debug.LogError("Nie znaleziono jednej lub wiÍcej akcji w InputActionAsset! Sprawdü nazwy akcji (Moving Up, Moving Down, Moving Left, Moving Right, Look, Jump, Crouch, Sprint, Shoot).");
+        }
     }
 
     void Start()
@@ -86,7 +84,13 @@ public class Moving : MonoBehaviour
         currentStamina = maxStamina;
 
         if (thirdPersonCamera == null)
+        {
             thirdPersonCamera = Camera.main;
+            if (thirdPersonCamera == null)
+            {
+                Debug.LogWarning("Brak kamery przypisanej w thirdPersonCamera i Camera.main nie znaleziono. OczekujÍ przypisania przez SetCamera.");
+            }
+        }
 
         cameraOffset = new Vector3(0, 2f, -cameraDistance);
         Cursor.lockState = CursorLockMode.Locked;
@@ -95,6 +99,23 @@ public class Moving : MonoBehaviour
         {
             staminaSlider.maxValue = maxStamina;
             staminaSlider.value = currentStamina;
+        }
+
+        // W≥πcz akcje inputu
+        if (inputActions != null)
+        {
+            inputActions.Enable();
+            Debug.Log("InputActions w≥πczone w Moving.");
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Wy≥πcz akcje inputu
+        if (inputActions != null)
+        {
+            inputActions.Disable();
+            Debug.Log("InputActions wy≥πczone w Moving.");
         }
     }
 
@@ -114,37 +135,11 @@ public class Moving : MonoBehaviour
         CheckStairs();
     }
 
-    private void OnMovingLeft(InputAction.CallbackContext context)
-    {
-        movementInput.x = context.ReadValue<float>() > 0.5f ? -1f : 0f;
-        if (movementInput.x == 0 && inputActions.Player.MovingRight.ReadValue<float>() > 0.5f)
-            movementInput.x = 1f;
-    }
-
-    private void OnMovingRight(InputAction.CallbackContext context)
-    {
-        movementInput.x = context.ReadValue<float>() > 0.5f ? 1f : 0f;
-        if (movementInput.x == 0 && inputActions.Player.MovingLeft.ReadValue<float>() > 0.5f)
-            movementInput.x = -1f;
-    }
-
-    private void OnMovingUp(InputAction.CallbackContext context)
-    {
-        movementInput.y = context.ReadValue<float>() > 0.5f ? 1f : 0f;
-        if (movementInput.y == 0 && inputActions.Player.MovingDown.ReadValue<float>() > 0.5f)
-            movementInput.y = -1f;
-    }
-
-    private void OnMovingDown(InputAction.CallbackContext context)
-    {
-        movementInput.y = context.ReadValue<float>() > 0.5f ? -1f : 0f;
-        if (movementInput.y == 0 && inputActions.Player.MovingUp.ReadValue<float>() > 0.5f)
-            movementInput.y = 1f;
-    }
-
     void HandleMouseLook()
     {
-        Vector2 look = inputActions.Player.Look.ReadValue<Vector2>();
+        if (lookAction == null) return;
+
+        Vector2 look = lookAction.ReadValue<Vector2>();
         rotationX -= look.y * mouseSensitivity;
         rotationY += look.x * mouseSensitivity;
         rotationX = Mathf.Clamp(rotationX, -45f, 45f);
@@ -156,10 +151,22 @@ public class Moving : MonoBehaviour
 
     void HandleMovement()
     {
+        // Inicjalizuj wektor ruchu
+        float horizontal = 0f;
+        float vertical = 0f;
+
+        // Odczytaj wartoúci z akcji
+        if (upAction != null && upAction.IsPressed()) vertical += 1f;
+        if (downAction != null && downAction.IsPressed()) vertical -= 1f;
+        if (leftAction != null && leftAction.IsPressed()) horizontal -= 1f;
+        if (rightAction != null && rightAction.IsPressed()) horizontal += 1f;
+
+        movementInput = new Vector2(horizontal, vertical).normalized;
+
         Vector3 moveDirection = transform.forward * movementInput.y + transform.right * movementInput.x;
         moveDirection.Normalize();
 
-        bool sprintHeld = inputActions.Player.Sprint.ReadValue<float>() > 0.5f;
+        bool sprintHeld = sprintAction != null && sprintAction.ReadValue<float>() > 0f;
         bool isMoving = movementInput.magnitude > 0.1f;
 
         isSprinting = sprintHeld && isMoving && currentStamina > 0;
@@ -173,11 +180,14 @@ public class Moving : MonoBehaviour
             velocity.y = -5f;
 
         rb.velocity = velocity;
+
+        // Debug: Sprawdzanie inputu (odkomentuj w razie potrzeby)
+        // Debug.Log($"Movement Input: {movementInput}, Velocity: {rb.velocity}");
     }
 
     void HandleJump()
     {
-        if (inputActions.Player.Jump.triggered && isGrounded)
+        if (jumpAction != null && jumpAction.WasPressedThisFrame() && isGrounded)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -187,7 +197,7 @@ public class Moving : MonoBehaviour
 
     void HandleCrouch()
     {
-        if (inputActions.Player.Crouch.ReadValue<float>() > 0.5f)
+        if (crouchAction != null && crouchAction.ReadValue<float>() > 0f)
             transform.localScale = crouchScale;
         else
             transform.localScale = new Vector3(1, originalHeight, 1);
@@ -195,7 +205,7 @@ public class Moving : MonoBehaviour
 
     void HandleShooting()
     {
-        if (inputActions.Player.Shoot.triggered)
+        if (shootAction != null && shootAction.WasPressedThisFrame())
             Shoot();
     }
 
@@ -206,13 +216,15 @@ public class Moving : MonoBehaviour
             GameObject bullet = Instantiate(bulletPrefab, shootingPoint.position, shootingPoint.rotation);
             Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
             if (bulletRb != null)
+            {
                 bulletRb.velocity = shootingPoint.forward * bulletSpeed;
+            }
         }
     }
 
     void HandleStamina()
     {
-        bool sprintHeld = inputActions.Player.Sprint.ReadValue<float>() > 0.5f;
+        bool sprintHeld = sprintAction != null && sprintAction.ReadValue<float>() > 0f;
         bool isMoving = movementInput.magnitude > 0.1f;
 
         if (sprintHeld && isMoving && currentStamina > 0)
@@ -232,6 +244,12 @@ public class Moving : MonoBehaviour
 
     void HandleCameraPosition()
     {
+        if (thirdPersonCamera == null)
+        {
+            Debug.LogWarning("Brak kamery w thirdPersonCamera, pomijam HandleCameraPosition.");
+            return;
+        }
+
         Vector3 pivot = transform.position + Vector3.up * 1.5f;
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
         Vector3 desiredOffset = rotation * cameraOffset;
@@ -288,5 +306,18 @@ public class Moving : MonoBehaviour
     void OnCollisionExit(Collision collision)
     {
         isGrounded = false;
+    }
+
+    public void SetCamera(Camera camera)
+    {
+        if (camera != null)
+        {
+            thirdPersonCamera = camera;
+            Debug.Log("Kamera przypisana do Moving.cs: " + camera.name);
+        }
+        else
+        {
+            Debug.LogError("PrÛba przypisania null jako kamery w SetCamera!");
+        }
     }
 }
