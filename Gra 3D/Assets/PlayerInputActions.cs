@@ -125,6 +125,33 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire Torch Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""febf63e8-d2b8-4eaa-9b6b-faeb41181f5a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Speed Hour"",
+                    ""type"": ""Button"",
+                    ""id"": ""1f67caff-29d1-437c-bd73-3ff061d43aad"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Slow Hour"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e1a36e0-8f54-4966-9aa1-7e801edc61fd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -248,6 +275,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Pistol"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""31fc02a0-4612-49a9-b993-5aa6af18a03b"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire Torch Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13b9df74-a14d-4720-a7f1-54e6969feb85"",
+                    ""path"": ""<Keyboard>/numpadPlus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Speed Hour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb20abcf-ba46-4c03-809e-f2142f34d883"",
+                    ""path"": ""<Keyboard>/minus"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Slow Hour"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -267,6 +327,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MovingDown = m_Player.FindAction("Moving Down", throwIfNotFound: true);
         m_Player_FireTorch = m_Player.FindAction("Fire Torch", throwIfNotFound: true);
         m_Player_Pistol = m_Player.FindAction("Pistol", throwIfNotFound: true);
+        m_Player_FireTorchAttack = m_Player.FindAction("Fire Torch Attack", throwIfNotFound: true);
+        m_Player_SpeedHour = m_Player.FindAction("Speed Hour", throwIfNotFound: true);
+        m_Player_SlowHour = m_Player.FindAction("Slow Hour", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -344,6 +407,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MovingDown;
     private readonly InputAction m_Player_FireTorch;
     private readonly InputAction m_Player_Pistol;
+    private readonly InputAction m_Player_FireTorchAttack;
+    private readonly InputAction m_Player_SpeedHour;
+    private readonly InputAction m_Player_SlowHour;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -359,6 +425,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MovingDown => m_Wrapper.m_Player_MovingDown;
         public InputAction @FireTorch => m_Wrapper.m_Player_FireTorch;
         public InputAction @Pistol => m_Wrapper.m_Player_Pistol;
+        public InputAction @FireTorchAttack => m_Wrapper.m_Player_FireTorchAttack;
+        public InputAction @SpeedHour => m_Wrapper.m_Player_SpeedHour;
+        public InputAction @SlowHour => m_Wrapper.m_Player_SlowHour;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -401,6 +470,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pistol.started += instance.OnPistol;
             @Pistol.performed += instance.OnPistol;
             @Pistol.canceled += instance.OnPistol;
+            @FireTorchAttack.started += instance.OnFireTorchAttack;
+            @FireTorchAttack.performed += instance.OnFireTorchAttack;
+            @FireTorchAttack.canceled += instance.OnFireTorchAttack;
+            @SpeedHour.started += instance.OnSpeedHour;
+            @SpeedHour.performed += instance.OnSpeedHour;
+            @SpeedHour.canceled += instance.OnSpeedHour;
+            @SlowHour.started += instance.OnSlowHour;
+            @SlowHour.performed += instance.OnSlowHour;
+            @SlowHour.canceled += instance.OnSlowHour;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -438,6 +516,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pistol.started -= instance.OnPistol;
             @Pistol.performed -= instance.OnPistol;
             @Pistol.canceled -= instance.OnPistol;
+            @FireTorchAttack.started -= instance.OnFireTorchAttack;
+            @FireTorchAttack.performed -= instance.OnFireTorchAttack;
+            @FireTorchAttack.canceled -= instance.OnFireTorchAttack;
+            @SpeedHour.started -= instance.OnSpeedHour;
+            @SpeedHour.performed -= instance.OnSpeedHour;
+            @SpeedHour.canceled -= instance.OnSpeedHour;
+            @SlowHour.started -= instance.OnSlowHour;
+            @SlowHour.performed -= instance.OnSlowHour;
+            @SlowHour.canceled -= instance.OnSlowHour;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -468,5 +555,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovingDown(InputAction.CallbackContext context);
         void OnFireTorch(InputAction.CallbackContext context);
         void OnPistol(InputAction.CallbackContext context);
+        void OnFireTorchAttack(InputAction.CallbackContext context);
+        void OnSpeedHour(InputAction.CallbackContext context);
+        void OnSlowHour(InputAction.CallbackContext context);
     }
 }

@@ -103,6 +103,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Fire Torch Attack",
+                    "type": "Button",
+                    "id": "febf63e8-d2b8-4eaa-9b6b-faeb41181f5a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Speed Hour",
+                    "type": "Button",
+                    "id": "1f67caff-29d1-437c-bd73-3ff061d43aad",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Slow Hour",
+                    "type": "Button",
+                    "id": "0e1a36e0-8f54-4966-9aa1-7e801edc61fd",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -224,6 +251,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pistol",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "31fc02a0-4612-49a9-b993-5aa6af18a03b",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire Torch Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13b9df74-a14d-4720-a7f1-54e6969feb85",
+                    "path": "<Keyboard>/numpadPlus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Speed Hour",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eb20abcf-ba46-4c03-809e-f2142f34d883",
+                    "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slow Hour",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

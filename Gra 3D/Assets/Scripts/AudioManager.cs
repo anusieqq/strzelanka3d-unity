@@ -56,12 +56,12 @@ public class AudioManager : MonoBehaviour
     {
         if (uiOpcje == null)
         {
-            uiOpcje = GameObject.Find("Opcje"); 
+            uiOpcje = GameObject.Find("Opcje");
             if (uiOpcje != null)
             {
                 uiOpcje.transform.SetParent(null);
                 DontDestroyOnLoad(uiOpcje);
-                uiOpcje.SetActive(false); 
+                uiOpcje.SetActive(false);
             }
         }
     }

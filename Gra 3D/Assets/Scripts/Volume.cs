@@ -12,14 +12,14 @@ public class Volume : MonoBehaviour
 
     private void Awake()
     {
-       
+
         float savedVolume = PlayerPrefs.GetFloat("ShootVolume", 1f);
         shootslider.value = savedVolume;
 
-       
+
         mixer.SetFloat(MIXER_Shoot, Mathf.Log10(Mathf.Clamp(savedVolume, 0.0001f, 1f)) * 20);
 
-     
+
         shootslider.onValueChanged.AddListener(SetShootVolume);
     }
 
@@ -30,8 +30,8 @@ public class Volume : MonoBehaviour
         mixer.SetFloat(MIXER_Shoot, Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20);
     }
 
-  
 
-    
+
+
 
 }

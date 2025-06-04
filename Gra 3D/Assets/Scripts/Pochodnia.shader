@@ -98,7 +98,6 @@ Shader "Custom/TorchEffect"
 
                 col.rgb = clamp(col.rgb, 0.0, 1.0);
 
-                // Zachowanie przezroczystoœci z tekstury (wa¿ne!)
                 col.a *= texColor.a;
 
                 return col;

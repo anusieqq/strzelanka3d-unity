@@ -28,6 +28,12 @@ TagManager:
   - "\u015Acie\u017Cka2"
   - "\u015Acie\u017Cka3"
   - "\u015Acie\u017Cka"
+  - StartPoint
+  - Door
+  - Boss
+  - Pendrive
+  - Klatka
+  - Demon
   layers:
   - Default
   - TransparentFX

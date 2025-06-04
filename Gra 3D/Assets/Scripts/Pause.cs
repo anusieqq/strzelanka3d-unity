@@ -20,6 +20,7 @@ public class Pause : MonoBehaviour
     private bool isPaused = false;
     private bool isLoading = false;
     private static Dictionary<string, Enemy> allEnemies = new Dictionary<string, Enemy>();
+    private MenuAudioManager audioManager;
 
     public bool IsLoading() => isLoading;
 
@@ -420,6 +421,11 @@ public class Pause : MonoBehaviour
             Opcje.SetActive(true);
             PauseCanvas.SetActive(false);
             Debug.Log("Opened options panel.");
+
+            if (audioManager != null)
+            {
+                audioManager.PlayMenuMusic(); // Wznów muzykê menu w panelu opcji
+            }
         }
         else
         {

@@ -176,7 +176,7 @@ public class Interaction : MonoBehaviour
         PlayerPrefs.SetInt("PlayerHealth", 80); // Reset zdrowia
         PlayerPrefs.SetString("KilledEnemyIds", "{\"killedEnemyIds\":[]}"); // Reset listy zabitych wrogów
         PlayerPrefs.Save();
-        SceneManager.LoadScene("BUILDING");
+        SceneManager.LoadScene("Menu");
     }
 
     public void QuitGame()
