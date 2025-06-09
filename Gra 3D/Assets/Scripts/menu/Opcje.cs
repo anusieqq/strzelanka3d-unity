@@ -36,13 +36,13 @@ public class Opcje : MonoBehaviour
             if (pauseScript != null)
             {
                 // Najpierw ukryj opcje
-                if (AudioManager.Instance != null && AudioManager.Instance.uiOpcje != null)
+                if (AudioManager.Instance != null && AudioManager.Instance.optionsPanel != null)
                 {
-                    AudioManager.Instance.uiOpcje.SetActive(false);
+                    AudioManager.Instance.optionsPanel.SetActive(false);
                 }
 
                 // Nastêpnie poka¿ menu pauzy
-                pauseScript.HideOptions(); // Ta metoda ju¿ zawiera odpowiedni¹ logikê pokazywania/poprawnego prze³¹czania
+                pauseScript.HideOptions(); 
             }
             else
             {

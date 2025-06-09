@@ -3,11 +3,12 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.IO;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
     [Header("Text Animation")]
-    public Text textComponent;
+    public TMP_Text textComponent;
     public string fullText;
     public ScrollRect scrollRect;
     private float typingSpeed = 0.005f;
@@ -27,20 +28,21 @@ public class Menu : MonoBehaviour
     public Canvas fabula;
     public Canvas opcjePanel;
 
-    private MenuAudioManager audioManager;
+    private AudioManager audioManager; // Zmieniono z MenuAudioManager na AudioManager
 
     private void Start()
     {
         InitializeUI();
         Pomiń.SetActive(false);
-        audioManager = FindObjectOfType<MenuAudioManager>();
+        audioManager = FindObjectOfType<AudioManager>();
         if (audioManager != null)
         {
             audioManager.PlayMenuMusic();
+            Debug.Log("Odtwarzanie muzyki menu w scenie Menu.");
         }
         else
         {
-            Debug.LogError("Nie znaleziono obiektu z komponentem MenuAudioManager!");
+            Debug.LogError("Nie znaleziono obiektu z komponentem AudioManager!");
         }
 
         // Dodaj PlayerStartPositioner, jeśli nie istnieje
@@ -75,6 +77,12 @@ public class Menu : MonoBehaviour
         PlayerPrefs.SetInt("ReserveAmmo", 90);
         PlayerPrefs.Save();
 
+        if (audioManager != null)
+        {
+            audioManager.StopMenuMusic();
+            Debug.Log("Zatrzymano muzykę menu przed załadowaniem sceny BUILDING.");
+        }
+
         PlayerStartPositioner positioner = FindObjectOfType<PlayerStartPositioner>();
         if (positioner != null)
         {
@@ -97,6 +105,7 @@ public class Menu : MonoBehaviour
             if (audioManager != null)
             {
                 audioManager.StopMenuMusic();
+                Debug.Log("Zatrzymano muzykę menu w StartGame.");
             }
             fabula.gameObject.SetActive(true);
             menu.gameObject.SetActive(false);
@@ -114,6 +123,12 @@ public class Menu : MonoBehaviour
 
     IEnumerator LoadGameAndScene()
     {
+        if (audioManager != null)
+        {
+            audioManager.StopMenuMusic();
+            Debug.Log("Zatrzymano muzykę menu przed załadowaniem zapisu gry.");
+        }
+
         string path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "savegame.json");
         if (!File.Exists(path))
         {
@@ -246,6 +261,11 @@ public class Menu : MonoBehaviour
 
     public void ExitGame()
     {
+        if (audioManager != null)
+        {
+            audioManager.StopMenuMusic();
+            Debug.Log("Zatrzymano muzykę menu przed wyjściem z gry.");
+        }
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -259,6 +279,7 @@ public class Menu : MonoBehaviour
         if (audioManager != null)
         {
             audioManager.PlayMenuMusic();
+            Debug.Log("Odtwarzanie muzyki menu w panelu opcji.");
         }
     }
 
@@ -269,6 +290,7 @@ public class Menu : MonoBehaviour
         if (audioManager != null)
         {
             audioManager.PlayMenuMusic();
+            Debug.Log("Odtwarzanie muzyki menu po powrocie do menu.");
         }
     }
 

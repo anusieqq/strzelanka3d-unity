@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,25 +9,23 @@ public class Pendrive : MonoBehaviour
     public Button startButton;
     public Button YesButton;
     public Button NoButton;
-    public Button serverButton; 
     public Slider uploadSlider;
     public GameObject gameOverCanvas;
-    public TMP_Text messageText; 
+    public TMP_Text messageText;
 
     private bool isUploading = false;
     private bool ispendrive = false;
-    private bool isServerRunning = false; 
 
     void Start()
     {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         if (uploadSlider != null)
         {
             uploadSlider.gameObject.SetActive(false);
             uploadSlider.value = 0;
-        }
-        else
-        {
-            Debug.LogError("UploadSlider nie jest przypisany!");
         }
 
         if (startButton != null)
@@ -35,58 +33,28 @@ public class Pendrive : MonoBehaviour
             startButton.gameObject.SetActive(false);
             startButton.onClick.AddListener(StartUpload);
         }
-        else
-        {
-            Debug.LogError("StartButton nie jest przypisany!");
-        }
-
-        if (serverButton != null)
-        {
-            serverButton.gameObject.SetActive(false);
-            serverButton.onClick.AddListener(StartServer);
-        }
-        else
-        {
-            Debug.LogError("ServerButton nie jest przypisany!");
-        }
 
         if (gameOverCanvas != null)
         {
             gameOverCanvas.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("GameOverCanvas nie jest przypisany!");
         }
 
         if (YesButton != null)
         {
             YesButton.onClick.AddListener(LoadMenu);
         }
-        else
-        {
-            Debug.LogError("YesButton nie jest przypisany!");
-        }
 
         if (NoButton != null)
         {
             NoButton.onClick.AddListener(ExitGame);
-        }
-        else
-        {
-            Debug.LogError("NoButton nie jest przypisany!");
         }
 
         if (messageText != null)
         {
             messageText.gameObject.SetActive(false);
         }
-        else
-        {
-            Debug.LogError("MessageText nie jest przypisany!");
-        }
 
-        Debug.Log("Pendrive Start: ispendrive = " + ispendrive + ", isServerRunning = " + isServerRunning);
+        Debug.Log("Pendrive Start: ispendrive = " + ispendrive);
     }
 
     void OnTriggerEnter(Collider other)
@@ -95,50 +63,24 @@ public class Pendrive : MonoBehaviour
         {
             if (ispendrive)
             {
-                if (isServerRunning)
+                if (ServerManager.Instance != null && ServerManager.Instance.IsServerRunning)
                 {
-                    if (startButton != null)
-                    {
-                        startButton.gameObject.SetActive(true);
-                        Debug.Log("Wykryto kolizjÍ z graczem, pendrive zebrany, serwer uruchomiony, pokazano startButton.");
-                        Cursor.visible = true;
-                        Cursor.lockState = CursorLockMode.None;
-                    }
-                    if (messageText != null)
-                    {
-                        messageText.gameObject.SetActive(false); 
-                    }
+                    startButton?.gameObject.SetActive(true);
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
+                    messageText?.gameObject.SetActive(false);
                 }
                 else
                 {
-                    if (serverButton != null)
-                    {
-                        serverButton.gameObject.SetActive(true);
-                        Debug.Log("Wykryto kolizjÍ z graczem, pendrive zebrany, serwer nie uruchomiony, pokazano serverButton.");
-                        Cursor.visible = true;
-                        Cursor.lockState = CursorLockMode.None;
-                    }
-                    if (messageText != null)
-                    {
-                        messageText.text = "Uruchom serwer!";
-                        messageText.gameObject.SetActive(true);
-                        Debug.Log("Pokazano komunikat: Uruchom serwer!");
-                    }
+                    messageText.text = "Uruchom serwer!";
+                    messageText.gameObject.SetActive(true);
                 }
             }
             else
             {
-                if (messageText != null)
-                {
-                    messageText.text = "Zdobπdü pendrive'a!";
-                    messageText.gameObject.SetActive(true);
-                    Debug.Log("Wykryto kolizjÍ z graczem, brak pendrive'a, pokazano komunikat.");
-                }
+                messageText.text = "ZdobƒÖd≈∫ pendrive'a!";
+                messageText.gameObject.SetActive(true);
             }
-        }
-        else
-        {
-            Debug.LogWarning("Warunki nie spe≥nione: isUploading = " + isUploading + ", ispendrive = " + ispendrive + ", isServerRunning = " + isServerRunning);
         }
     }
 
@@ -146,79 +88,23 @@ public class Pendrive : MonoBehaviour
     {
         if (other.CompareTag("player") && !isUploading)
         {
-            if (startButton != null)
-            {
-                startButton.gameObject.SetActive(false);
-                Debug.Log("Gracz opuúci≥ UploadPoint, ukryto startButton.");
-            }
-            if (serverButton != null)
-            {
-                serverButton.gameObject.SetActive(false);
-                Debug.Log("Gracz opuúci≥ UploadPoint, ukryto serverButton.");
-            }
-            if (messageText != null)
-            {
-                messageText.gameObject.SetActive(false);
-                Debug.Log("Gracz opuúci≥ UploadPoint, ukryto komunikat.");
-            }
-        }
-    }
-
-    public void StartServer()
-    {
-        if (!ispendrive)
-        {
-            Debug.LogWarning("Nie moøesz uruchomiÊ serwera bez pendrive'a!");
-            return;
-        }
-
-        isServerRunning = true;
-        if (serverButton != null)
-        {
-            serverButton.gameObject.SetActive(false);
-            Debug.Log("Serwer uruchomiony, ukryto serverButton.");
-        }
-        if (startButton != null)
-        {
-            startButton.gameObject.SetActive(true);
-            Debug.Log("Pokazano startButton po uruchomieniu serwera.");
-        }
-        if (messageText != null)
-        {
-            messageText.gameObject.SetActive(false);
-            Debug.Log("Ukryto komunikat po uruchomieniu serwera.");
+            startButton?.gameObject.SetActive(false);
+            messageText?.gameObject.SetActive(false);
         }
     }
 
     public void StartUpload()
     {
-        if (!ispendrive)
+        if (!ispendrive || ServerManager.Instance == null || !ServerManager.Instance.IsServerRunning)
         {
-            Debug.LogWarning("Nie masz pendrive'a! Wgrywanie zablokowane.");
-            return;
-        }
-        if (!isServerRunning)
-        {
-            Debug.LogWarning("Serwer nie jest uruchomiony! Wgrywanie zablokowane.");
+            Debug.LogWarning("Nie mo≈ºna wgraƒá ‚Äì brak pendrive'a lub serwera.");
             return;
         }
 
         isUploading = true;
-
-        if (startButton != null)
-        {
-            startButton.gameObject.SetActive(false);
-        }
-        if (uploadSlider != null)
-        {
-            uploadSlider.gameObject.SetActive(true);
-            uploadSlider.value = 0;
-        }
-        if (messageText != null)
-        {
-            messageText.gameObject.SetActive(false); 
-        }
-
+        startButton?.gameObject.SetActive(false);
+        uploadSlider?.gameObject.SetActive(true);
+        messageText?.gameObject.SetActive(false);
         StartCoroutine(UploadProgress());
     }
 
@@ -231,38 +117,71 @@ public class Pendrive : MonoBehaviour
         {
             time += Time.deltaTime;
             if (uploadSlider != null)
-            {
                 uploadSlider.value = Mathf.Lerp(0f, 1f, time / duration);
-            }
             yield return null;
         }
 
-        if (uploadSlider != null)
-        {
-            uploadSlider.value = 1f;
-        }
-        Debug.Log("Wgrywanie zakoÒczone!");
+        uploadSlider.value = 1f;
+        Debug.Log("Wgrywanie zako≈Ñczone!");
+
+        PlayerPrefs.SetInt("ResetGame", 1);
+        PlayerPrefs.Save();
+        Debug.Log("Flaga ResetGame ustawiona na true w Pendrive.cs");
 
         yield return new WaitForSeconds(1f);
 
         if (gameOverCanvas != null)
         {
+            Time.timeScale = 0f;
             gameOverCanvas.SetActive(true);
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
-            Debug.Log("GameOverCanvas aktywowany!");
         }
     }
 
     public void LoadMenu()
     {
-        Debug.Log("£adowanie sceny Menu...");
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.StopMusic();
+            Destroy(AudioManager.Instance.gameObject);
+            Debug.Log("AudioManager destroyed for reset.");
+        }
+
+        if (Pause.Instance != null)
+        {
+            Destroy(Pause.Instance.gameObject);
+            Debug.Log("Pause destroyed for reset.");
+        }
+
+        if (PlayerController.Instance != null)
+        {
+            Destroy(PlayerController.Instance.gameObject);
+            Debug.Log("PlayerController destroyed for reset.");
+        }
+
+        if (Day.Instance != null)
+        {
+            Day.Instance.ResetTime(); // Resetuj czas przed zniszczeniem
+            Destroy(Day.Instance.gameObject);
+            Debug.Log("Day destroyed for reset.");
+        }
+
+        Time.timeScale = 1f;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+        Debug.Log("PlayerPrefs cleared for reset.");
+
+        Debug.Log("≈Åadowanie sceny Menu...");
         SceneManager.LoadScene("Menu");
     }
 
     public void ExitGame()
     {
-        Debug.Log("Wyjúcie z gry...");
+        Debug.Log("Wyj≈õcie z gry...");
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -272,6 +191,6 @@ public class Pendrive : MonoBehaviour
     public void SetPendriveCollected()
     {
         ispendrive = true;
-        Debug.Log("Pendrive zebrany - moøna wgrywaÊ pliki. ispendrive = " + ispendrive);
+        Debug.Log("Pendrive zebrany - mo≈ºna wgrywaƒá pliki. ispendrive = " + ispendrive);
     }
 }

@@ -6,10 +6,21 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
+    [Header("Audio Mixer")]
     public AudioMixer audioMixer;
-    public GameObject uiOpcje;
 
+    [Header("Music")]
+    public AudioClip menuMusic;
+    public AudioClip BuildingMusic;
+    public AudioClip ForestMusic;
+    public AudioClip UfoMusic;
+
+    [Header("UI")]
+    public GameObject optionsPanel;
+
+    private AudioSource musicSource;
     private const string MIXER_Shoot = "ShootVolume";
+    private string lastSceneMusic; // Œledzi ostatni¹ odtwarzan¹ muzykê dla danej sceny
 
     private void Awake()
     {
@@ -17,17 +28,20 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            InitializeVolumeSettings();
 
-            if (uiOpcje != null)
-            {
-                DontDestroyOnLoad(uiOpcje);
-            }
+            // Inicjalizacja Ÿród³a muzyki
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.loop = true;
+
+            InitializeVolumeSettings();
+            HandleOptionsPanel();
 
             SceneManager.sceneLoaded += OnSceneLoaded;
+            Debug.Log("AudioManager utworzony jako singleton.");
         }
         else
         {
+            Debug.LogWarning("Próba utworzenia kolejnej instancji AudioManager. Niszczenie duplikatu.");
             Destroy(gameObject);
         }
     }
@@ -38,6 +52,163 @@ public class AudioManager : MonoBehaviour
         {
             PlayerPrefs.SetFloat(MIXER_Shoot, 1f);
             PlayerPrefs.Save();
+        }
+
+        // Przywróæ ustawienia g³oœnoœci
+        SetShootVolume(PlayerPrefs.GetFloat(MIXER_Shoot, 1f));
+    }
+
+    private void HandleOptionsPanel()
+    {
+        if (optionsPanel != null)
+        {
+            DontDestroyOnLoad(optionsPanel);
+            optionsPanel.SetActive(false);
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Zatrzymaj aktualn¹ muzykê
+        StopMusic();
+
+        // Odtwarzaj muzykê na podstawie sceny
+        switch (scene.name)
+        {
+            case "Menu":
+                PlayMusic(menuMusic);
+                lastSceneMusic = "Menu";
+                Debug.Log("Odtwarzanie muzyki menu w scenie Menu.");
+                break;
+            case "BUILDING":
+                PlayMusic(BuildingMusic);
+                lastSceneMusic = "BUILDING";
+                Debug.Log("Odtwarzanie muzyki gry w scenie BUILDING.");
+                break;
+            case "FOREST":
+                PlayMusic(ForestMusic);
+                lastSceneMusic = "FOREST";
+                Debug.Log("Odtwarzanie muzyki gry w scenie FOREST.");
+                break;
+            case "UFO":
+                PlayMusic(UfoMusic);
+                lastSceneMusic = "UFO";
+                Debug.Log("Odtwarzanie muzyki gry w scenie UFO.");
+                break;
+            default:
+                lastSceneMusic = null;
+                Debug.Log("Brak przypisanej muzyki dla sceny: " + scene.name);
+                break;
+        }
+
+        // Obs³uga panelu opcji
+        if (optionsPanel == null)
+        {
+            optionsPanel = GameObject.Find("Opcje");
+            if (optionsPanel != null)
+            {
+                optionsPanel.transform.SetParent(null);
+                DontDestroyOnLoad(optionsPanel);
+                optionsPanel.SetActive(false);
+                Debug.Log("Znaleziono panel opcji i ustawiono na DontDestroyOnLoad.");
+            }
+            else
+            {
+                Debug.LogWarning("Nie znaleziono panelu opcji w scenie: " + scene.name);
+            }
+        }
+    }
+
+    public void PlayMusic(AudioClip clip)
+    {
+        if (musicSource == null || clip == null)
+        {
+            Debug.LogWarning("PlayMusic: musicSource lub clip jest null!");
+            return;
+        }
+
+        if (musicSource.clip != clip || !musicSource.isPlaying)
+        {
+            musicSource.clip = clip;
+            musicSource.Play();
+            Debug.Log("Odtwarzanie muzyki: " + clip.name);
+        }
+    }
+
+    public void StopMusic()
+    {
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+            musicSource.clip = null;
+            Debug.Log("Muzyka zatrzymana.");
+        }
+    }
+
+    public void PlayMenuMusic()
+    {
+        PlayMusic(menuMusic);
+        Debug.Log("Odtwarzanie muzyki menu.");
+    }
+
+    public void StopMenuMusic()
+    {
+        if (musicSource != null && musicSource.clip == menuMusic && musicSource.isPlaying)
+        {
+            StopMusic();
+            Debug.Log("Zatrzymano muzykê menu.");
+        }
+    }
+
+    public void PlayGameMusic()
+    {
+        // Odtwarzaj muzykê zale¿n¹ od aktualnej sceny
+        string currentScene = SceneManager.GetActiveScene().name;
+        switch (currentScene)
+        {
+            case "BUILDING":
+                PlayMusic(BuildingMusic);
+                Debug.Log("Odtwarzanie muzyki gry BUILDING.");
+                break;
+            case "FOREST":
+                PlayMusic(ForestMusic);
+                Debug.Log("Odtwarzanie muzyki gry FOREST.");
+                break;
+            case "UFO":
+                PlayMusic(UfoMusic);
+                Debug.Log("Odtwarzanie muzyki gry UFO.");
+                break;
+            default:
+                Debug.LogWarning("Brak muzyki gry dla sceny: " + currentScene);
+                break;
+        }
+    }
+
+    public void RestoreSceneMusic()
+    {
+        // Przywraca muzykê odpowiedni¹ dla aktualnej sceny
+        string currentScene = SceneManager.GetActiveScene().name;
+        switch (currentScene)
+        {
+            case "Menu":
+                PlayMenuMusic();
+                break;
+            case "BUILDING":
+                PlayMusic(BuildingMusic);
+                Debug.Log("Przywrócono muzykê BUILDING.");
+                break;
+            case "FOREST":
+                PlayMusic(ForestMusic);
+                Debug.Log("Przywrócono muzykê FOREST.");
+                break;
+            case "UFO":
+                PlayMusic(UfoMusic);
+                Debug.Log("Przywrócono muzykê UFO.");
+                break;
+            default:
+                StopMusic();
+                Debug.Log("Brak muzyki do przywrócenia dla sceny: " + currentScene);
+                break;
         }
     }
 
@@ -52,17 +223,44 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void ToggleOptionsMenu()
     {
-        if (uiOpcje == null)
+        if (optionsPanel != null)
         {
-            uiOpcje = GameObject.Find("Opcje");
-            if (uiOpcje != null)
+            bool wasActive = optionsPanel.activeSelf;
+            optionsPanel.SetActive(!wasActive);
+
+            if (optionsPanel.activeSelf)
             {
-                uiOpcje.transform.SetParent(null);
-                DontDestroyOnLoad(uiOpcje);
-                uiOpcje.SetActive(false);
+                PlayMenuMusic(); // Odtwarzaj muzykê menu w panelu opcji
             }
+            else
+            {
+                RestoreSceneMusic(); // Przywróæ muzykê sceny po zamkniêciu opcji
+            }
+
+            // Pauzuj grê, gdy panel opcji jest aktywny (tylko w scenach gry)
+            if (SceneManager.GetActiveScene().name != "Menu")
+            {
+                Time.timeScale = optionsPanel.activeSelf ? 0f : 1f;
+                Cursor.visible = optionsPanel.activeSelf;
+                Cursor.lockState = optionsPanel.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+            }
+            Debug.Log("Prze³¹czono panel opcji: " + (optionsPanel.activeSelf ? "Aktywny" : "Nieaktywny"));
         }
+        else
+        {
+            Debug.LogWarning("optionsPanel jest null w ToggleOptionsMenu!");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (optionsPanel != null)
+        {
+            Destroy(optionsPanel);
+            Debug.Log("Zniszczono panel opcji.");
+        }
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }

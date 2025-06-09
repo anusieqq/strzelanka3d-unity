@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -26,10 +26,10 @@ public class PanelCollision : MonoBehaviour
     // Kolory dla kolejnych pozycji kursora
     private readonly Color[] koloryKursora = new Color[]
     {
-        Color.blue,      
-        Color.green,     
-        Color.red,       
-        new Color(0.5f, 0f, 0.5f) 
+        Color.blue,
+        Color.green,
+        Color.red,
+        new Color(0.5f, 0f, 0.5f)
     };
 
     private readonly Dictionary<char, Color> koloryCyfr = new Dictionary<char, Color>()
@@ -44,12 +44,12 @@ public class PanelCollision : MonoBehaviour
     {
         if (inputFieldPanel != null)
             inputFieldPanel.SetActive(false);
-            displayText.gameObject.SetActive(false);
+        displayText.gameObject.SetActive(false);
 
         if (inputField != null)
         {
             inputField.onValueChanged.AddListener(OnInputChanged);
-            inputField.customCaretColor = true; 
+            inputField.customCaretColor = true;
         }
 
         if (loadForestScript != null)
@@ -68,7 +68,7 @@ public class PanelCollision : MonoBehaviour
             }
             else
             {
-                inputField.caretColor = Color.white; // Domyœlny kolor poza zakresem
+                inputField.caretColor = Color.white; // DomyÅ“lny kolor poza zakresem
             }
         }
     }
@@ -84,14 +84,14 @@ public class PanelCollision : MonoBehaviour
             if (sprawdzajZagadki)
             {
                 GameObject[] rozwiazaneZagadki = GameObject.FindGameObjectsWithTag("Finish");
-                Debug.Log($"Znaleziono {rozwiazaneZagadki.Length}/4 rozwi¹zanych zagadek");
+                Debug.Log($"Znaleziono {rozwiazaneZagadki.Length}/4 rozwiÂ¹zanych zagadek");
 
                 if (rozwiazaneZagadki.Length < 4)
                 {
                     if (displayText != null)
                     {
                         displayText.gameObject.SetActive(true);
-                        displayText.text = "<b><color=red>Rozwi¹¿ wszystkie zagadki, aby kontynuowaæ!</color></b>";
+                        displayText.text = "<b><color=red>RozwiÂ¹Â¿ wszystkie zagadki, aby kontynuowaÃ¦!</color></b>";
                     }
 
                     if (inputFieldPanel != null)
@@ -103,14 +103,14 @@ public class PanelCollision : MonoBehaviour
                 }
             }
 
-            // Sprawdzenie przeciwników
+            // Sprawdzenie przeciwnikÃ³w
             GameObject[] przeciwnicy = GameObject.FindGameObjectsWithTag("Enemy");
             if (przeciwnicy.Length > 0)
             {
                 if (displayText != null)
                 {
                     displayText.gameObject.SetActive(true);
-                    displayText.text = "<b><color=red>Zabij wszystkich przeciwników, aby kontynuowaæ!</color></b>";
+                    displayText.text = "<b><color=red>Zabij wszystkich przeciwnikÃ³w, aby kontynuowaÃ¦!</color></b>";
                 }
 
                 if (inputFieldPanel != null)
@@ -121,7 +121,7 @@ public class PanelCollision : MonoBehaviour
                 return;
             }
 
-            // Wszystkie warunki spe³nione
+            // Wszystkie warunki speÂ³nione
             if (inputFieldPanel != null)
             {
                 inputFieldPanel.SetActive(true);
@@ -149,7 +149,7 @@ public class PanelCollision : MonoBehaviour
     {
         if (other.CompareTag("player") || (other.CompareTag("pistol")))
         {
-            Debug.Log("Gracz opuœci³ strefê triggera");
+            Debug.Log("Gracz opuÅ“ciÂ³ strefÃª triggera");
 
             if (inputFieldPanel != null)
             {
@@ -164,7 +164,7 @@ public class PanelCollision : MonoBehaviour
 
             if (displayText != null)
             {
-                displayText.gameObject.SetActive(false); 
+                displayText.gameObject.SetActive(false);
             }
         }
     }
@@ -192,8 +192,8 @@ public class PanelCollision : MonoBehaviour
                 displayText.text = "<b><color=red>Wpisuj tylko cyfry!</color></b>";
             }
 
-            // Wyczyœæ pole i pozwól u¿ytkownikowi wpisaæ ponownie
-            inputField.text = rawText; // Przywróæ poprzedni poprawny stan
+            // WyczyÅ“Ã¦ pole i pozwÃ³l uÂ¿ytkownikowi wpisaÃ¦ ponownie
+            inputField.text = rawText; // PrzywrÃ³Ã¦ poprzedni poprawny stan
             inputField.ActivateInputField();
             UpdateCaretColor();
             return;
@@ -214,10 +214,10 @@ public class PanelCollision : MonoBehaviour
                 Debug.Log("Niepoprawny kod!");
                 if (displayText != null)
                 {
-                    displayText.text = "<b><color=red>Niepoprawny kod, spróbuj ponownie.</color></b>";
+                    displayText.text = "<b><color=red>Niepoprawny kod, sprÃ³buj ponownie.</color></b>";
                 }
 
-                // Wyczyœæ pole i pozwól u¿ytkownikowi wpisaæ ponownie
+                // WyczyÅ“Ã¦ pole i pozwÃ³l uÂ¿ytkownikowi wpisaÃ¦ ponownie
                 inputField.text = "";
                 rawText = "";
                 inputField.ActivateInputField();

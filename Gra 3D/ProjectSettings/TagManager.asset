@@ -34,6 +34,7 @@ TagManager:
   - Pendrive
   - Klatka
   - Demon
+  - GameOver
   layers:
   - Default
   - TransparentFX

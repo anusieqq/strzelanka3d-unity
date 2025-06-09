@@ -2,224 +2,349 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
-public class Interaction : MonoBehaviour
+[System.Serializable]
+public class UIReferences
 {
-    public Gun gunScript;
-
-    private int playerHealth = 80;
-
     public Text ammoText;
     public Text enemyCountText;
     public Slider healthSlider;
     public Slider shieldSlider;
+    public Canvas gameOverCanvas;
     public GameObject gameOverPanel;
-    public GameObject Jeszczerazbutton;
-    public GameObject Wyjdźbutton;
-    public Text Przegrałeś;
+    public Button retryButton;
+    public Button quitButton;
+    public TextMeshProUGUI gameOverText;
+}
 
+public class Interaction : MonoBehaviour
+{
+    public static Interaction Instance { get; private set; }
+
+    [Header("Konfiguracja")]
+    public Gun gunScript;
+    public UIReferences ui;
     public AudioClip bonusSound;
+    [SerializeField] private float shieldDepletionRate = 5f; // Ilość punktów tarczy traconej na sekundę
+
+    public int playerHealth = 100;
+    private bool isInitialized = false;
     private AudioSource audioSource;
+    private Coroutine shieldDepletionCoroutine; // Do zarządzania ubywaniem tarczy
 
-    void OnEnable()
+    #region Cykl życia Unity
+
+    private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            InitializePersistentUI();
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         audioSource = GetComponent<AudioSource>();
-        playerHealth = PlayerPrefs.GetInt("PlayerHealth", 80); // Wczytaj zdrowie z PlayerPrefs
-        UpdateHealthSlider();
+        playerHealth = PlayerPrefs.GetInt("PlayerHealth", 80);
     }
 
-    void Start()
+    private void OnEnable()
     {
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
-
-        healthSlider.maxValue = 100;
-        healthSlider.minValue = 0;
-        healthSlider.wholeNumbers = true;
-
-        shieldSlider.maxValue = 100;
-        shieldSlider.minValue = 0;
-        shieldSlider.wholeNumbers = true;
-
-        playerHealth = Mathf.Clamp(playerHealth, 0, 100);
-        UpdateHealthSlider();
-
-        // Wczytaj amunicję i liczbę przeciwników
-        InitializeAmmoAndEnemyCount();
-        UpdateAmmoText();
-        UpdateEnemyCount();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Update()
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        if (!isInitialized)
+        {
+            InitializeGame();
+            isInitialized = true;
+        }
+    }
+
+    private void Update()
     {
         UpdateEnemyCount();
     }
 
-    void InitializeAmmoAndEnemyCount()
+    #endregion
+
+    #region Inicjalizacja
+
+    private void InitializePersistentUI()
     {
-        // Wczytaj amunicję z PlayerPrefs
+        if (ui.gameOverCanvas != null)
+        {
+            DontDestroyOnLoad(ui.gameOverCanvas.gameObject);
+
+            if (ui.retryButton != null)
+                ui.retryButton.onClick.AddListener(RestartGame);
+
+            if (ui.quitButton != null)
+                ui.quitButton.onClick.AddListener(QuitGame);
+
+            if (ui.gameOverPanel != null)
+            {
+                ui.gameOverPanel.SetActive(false);
+                SetGameOverElementsActive(false);
+            }
+        }
+
+        var eventSystem = FindObjectOfType<UnityEngine.EventSystems.EventSystem>();
+        if (eventSystem != null)
+            DontDestroyOnLoad(eventSystem.gameObject);
+    }
+
+    private void InitializeGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        if (ui.healthSlider != null)
+        {
+            ui.healthSlider.maxValue = 100;
+            ui.healthSlider.minValue = 0;
+            ui.healthSlider.wholeNumbers = true;
+            ui.healthSlider.value = playerHealth;
+        }
+
+        if (ui.shieldSlider != null)
+        {
+            ui.shieldSlider.maxValue = 100;
+            ui.shieldSlider.minValue = 0;
+            ui.shieldSlider.wholeNumbers = true;
+        }
+
         if (gunScript != null)
         {
             int ammoCount = PlayerPrefs.GetInt("AmmoCount", 30);
             int reserveAmmo = PlayerPrefs.GetInt("ReserveAmmo", 90);
             gunScript.SetAmmo(ammoCount, reserveAmmo);
+            UpdateAmmoText();
         }
-        else
-        {
-            Debug.LogError("gunScript nie jest przypisany w skrypcie Interaction!");
-        }
-
-        // Liczba przeciwników jest aktualizowana w Pause.cs (AdjustEnemyCount),
-        // więc tutaj tylko aktualizujemy UI
-        int enemyCount = PlayerPrefs.GetInt("EnemyCount", 10);
-        enemyCountText.text = "Enemies: " + enemyCount.ToString();
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (collision.gameObject.CompareTag("heart"))
-        {
-            playerHealth += 10;
-            playerHealth = Mathf.Clamp(playerHealth, 0, 100);
-            UpdateHealthSlider();
-            PlayBonusSound();
-            Destroy(collision.gameObject);
-        }
-        else if (collision.gameObject.CompareTag("ammo"))
-        {
-            if (gunScript.reserveAmmo < gunScript.maxReserveAmmo)
-            {
-                int ammoToAdd = 5;
-                gunScript.reserveAmmo += ammoToAdd;
-                gunScript.reserveAmmo = Mathf.Clamp(gunScript.reserveAmmo, 0, gunScript.maxReserveAmmo);
-                UpdateAmmoText();
-                PlayBonusSound();
-                Destroy(collision.gameObject);
-            }
-        }
-        else if (collision.gameObject.CompareTag("shield"))
-        {
-            PlayerController pc = FindObjectOfType<PlayerController>();
-            if (pc != null)
-            {
-                pc.SetShield(100f, pc.maxShield);
-            }
-            PlayBonusSound();
-            Destroy(collision.gameObject);
-        }
+        UpdateSceneUIReferences();
     }
 
-    void UpdateAmmoText()
+    private void UpdateSceneUIReferences()
     {
-        if (gunScript != null)
-        {
-            ammoText.text = "Ammo: " + gunScript.ammoCount.ToString() + "/" + gunScript.reserveAmmo.ToString();
-        }
-        else
-        {
-            Debug.LogError("gunScript nie jest przypisany, nie można zaktualizować tekstu amunicji!");
-        }
+        if (ui.ammoText == null)
+            ui.ammoText = GameObject.Find("AmmoText")?.GetComponent<Text>();
+
+        if (ui.enemyCountText == null)
+            ui.enemyCountText = GameObject.Find("EnemyCountText")?.GetComponent<Text>();
+
+        if (ui.healthSlider == null)
+            ui.healthSlider = GameObject.Find("HealthSlider")?.GetComponent<Slider>();
+
+        if (ui.shieldSlider == null)
+            ui.shieldSlider = GameObject.Find("ShieldSlider")?.GetComponent<Slider>();
+
+        UpdateAmmoText();
+        UpdateEnemyCount();
+        UpdateHealthSlider();
     }
 
-    void UpdateHealthSlider()
-    {
-        healthSlider.value = playerHealth;
-    }
+    #endregion
+
+    #region Logika gry
 
     public void TakeDamage(int damage)
     {
-        PlayerController pc = FindObjectOfType<PlayerController>();
+        PlayerController pc = PlayerController.Instance;
 
         if (pc != null && pc.currentShield > 0)
         {
-            float remainingDamage = Mathf.Max(0f, damage - pc.currentShield);
+            // Odejmij obrażenia tylko od tarczy
             pc.currentShield = Mathf.Max(0f, pc.currentShield - damage);
-            shieldSlider.value = pc.currentShield;
 
-            if (remainingDamage > 0)
-            {
-                playerHealth -= (int)remainingDamage;
-                UpdateHealthSlider();
-            }
+            if (ui.shieldSlider != null)
+                ui.shieldSlider.value = pc.currentShield;
         }
         else
         {
+            // Jeśli nie ma tarczy, redukuj zdrowie
             playerHealth -= damage;
             UpdateHealthSlider();
         }
 
         playerHealth = Mathf.Clamp(playerHealth, 0, 100);
 
-        if (playerHealth <= 0 && gameOverPanel != null)
+        if (playerHealth <= 0)
         {
-            gameOverPanel.SetActive(true);
-            Jeszczerazbutton.SetActive(true);
-            Wyjdźbutton.SetActive(true);
-            Przegrałeś.gameObject.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Time.timeScale = 0;
+            ShowGameOverScreen();
         }
         else
         {
-            StartCoroutine(FlashDamagePanel());
+            StartCoroutine(FlashDamageIndicator());
         }
     }
 
+    private IEnumerator FlashDamageIndicator()
+    {
+        if (ui.gameOverPanel != null)
+        {
+            ui.gameOverPanel.SetActive(true);
+            SetGameOverElementsActive(false);
+            yield return new WaitForSeconds(0.3f);
+
+            if (playerHealth > 0)
+                ui.gameOverPanel.SetActive(false);
+        }
+    }
+
+    private void ShowGameOverScreen()
+    {
+        if (ui.gameOverPanel != null)
+        {
+            ui.gameOverPanel.SetActive(true);
+            SetGameOverElementsActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Time.timeScale = 0f;
+        }
+    }
+
+    private void SetGameOverElementsActive(bool active)
+    {
+        if (ui.retryButton != null)
+            ui.retryButton.gameObject.SetActive(active);
+
+        if (ui.quitButton != null)
+            ui.quitButton.gameObject.SetActive(active);
+
+        if (ui.gameOverText != null)
+            ui.gameOverText.gameObject.SetActive(active);
+    }
+
+    #endregion
+
+    #region Aktualizacje UI
+
+    private void UpdateAmmoText()
+    {
+        if (gunScript != null && ui.ammoText != null)
+        {
+            ui.ammoText.text = $"Amunicja: {gunScript.ammoCount}/{gunScript.reserveAmmo}";
+        }
+    }
+
+    private void UpdateEnemyCount()
+    {
+        if (ui.enemyCountText != null)
+        {
+            int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+            ui.enemyCountText.text = $"Wrogowie: {enemyCount}";
+        }
+    }
+
+    private void UpdateHealthSlider()
+    {
+        if (ui.healthSlider != null)
+        {
+            ui.healthSlider.value = playerHealth;
+        }
+    }
+
+    #endregion
+
+    #region Akcje przycisków
+
     public void RestartGame()
     {
-        Time.timeScale = 1;
+        Time.timeScale = 1f;
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("EnemyCount", 10); // Reset do domyślnej liczby przeciwników
-        PlayerPrefs.SetInt("AmmoCount", 30);  // Reset amunicji w magazynku
-        PlayerPrefs.SetInt("ReserveAmmo", 90); // Reset zapasowej amunicji
-        PlayerPrefs.SetInt("PlayerHealth", 80); // Reset zdrowia
-        PlayerPrefs.SetString("KilledEnemyIds", "{\"killedEnemyIds\":[]}"); // Reset listy zabitych wrogów
-        PlayerPrefs.Save();
+
+        foreach (var obj in FindObjectsOfType<GameObject>())
+        {
+            if (obj.scene.buildIndex == -1) // Obiekty DontDestroyOnLoad
+            {
+                Destroy(obj);
+            }
+        }
+
         SceneManager.LoadScene("Menu");
     }
 
     public void QuitGame()
     {
-        Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
 #endif
     }
 
-    IEnumerator FlashDamagePanel()
+    #endregion
+
+    #region Zbieranie przedmiotów
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (gameOverPanel != null)
+        if (collision.gameObject.CompareTag("heart"))
         {
-            gameOverPanel.SetActive(true);
-            Jeszczerazbutton.SetActive(false);
-            Wyjdźbutton.SetActive(false);
-            Przegrałeś.gameObject.SetActive(false);
+            playerHealth = Mathf.Clamp(playerHealth + 10, 0, 100);
+            UpdateHealthSlider();
+            PlaySound(bonusSound);
+            Destroy(collision.gameObject);
         }
-
-        yield return new WaitForSeconds(0.3f);
-
-        if (playerHealth > 0 && gameOverPanel != null)
+        else if (collision.gameObject.CompareTag("ammo") && gunScript != null)
         {
-            gameOverPanel.SetActive(false);
+            gunScript.reserveAmmo = Mathf.Clamp(gunScript.reserveAmmo + 5, 0, gunScript.maxReserveAmmo);
+            UpdateAmmoText();
+            PlaySound(bonusSound);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("shield"))
+        {
+            var pc = PlayerController.Instance;
+            if (pc != null)
+            {
+                pc.SetShield(100f, pc.maxShield);
+                if (ui.shieldSlider != null)
+                    ui.shieldSlider.value = pc.currentShield;
+                PlaySound(bonusSound);
+                Destroy(collision.gameObject);
+                // Uruchom korutynę do ubywania tarczy
+                if (shieldDepletionCoroutine != null)
+                    StopCoroutine(shieldDepletionCoroutine);
+                shieldDepletionCoroutine = StartCoroutine(DepleteShieldOverTime());
+            }
         }
     }
 
-    void UpdateEnemyCount()
+    private void PlaySound(AudioClip clip)
     {
-        int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        enemyCountText.text = "Enemies: " + enemyCount.ToString();
-    }
-
-    void PlayBonusSound()
-    {
-        if (bonusSound != null)
+        if (clip != null && audioSource != null)
         {
-            if (audioSource == null)
-                audioSource = GetComponent<AudioSource>();
-
-            if (audioSource != null)
-                audioSource.PlayOneShot(bonusSound);
+            audioSource.PlayOneShot(clip);
         }
     }
+
+    private IEnumerator DepleteShieldOverTime()
+    {
+        PlayerController pc = PlayerController.Instance;
+        while (pc != null && pc.currentShield > 0)
+        {
+            pc.currentShield = Mathf.Max(0f, pc.currentShield - shieldDepletionRate * Time.deltaTime);
+            if (ui.shieldSlider != null)
+                ui.shieldSlider.value = pc.currentShield;
+            yield return null; // Czekaj na następną klatkę
+        }
+    }
+
+    #endregion
 }

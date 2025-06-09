@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LoadForest : MonoBehaviour
@@ -15,7 +15,7 @@ public class LoadForest : MonoBehaviour
 
         if (other.CompareTag("player"))
         {
-            Debug.Log("Gracz dotkn¹³ drzwi. ³adowanie sceny...");
+            Debug.Log("Gracz dotknÂ¹Â³ drzwi. Â³adowanie sceny...");
             SceneManager.LoadScene("Forest");
         }
     }

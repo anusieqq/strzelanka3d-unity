@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Moving : MonoBehaviour
 {
@@ -45,7 +46,7 @@ public class Moving : MonoBehaviour
     private bool isSprinting;
     private Vector2 movementInput;
 
-    void Awake()
+    private void Awake()
     {
         // SprawdŸ, czy InputActionAsset jest przypisany
         if (inputActions == null)
@@ -71,9 +72,41 @@ public class Moving : MonoBehaviour
         {
             Debug.LogError("Nie znaleziono jednej lub wiêcej akcji w InputActionAsset! SprawdŸ nazwy akcji (Moving Up, Moving Down, Moving Left, Moving Right, Look, Jump, Crouch, Sprint, Shoot).");
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    void Start()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Resetuj kamerê
+        if (thirdPersonCamera == null)
+        {
+            thirdPersonCamera = Camera.main;
+            if (thirdPersonCamera == null)
+            {
+                Debug.LogWarning("Nie znaleziono kamery w scenie: " + scene.name);
+            }
+            else
+            {
+                Debug.Log("Moving: Camera updated to " + thirdPersonCamera.name);
+            }
+        }
+
+        // W³¹cz akcje inputu
+        if (inputActions != null)
+        {
+            inputActions.Enable();
+            Debug.Log("InputActions w³¹czone po za³adowaniu sceny: " + scene.name);
+        }
+
+        // SprawdŸ headTransform
+        if (headTransform == null)
+        {
+            Debug.LogWarning("headTransform nie jest przypisany w Moving! Upewnij siê, ¿e jest ustawiony w Inspectorze.");
+        }
+    }
+
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -88,8 +121,13 @@ public class Moving : MonoBehaviour
             thirdPersonCamera = Camera.main;
             if (thirdPersonCamera == null)
             {
-                Debug.LogWarning("Brak kamery przypisanej w thirdPersonCamera i Camera.main nie znaleziono. Oczekujê przypisania przez SetCamera.");
+                Debug.LogWarning("Brak kamery przypisanej w thirdPersonCamera i Camera.main nie znaleziono.");
             }
+        }
+
+        if (headTransform == null)
+        {
+            Debug.LogWarning("headTransform nie jest przypisany w Moving! Upewnij siê, ¿e jest ustawiony w Inspectorze.");
         }
 
         cameraOffset = new Vector3(0, 2f, -cameraDistance);
@@ -109,7 +147,7 @@ public class Moving : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         // Wy³¹cz akcje inputu
         if (inputActions != null)
@@ -117,6 +155,8 @@ public class Moving : MonoBehaviour
             inputActions.Disable();
             Debug.Log("InputActions wy³¹czone w Moving.");
         }
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     void Update()
@@ -137,9 +177,24 @@ public class Moving : MonoBehaviour
 
     void HandleMouseLook()
     {
-        if (lookAction == null) return;
+        if (lookAction == null)
+        {
+            Debug.LogError("lookAction jest null w HandleMouseLook!");
+            return;
+        }
+
+        if (!lookAction.enabled)
+        {
+            Debug.LogWarning("lookAction nie jest w³¹czone! W³¹czanie...");
+            lookAction.Enable();
+        }
 
         Vector2 look = lookAction.ReadValue<Vector2>();
+        if (look != Vector2.zero)
+        {
+            Debug.Log("Look Input: " + look); // Log dla debugowania
+        }
+
         rotationX -= look.y * mouseSensitivity;
         rotationY += look.x * mouseSensitivity;
         rotationX = Mathf.Clamp(rotationX, -45f, 45f);
@@ -147,6 +202,8 @@ public class Moving : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         if (headTransform != null)
             headTransform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+        else
+            Debug.LogWarning("headTransform is null in HandleMouseLook!");
     }
 
     void HandleMovement()
@@ -180,9 +237,6 @@ public class Moving : MonoBehaviour
             velocity.y = -5f;
 
         rb.velocity = velocity;
-
-        // Debug: Sprawdzanie inputu (odkomentuj w razie potrzeby)
-        // Debug.Log($"Movement Input: {movementInput}, Velocity: {rb.velocity}");
     }
 
     void HandleJump()

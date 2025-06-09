@@ -15,59 +15,75 @@ public class Pause : MonoBehaviour
     public Slider enemyHealthSlider;
     public TextMeshProUGUI gameTimeText;
     public TextMeshProUGUI multiplierText;
+    public TextMeshProUGUI saveConfirmationText; 
 
     private GameObject Opcje;
     private bool isPaused = false;
     private bool isLoading = false;
     private static Dictionary<string, Enemy> allEnemies = new Dictionary<string, Enemy>();
-    private MenuAudioManager audioManager;
+    private AudioManager audioManager;
+    public static Pause Instance;
 
     public bool IsLoading() => isLoading;
 
     private void Awake()
     {
-        allEnemies.Clear();
-        Enemy[] enemies = FindObjectsOfType<Enemy>();
-        foreach (Enemy enemy in enemies)
+        if (Instance == null)
         {
-            if (!string.IsNullOrEmpty(enemy.enemyId) && !allEnemies.ContainsKey(enemy.enemyId))
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            allEnemies.Clear();
+            Enemy[] enemies = FindObjectsOfType<Enemy>();
+            foreach (Enemy enemy in enemies)
             {
-                allEnemies.Add(enemy.enemyId, enemy);
-                Debug.Log($"Added enemy with ID: {enemy.enemyId} ({enemy.gameObject.name})");
+                if (!string.IsNullOrEmpty(enemy.enemyId) && !allEnemies.ContainsKey(enemy.enemyId))
+                {
+                    allEnemies.Add(enemy.enemyId, enemy);
+                    Debug.Log($"Dodano wroga z ID: {enemy.enemyId} ({enemy.gameObject.name})");
+                }
+                else if (string.IsNullOrEmpty(enemy.enemyId))
+                {
+                    Debug.LogError($"Wróg {enemy.gameObject.name} nie ma ustawionego enemyId!");
+                }
             }
-            else if (string.IsNullOrEmpty(enemy.enemyId))
-            {
-                Debug.LogError($"Enemy {enemy.gameObject.name} has no enemyId set!");
-            }
+            Debug.Log($"Zainicjalizowano {allEnemies.Count} wrogów na starcie gry.");
         }
-        Debug.Log($"Initialized {allEnemies.Count} enemies at game start.");
+        else
+        {
+            Debug.LogWarning("Próba utworzenia kolejnej instancji Pause. Niszczenie duplikatu.");
+            Destroy(gameObject);
+        }
 
-        DontDestroyOnLoad(gameObject);
+        if (PauseCanvas != null)
+        {
+            PauseCanvas.SetActive(false);
+        }
     }
 
     private void Start()
     {
         InitializeUI();
 
-        if (AudioManager.Instance != null && AudioManager.Instance.uiOpcje != null)
+        audioManager = AudioManager.Instance;
+        if (AudioManager.Instance != null && AudioManager.Instance.optionsPanel != null)
         {
-            Opcje = AudioManager.Instance.uiOpcje;
+            Opcje = AudioManager.Instance.optionsPanel;
             Opcje.SetActive(false);
-            Debug.Log("Options initialized and set to inactive.");
+            Debug.Log("Opcje zainicjalizowane i ustawione na nieaktywne.");
         }
         else
         {
-            Debug.LogWarning("AudioManager.Instance or uiOpcje is not available.");
+            Debug.LogWarning("AudioManager.Instance lub optionsPanel nie jest dostêpny.");
         }
 
         if (PlayerPrefs.HasKey("SavedScene") && !isLoading)
         {
-            Debug.Log("SavedScene found in PlayerPrefs, loading player data.");
+            Debug.Log("Znalezione SavedScene w PlayerPrefs, ³adowanie danych gracza.");
             LoadPlayerData();
         }
         else
         {
-            Debug.Log("No saved game or loading in progress, skipping LoadPlayerData.");
+            Debug.Log("Brak zapisanego stanu gry lub trwa ³adowanie, pomijanie LoadPlayerData.");
         }
     }
 
@@ -76,55 +92,66 @@ public class Pause : MonoBehaviour
         if (PauseCanvas != null)
         {
             PauseCanvas.SetActive(false);
-            Debug.Log("PauseCanvas initialized and set to inactive.");
+            Debug.Log("PauseCanvas zainicjalizowany i ustawiony na nieaktywny.");
         }
         else
         {
-            Debug.LogError("PauseCanvas is not assigned!");
+            Debug.LogError("PauseCanvas nie jest przypisany!");
         }
 
         if (healthSlider != null)
             healthSlider.value = PlayerPrefs.GetFloat("PlayerHealth", 100f);
         else
-            Debug.LogError("healthSlider is not assigned!");
+            Debug.LogError("healthSlider nie jest przypisany!");
 
         if (shieldSlider != null)
             shieldSlider.value = PlayerPrefs.GetFloat("PlayerShield", 0f);
         else
-            Debug.LogError("shieldSlider is not assigned!");
+            Debug.LogError("shieldSlider nie jest przypisany!");
 
         if (enemyHealthSlider != null)
             enemyHealthSlider.value = PlayerPrefs.GetFloat("EnemyHealth", 100f);
         else
-            Debug.LogError("enemyHealthSlider is not assigned!");
+            Debug.LogError("enemyHealthSlider nie jest przypisany!");
 
         if (gameTimeText != null)
         {
             float gameTime = PlayerPrefs.GetFloat("GameTimeInMinutes", 6f * 60f);
             gameTimeText.text = FormatTime(gameTime);
-            Debug.Log($"Initialized game time: {gameTimeText.text}");
+            Debug.Log($"Zainicjalizowano czas gry: {gameTimeText.text}");
         }
         else
         {
-            Debug.LogError("gameTimeText is not assigned!");
+            Debug.LogError("gameTimeText nie jest przypisany!");
         }
 
         if (multiplierText != null)
         {
             float multiplier = PlayerPrefs.GetFloat("TimeMultiplier", 0.1f);
             multiplierText.text = $"x{multiplier:F1}";
-            Debug.Log($"Initialized time multiplier: {multiplier}");
+            Debug.Log($"Zainicjalizowano mno¿nik czasu: {multiplier}");
         }
         else
         {
-            Debug.LogError("multiplierText is not assigned!");
+            Debug.LogError("multiplierText nie jest przypisany!");
+        }
+
+        if (saveConfirmationText != null)
+        {
+            saveConfirmationText.gameObject.SetActive(false);
+            saveConfirmationText.text = "Gra zapisana";
+            Debug.Log("saveConfirmationText zainicjalizowany i ustawiony na nieaktywny.");
+        }
+        else
+        {
+            Debug.LogError("saveConfirmationText nie jest przypisany!");
         }
     }
 
     public void LoadPlayerData()
     {
         isLoading = true;
-        Debug.Log("Started loading player data.");
+        Debug.Log("Rozpoczêto ³adowanie danych gracza.");
 
         float hp = PlayerPrefs.GetFloat("PlayerHealth", 100f);
         float maxHp = PlayerPrefs.GetFloat("MaxHealth", 100f);
@@ -145,19 +172,18 @@ public class Pause : MonoBehaviour
         {
             KilledEnemyIdsWrapper wrapper = JsonUtility.FromJson<KilledEnemyIdsWrapper>(killedEnemyIdsJson);
             killedEnemyIds = wrapper != null ? wrapper.killedEnemyIds : new string[0];
-            Debug.Log($"Loaded {killedEnemyIds.Length} killed enemies: {string.Join(", ", killedEnemyIds)}");
+            Debug.Log($"Za³adowano {killedEnemyIds.Length} zabitych wrogów: {string.Join(", ", killedEnemyIds)}");
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Error deserializing KilledEnemyIds: " + e.Message);
+            Debug.LogError("B³¹d podczas deserializacji KilledEnemyIds: " + e.Message);
             killedEnemyIds = new string[0];
         }
 
-        // U¿yj singletona PlayerController
         GameObject playerObject = PlayerController.Instance != null ? PlayerController.Instance.gameObject : null;
         if (playerObject == null)
         {
-            Debug.LogWarning("No player found, creating new player.");
+            Debug.LogWarning("Nie znaleziono gracza, tworzenie nowego gracza.");
             playerObject = new GameObject("Player");
             playerObject.tag = "player";
             playerObject.AddComponent<PlayerController>();
@@ -168,14 +194,13 @@ public class Pause : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Found existing player: {playerObject.name}");
+            Debug.Log($"Znaleziono istniej¹cego gracza: {playerObject.name}");
         }
 
-        // ZnajdŸ kamerê
         GameObject cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
         if (cameraObject == null)
         {
-            Debug.LogWarning("No camera found with tag 'MainCamera', creating new camera.");
+            Debug.LogWarning("Nie znaleziono kamery z tagiem 'MainCamera', tworzenie nowej kamery.");
             cameraObject = new GameObject("MainCamera");
             cameraObject.tag = "MainCamera";
             Camera tempCamera = cameraObject.AddComponent<Camera>();
@@ -187,20 +212,19 @@ public class Pause : MonoBehaviour
         }
         else
         {
-            Debug.Log($"Found camera: {cameraObject.name}");
+            Debug.Log($"Znaleziono kamerê: {cameraObject.name}");
             if (cameraObject.GetComponent<Camera>() == null)
             {
-                Debug.LogError("MainCamera object has no Camera component!");
+                Debug.LogError("Obiekt MainCamera nie ma komponentu Camera!");
                 cameraObject.AddComponent<Camera>().enabled = true;
             }
             else if (!cameraObject.GetComponent<Camera>().enabled)
             {
                 cameraObject.GetComponent<Camera>().enabled = true;
-                Debug.Log("Enabled camera.");
+                Debug.Log("W³¹czono kamerê.");
             }
         }
 
-        // Domyœlna pozycja (y: 9)
         Vector3 defaultPosition = new Vector3(-50.80672f, 9f, 21.12359f);
         Vector3 savedPosition = defaultPosition;
 
@@ -211,131 +235,122 @@ public class Pause : MonoBehaviour
                 PlayerPrefs.GetFloat("playerPosY", defaultPosition.y),
                 PlayerPrefs.GetFloat("playerPosZ", defaultPosition.z)
             );
-            Debug.Log($"Loaded saved position from PlayerPrefs: {savedPosition}");
+            Debug.Log($"Za³adowano zapisan¹ pozycjê z PlayerPrefs: {savedPosition}");
 
-            // Walidacja zapisanej pozycji
             if (savedPosition.magnitude > 1000f || float.IsNaN(savedPosition.x) || float.IsNaN(savedPosition.y) || float.IsNaN(savedPosition.z))
             {
-                Debug.LogWarning($"Invalid saved position {savedPosition}, using default position: {defaultPosition}");
+                Debug.LogWarning($"Nieprawid³owa zapisana pozycja {savedPosition}, u¿ywanie domyœlnej pozycji: {defaultPosition}");
                 savedPosition = defaultPosition;
             }
         }
         else
         {
-            Debug.Log("No saved position in PlayerPrefs, using default position.");
+            Debug.Log("Brak zapisanej pozycji w PlayerPrefs, u¿ywanie domyœlnej pozycji.");
         }
 
-        // Sprawdzenie kolizji
         Vector3 rayStart = savedPosition + Vector3.up * 20f;
-        Debug.DrawRay(rayStart, Vector3.down * 40f, Color.red, 5f); // Wizualizacja promienia
+        Debug.DrawRay(rayStart, Vector3.down * 40f, Color.red, 5f);
         if (Physics.Raycast(rayStart, Vector3.down, out RaycastHit hit, 40f, ~LayerMask.GetMask("Player")))
         {
-            playerObject.transform.position = hit.point + Vector3.up * 1.5f; // Zwiêkszony offset
-            Debug.Log($"Set player position with collision check: {playerObject.transform.position}, hit point: {hit.point}, hit collider: {hit.collider.name}");
+            playerObject.transform.position = hit.point + Vector3.up * 1.5f;
+            Debug.Log($"Ustawiono pozycjê gracza z kontrol¹ kolizji: {playerObject.transform.position}, punkt trafienia: {hit.point}, trafiony collider: {hit.collider.name}");
         }
         else
         {
             playerObject.transform.position = savedPosition;
-            Debug.Log($"Set player position without collision: {playerObject.transform.position}");
+            Debug.Log($"Ustawiono pozycjê gracza bez kolizji: {playerObject.transform.position}");
         }
 
-        // Reset Rigidbody
         Rigidbody rb = playerObject.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
-            Debug.Log("Reset player Rigidbody velocity and angular velocity.");
+            Debug.Log("Zresetowano prêdkoœæ i prêdkoœæ k¹tow¹ Rigidbody gracza.");
         }
 
-        // Ustaw kamerê
         if (cameraObject != null)
         {
             Moving movingScript = playerObject.GetComponent<Moving>();
             if (movingScript != null)
             {
                 movingScript.SetCamera(cameraObject.GetComponent<Camera>());
-                Debug.Log("Assigned camera to Moving.cs.");
+                Debug.Log("Przypisano kamerê do Moving.cs: " + cameraObject.name);
             }
             else
             {
-                Debug.LogWarning("Moving.cs not found on player! Setting camera manually.");
+                Debug.LogWarning("Moving.cs nie znaleziono na graczu! Ustawianie kamery rêcznie.");
                 Vector3 cameraOffset = new Vector3(0f, 2f, -5f);
                 cameraObject.transform.position = playerObject.transform.position + cameraOffset;
                 cameraObject.transform.LookAt(playerObject.transform.position + Vector3.up * 1.5f);
             }
         }
 
-        // Usuñ zabitych wrogów
         Enemy[] enemies = FindObjectsOfType<Enemy>();
-        Debug.Log($"Found {enemies.Length} enemies on scene before removal.");
+        Debug.Log($"Znaleziono {enemies.Length} wrogów na scenie przed usuniêciem.");
         foreach (Enemy enemy in enemies)
         {
-            Debug.Log($"Enemy on scene: {enemy.enemyId} ({enemy.gameObject.name})");
+            Debug.Log($"Wróg na scenie: {enemy.enemyId} ({enemy.gameObject.name})");
             if (killedEnemyIds.Contains(enemy.enemyId))
             {
-                Debug.Log($"Removing enemy with ID: {enemy.enemyId} ({enemy.gameObject.name})");
+                Debug.Log($"Usuwanie wroga z ID: {enemy.enemyId} ({enemy.gameObject.name})");
                 DestroyImmediate(enemy.gameObject);
             }
         }
 
         enemies = FindObjectsOfType<Enemy>();
-        Debug.Log($"Remaining {enemies.Length} enemies on scene after removal.");
+        Debug.Log($"Pozosta³o {enemies.Length} wrogów na scenie po usuniêciu.");
 
-        // Ustaw zdrowie i tarczê
         PlayerController playerController = playerObject.GetComponent<PlayerController>();
         if (playerController != null)
         {
             playerController.SetHealth(hp, maxHp);
             playerController.SetShield(shield, maxShield);
-            Debug.Log($"Set health: {hp}/{maxHp}, shield: {shield}/{maxShield}");
+            Debug.Log($"Ustawiono zdrowie: {hp}/{maxHp}, tarcza: {shield}/{maxShield}");
         }
         else
         {
-            Debug.LogError("PlayerController not found! Health and shield not updated.");
+            Debug.LogError("PlayerController nie znaleziono! Zdrowie i tarcza nie zaktualizowane.");
         }
 
-        // Ustaw amunicjê
         Gun gun = FindObjectOfType<Gun>();
         if (gun != null)
         {
             gun.SetAmmo(ammoCount, reserveAmmoCount);
-            Debug.Log($"Set ammo: {ammoCount}, reserve: {reserveAmmoCount}");
+            Debug.Log($"Ustawiono amunicjê: {ammoCount}, rezerwa: {reserveAmmoCount}");
         }
         else
         {
-            Debug.LogError("Gun not found during data loading!");
+            Debug.LogError("Gun nie znaleziono podczas ³adowania danych!");
         }
 
-        // Ustaw czas gry
         if (Day.Instance != null)
         {
             Day.Instance.gameTimeInMinutes = gameTimeInMinutes;
             Day.Instance.timeOfDay = timeOfDay;
             Day.Instance.gameMinutesPerSecond = timeMultiplier;
-            Debug.Log($"Loaded game time: {gameTimeInMinutes} min, sun height: {timeOfDay}, time multiplier: {timeMultiplier}");
+            Debug.Log($"Za³adowano czas gry: {gameTimeInMinutes} min, wysokoœæ s³oñca: {timeOfDay}, mno¿nik czasu: {timeMultiplier}");
         }
         else
         {
-            Debug.LogWarning("Day.Instance not found, game time and multiplier not updated.");
+            Debug.LogWarning("Day.Instance nie znaleziono, czas gry i mno¿nik nie zaktualizowane.");
         }
 
-        // Zaktualizuj UI
         if (gameTimeText != null)
         {
             gameTimeText.text = FormatTime(gameTimeInMinutes);
-            Debug.Log($"Loaded game time in UI: {gameTimeText.text}");
+            Debug.Log($"Za³adowano czas gry w UI: {gameTimeText.text}");
         }
         if (multiplierText != null)
         {
             multiplierText.text = $"x{timeMultiplier:F1}";
-            Debug.Log($"Loaded time multiplier in UI: {multiplierText.text}");
+            Debug.Log($"Za³adowano mno¿nik czasu w UI: {multiplierText.text}");
         }
 
         AdjustEnemyCount(enemyCount);
 
         isLoading = false;
-        Debug.Log("Finished loading player data.");
+        Debug.Log("Zakoñczono ³adowanie danych gracza.");
     }
 
     private void AdjustEnemyCount(int targetCount)
@@ -347,18 +362,18 @@ public class Pause : MonoBehaviour
         {
             for (int i = targetCount; i < currentCount; i++)
             {
-                Debug.Log($"Removing excess enemy: {enemies[i].name}");
+                Debug.Log($"Usuwanie nadmiarowego wroga: {enemies[i].name}");
                 Destroy(enemies[i]);
             }
         }
-        Debug.Log($"After AdjustEnemyCount: {enemies.Length} enemies on scene.");
+        Debug.Log($"Po AdjustEnemyCount: {enemies.Length} wrogów na scenie.");
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isLoading)
         {
-            Debug.Log($"Escape pressed, isPaused: {isPaused}, isLoading: {isLoading}");
+            Debug.Log($"Naciœniêto Escape, isPaused: {isPaused}, isLoading: {isLoading}");
             if (isPaused)
                 Resume();
             else
@@ -368,49 +383,89 @@ public class Pause : MonoBehaviour
 
     public void PauseGame()
     {
-        Debug.Log("PauseGame called.");
+        Debug.Log("Wywo³ano PauseGame.");
         if (PauseCanvas != null)
         {
             PauseCanvas.SetActive(true);
-            Debug.Log("PauseCanvas set to active.");
+            Debug.Log("PauseCanvas ustawiony na aktywny.");
             Canvas canvas = PauseCanvas.GetComponent<Canvas>();
             if (canvas != null)
             {
                 canvas.sortingOrder = 10;
-                Debug.Log("Canvas sortingOrder set to 10.");
+                Debug.Log("Canvas sortingOrder ustawiony na 10.");
             }
             Time.timeScale = 0f;
             isPaused = true;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+
+            // Wy³¹cz rotacjê kamery
+            GameObject playerObject = PlayerController.Instance != null ? PlayerController.Instance.gameObject : null;
+            if (playerObject != null)
+            {
+                Moving movingScript = playerObject.GetComponent<Moving>();
+                if (movingScript != null)
+                {
+                    movingScript.enabled = false; // Wy³¹cz skrypt Moving, aby zatrzymaæ rotacjê kamery
+                    Debug.Log("Rotacja kamery wy³¹czona (skrypt Moving wy³¹czony).");
+                }
+                else
+                {
+                    Debug.LogWarning("Skrypt Moving nie znaleziony, nie mo¿na wy³¹czyæ rotacji kamery.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PlayerController.Instance nie znaleziony, nie mo¿na wy³¹czyæ rotacji kamery.");
+            }
         }
         else
         {
-            Debug.LogError("PauseCanvas is not assigned, cannot open pause panel!");
+            Debug.LogError("PauseCanvas nie jest przypisany, nie mo¿na otworzyæ panelu pauzy!");
         }
     }
 
     public void Resume()
     {
-        Debug.Log("Resume called.");
+        Debug.Log("Wywo³ano Resume.");
         if (Opcje != null)
         {
             Opcje.SetActive(false);
-            Debug.Log("Options disabled.");
+            Debug.Log("Opcje wy³¹czone.");
         }
 
         if (PauseCanvas != null)
         {
             PauseCanvas.SetActive(false);
-            Debug.Log("PauseCanvas disabled.");
+            Debug.Log("PauseCanvas wy³¹czony.");
             Time.timeScale = 1f;
             isPaused = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            // W³¹cz rotacjê kamery
+            GameObject playerObject = PlayerController.Instance != null ? PlayerController.Instance.gameObject : null;
+            if (playerObject != null)
+            {
+                Moving movingScript = playerObject.GetComponent<Moving>();
+                if (movingScript != null)
+                {
+                    movingScript.enabled = true; // W³¹cz skrypt Moving, aby przywróciæ rotacjê kamery
+                    Debug.Log("Rotacja kamery w³¹czona (skrypt Moving w³¹czony).");
+                }
+                else
+                {
+                    Debug.LogWarning("Skrypt Moving nie znaleziony, nie mo¿na w³¹czyæ rotacji kamery.");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("PlayerController.Instance nie znaleziony, nie mo¿na w³¹czyæ rotacji kamery.");
+            }
         }
         else
         {
-            Debug.LogError("PauseCanvas is not assigned, cannot resume game!");
+            Debug.LogError("PauseCanvas nie jest przypisany, nie mo¿na wznowiæ gry!");
         }
     }
 
@@ -420,16 +475,17 @@ public class Pause : MonoBehaviour
         {
             Opcje.SetActive(true);
             PauseCanvas.SetActive(false);
-            Debug.Log("Opened options panel.");
-
+            Debug.Log("Otwarto panel opcji.");
             if (audioManager != null)
             {
-                audioManager.PlayMenuMusic(); // Wznów muzykê menu w panelu opcji
+                audioManager.StopMusic();
+                audioManager.PlayMenuMusic();
+                Debug.Log("Zatrzymano bie¿¹c¹ muzykê i odtworzono muzykê menu w panelu opcji.");
             }
         }
         else
         {
-            Debug.LogError("Options are not assigned!");
+            Debug.LogError("Opcje nie s¹ przypisane!");
         }
     }
 
@@ -439,52 +495,53 @@ public class Pause : MonoBehaviour
         {
             Opcje.SetActive(false);
             PauseCanvas.SetActive(true);
-            Debug.Log("Hid options panel, showed PauseCanvas.");
+            Debug.Log("Ukryto panel opcji, pokazano PauseCanvas.");
+            if (audioManager != null)
+            {
+                audioManager.RestoreSceneMusic();
+                Debug.Log("Przywrócono muzykê sceny po zamkniêciu panelu opcji.");
+            }
         }
         else
         {
-            Debug.LogError("Options are not assigned!");
+            Debug.LogError("Opcje nie s¹ przypisane!");
         }
     }
 
     public void SaveGame()
     {
-        Debug.Log("SaveGame called.");
+        Debug.Log("Wywo³ano SaveGame.");
         GameData data = new GameData();
 
-        // U¿yj singletona PlayerController
         GameObject player = PlayerController.Instance != null ? PlayerController.Instance.gameObject : null;
-        Vector3 defaultPosition = new Vector3(-50.80672f, 9f, 21.12359f); // y: 9
+        Vector3 defaultPosition = new Vector3(-50.80672f, 9f, 21.12359f);
 
         if (player != null)
         {
             Vector3 safePosition = player.transform.position;
-            // Sprawdzenie pozycji wzglêdem pod³ogi
             if (Physics.Raycast(player.transform.position + Vector3.up * 1f, Vector3.down, out RaycastHit hit, 2f, ~LayerMask.GetMask("Player")))
             {
-                safePosition = hit.point + Vector3.up * 0.5f; // Pozycja na stopy
-                Debug.Log($"Adjusted player position to ground: {safePosition}, hit point: {hit.point}, hit collider: {hit.collider.name}");
+                safePosition = hit.point + Vector3.up * 0.5f;
+                Debug.Log($"Dostosowano pozycjê gracza do pod³o¿a: {safePosition}, punkt trafienia: {hit.point}, trafiony collider: {hit.collider.name}");
             }
             else
             {
-                Debug.LogWarning("No ground detected under player, using transform position.");
+                Debug.LogWarning("Nie wykryto pod³o¿a pod graczem, u¿ywanie pozycji transform.");
             }
 
-            // Walidacja pozycji przed zapisem
-            if (safePosition.magnitude > 500f || float.IsNaN(safePosition.x) || float.IsNaN(safePosition.y) || float.IsNaN(safePosition.z) ||
-                Mathf.Abs(safePosition.y - defaultPosition.y) > 10f)
+            if (safePosition.magnitude > 500f || float.IsNaN(safePosition.x) || float.IsNaN(safePosition.y) || float.IsNaN(safePosition.z))
             {
-                Debug.LogWarning($"Invalid player position {safePosition}, using default position: {defaultPosition}");
+                Debug.LogWarning($"Nieprawid³owa pozycja gracza {safePosition}, u¿ywanie domyœlnej pozycji: {defaultPosition}");
                 safePosition = defaultPosition;
             }
             data.playerPosX = safePosition.x;
             data.playerPosY = safePosition.y;
             data.playerPosZ = safePosition.z;
-            Debug.Log($"Saved player position: {safePosition}, GameObject: {player.name}, Tag: {player.tag}");
+            Debug.Log($"Zapisano pozycjê gracza: {safePosition}, GameObject: {player.name}, Tag: {player.tag}");
         }
         else
         {
-            Debug.LogError("Player not found during save! Using default position.");
+            Debug.LogError("Gracz nie znaleziony podczas zapisu! U¿ywanie domyœlnej pozycji.");
             data.playerPosX = defaultPosition.x;
             data.playerPosY = defaultPosition.y;
             data.playerPosZ = defaultPosition.z;
@@ -500,7 +557,7 @@ public class Pause : MonoBehaviour
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         data.enemyCount = enemies.Length;
-        Debug.Log($"Current active enemy count: {data.enemyCount}");
+        Debug.Log($"Aktualna liczba aktywnych wrogów: {data.enemyCount}");
 
         List<string> killedEnemyIds = new List<string>();
         List<string> activeEnemyIds = new List<string>();
@@ -511,7 +568,7 @@ public class Pause : MonoBehaviour
             if (enemy != null && enemy.gameObject.activeInHierarchy)
             {
                 activeEnemyIds.Add(enemy.enemyId);
-                Debug.Log($"Active enemy: {enemy.enemyId} ({enemy.gameObject.name})");
+                Debug.Log($"Aktywny wróg: {enemy.enemyId} ({enemy.gameObject.name})");
             }
         }
 
@@ -520,7 +577,7 @@ public class Pause : MonoBehaviour
             if (!activeEnemyIds.Contains(enemyEntry.Key))
             {
                 killedEnemyIds.Add(enemyEntry.Key);
-                Debug.Log($"Killed enemy: {enemyEntry.Key}");
+                Debug.Log($"Zabity wróg: {enemyEntry.Key}");
             }
         }
         data.killedEnemyIds = killedEnemyIds.ToArray();
@@ -534,14 +591,14 @@ public class Pause : MonoBehaviour
             data.gameTimeInMinutes = Day.Instance.gameTimeInMinutes;
             data.timeOfDay = Day.Instance.timeOfDay;
             data.timeMultiplier = Day.Instance.gameMinutesPerSecond;
-            Debug.Log($"Saved game time: {data.gameTimeInMinutes} min, sun height: {data.timeOfDay}, multiplier: {data.timeMultiplier}");
+            Debug.Log($"Zapisano czas gry: {data.gameTimeInMinutes} min, wysokoœæ s³oñca: {data.timeOfDay}, mno¿nik: {data.timeMultiplier}");
         }
         else
         {
             data.gameTimeInMinutes = 6f * 60f;
             data.timeOfDay = 0.25f;
             data.timeMultiplier = 0.1f;
-            Debug.LogWarning("Day.Instance not found. Using default values for game time and multiplier.");
+            Debug.LogWarning("Day.Instance nie znaleziono. U¿ywanie domyœlnych wartoœci dla czasu gry i mno¿nika.");
         }
 
         string json = JsonUtility.ToJson(data, true);
@@ -567,7 +624,29 @@ public class Pause : MonoBehaviour
         PlayerPrefs.SetFloat("TimeMultiplier", data.timeMultiplier);
         PlayerPrefs.Save();
 
-        Debug.Log("Game saved. Killed enemies: " + JsonUtility.ToJson(new KilledEnemyIdsWrapper { killedEnemyIds = data.killedEnemyIds }));
+        Debug.Log("Gra zapisana. Zabici wrogowie: " + JsonUtility.ToJson(new KilledEnemyIdsWrapper { killedEnemyIds = data.killedEnemyIds }));
+
+        // Wyœwietl komunikat potwierdzenia zapisu
+        if (saveConfirmationText != null)
+        {
+            saveConfirmationText.gameObject.SetActive(true);
+            StartCoroutine(HideSaveConfirmationText());
+            Debug.Log("Wyœwietlono komunikat potwierdzenia zapisu.");
+        }
+        else
+        {
+            Debug.LogError("saveConfirmationText nie jest przypisany, nie mo¿na wyœwietliæ komunikatu potwierdzenia!");
+        }
+    }
+
+    private System.Collections.IEnumerator HideSaveConfirmationText()
+    {
+        yield return new WaitForSecondsRealtime(2f); // U¿ywamy WaitForSecondsRealtime, poniewa¿ gra jest w trybie pauzy (Time.timeScale = 0)
+        if (saveConfirmationText != null)
+        {
+            saveConfirmationText.gameObject.SetActive(false);
+            Debug.Log("Ukryto komunikat potwierdzenia zapisu.");
+        }
     }
 
     private string FormatTime(float minutes)

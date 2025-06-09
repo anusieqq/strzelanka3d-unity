@@ -1,39 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pendrak : MonoBehaviour
 {
     public GameObject uploadPoint;
 
-    public void Start()
+    void Start()
     {
-
+        if (uploadPoint == null)
+        {
+            Debug.LogError($"Pendrak: UploadPoint nie jest przypisany w {gameObject.name}");
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("player"))
         {
-            Debug.Log("Kolizja z graczem w Pendrak!");
+            Debug.Log($"Pendrak: Kolizja z graczem w {gameObject.name}");
             if (uploadPoint != null)
             {
                 Pendrive p = uploadPoint.GetComponent<Pendrive>();
                 if (p != null)
                 {
                     p.SetPendriveCollected();
-                    Destroy(gameObject); 
-                    Debug.Log("Pendrive zebrany i zniszczony!");
+                    Debug.Log("Pendrak: Wywo³ano SetPendriveCollected w Pendrive.");
                 }
                 else
                 {
-                    Debug.LogError("Brak komponentu Pendrive na UploadPoint!");
+                    Debug.LogError("Pendrak: Brak komponentu Pendrive na UploadPoint!");
                 }
             }
             else
             {
-                Debug.LogError("UploadPoint nie jest przypisany!");
+                Debug.LogError("Pendrak: UploadPoint nie jest przypisany!");
             }
+
+            if (ServerManager.Instance != null)
+            {
+                ServerManager.Instance.SetPendriveCollected();
+                Debug.Log("Pendrak: Wywo³ano SetPendriveCollected w ServerManager.");
+            }
+            else
+            {
+                Debug.LogError("Pendrak: ServerManager.Instance jest null!");
+            }
+
+            Destroy(gameObject);
+            Debug.Log("Pendrak: Pendrive zebrany i zniszczony!");
         }
     }
 }
