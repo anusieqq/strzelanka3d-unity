@@ -7,7 +7,7 @@ using TMPro;
 
 public class Menu : MonoBehaviour
 {
-    [Header("Text Animation")]
+    [Header("Animacja tekstu")]
     public TMP_Text textComponent;
     public string fullText;
     public ScrollRect scrollRect;
@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour
     private bool isTyping = false;
     private bool skipRequested = false;
 
-    [Header("UI Elements")]
+    [Header("Elementy UI")]
     public GameObject Rozpocznij;
     public GameObject Pomiń;
     public GameObject StartButton;
@@ -28,84 +28,93 @@ public class Menu : MonoBehaviour
     public Canvas fabula;
     public Canvas opcjePanel;
 
-    private AudioManager audioManager; // Zmieniono z MenuAudioManager na AudioManager
+    private AudioManager audioManager;
 
     private void Start()
     {
+        // Inicjalizacja UI przy starcie
         InitializeUI();
         Pomiń.SetActive(false);
+
+        // Znajdź i uruchom muzykę menu
         audioManager = FindObjectOfType<AudioManager>();
         if (audioManager != null)
         {
-            audioManager.PlayMenuMusic();
-            Debug.Log("Odtwarzanie muzyki menu w scenie Menu.");
+            audioManager.PlayMenuMusic(); // Upewnij się, że AudioManager ma tę metodę
         }
         else
         {
-            Debug.LogError("Nie znaleziono obiektu z komponentem AudioManager!");
+            Debug.LogWarning("AudioManager nie znaleziony!");
         }
 
-        // Dodaj PlayerStartPositioner, jeśli nie istnieje
+        // Utwórz PlayerStartPositioner jeśli nie istnieje
         if (FindObjectOfType<PlayerStartPositioner>() == null)
         {
             GameObject manager = new GameObject("PlayerStartPositioner");
             manager.AddComponent<PlayerStartPositioner>();
-            Debug.Log("Utworzono nowy obiekt z PlayerStartPositioner.");
+            Debug.Log("Utworzono PlayerStartPositioner.");
         }
     }
 
     private void InitializeUI()
     {
+        // Ukryj fabułę i panel opcji, pokaż menu
         fabula.gameObject.SetActive(false);
         menu.gameObject.SetActive(true);
         opcjePanel.gameObject.SetActive(false);
         Rozpocznij.SetActive(false);
 
-        Rozpocznij.GetComponent<Button>().onClick.AddListener(StartNewGame);
-        StartButton.GetComponent<Button>().onClick.AddListener(StartGame);
-        Opcje.GetComponent<Button>().onClick.AddListener(OptionsGame);
-        Wczytaj.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadGameAndScene()));
-        Wyjdz.GetComponent<Button>().onClick.AddListener(ExitGame);
+        // Przypisz metody do przycisków
+        if (Rozpocznij != null) Rozpocznij.GetComponent<Button>().onClick.AddListener(StartNewGame);
+        if (StartButton != null) StartButton.GetComponent<Button>().onClick.AddListener(StartGame);
+        if (Opcje != null) Opcje.GetComponent<Button>().onClick.AddListener(OptionsGame);
+        if (Wczytaj != null) Wczytaj.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(LoadGameAndScene()));
+        if (Wyjdz != null) Wyjdz.GetComponent<Button>().onClick.AddListener(ExitGame);
     }
 
     public void StartNewGame()
     {
-        Debug.Log("StartNewGame called from Rozpocznij button.");
+        // Wyczyść zapisane dane i ustaw domyślne wartości
         PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("EnemyCount", 10);
         PlayerPrefs.SetInt("AmmoCount", 30);
         PlayerPrefs.SetInt("ReserveAmmo", 90);
+        PlayerPrefs.SetFloat("PlayerPosX", 14.25f);
+        PlayerPrefs.SetFloat("PlayerPosY", 3.8f);
+        PlayerPrefs.SetFloat("PlayerPosZ", 68.9f);
         PlayerPrefs.Save();
+        Debug.Log($"StartNewGame: Zapisano domyślną pozycję gracza: (14.25, 3.8, 68.9)");
 
+        // Zatrzymaj muzykę menu
         if (audioManager != null)
         {
             audioManager.StopMenuMusic();
-            Debug.Log("Zatrzymano muzykę menu przed załadowaniem sceny BUILDING.");
         }
 
+        // Ustaw pozycję gracza i załaduj scenę
         PlayerStartPositioner positioner = FindObjectOfType<PlayerStartPositioner>();
         if (positioner != null)
         {
             positioner.PositionPlayerOnSceneLoad("BUILDING");
+            Debug.Log("StartNewGame: Wywołano PlayerStartPositioner.");
         }
         else
         {
-            Debug.LogError("Nie znaleziono PlayerStartPositioner w scenie!");
             SceneManager.LoadScene("BUILDING");
+            Debug.LogWarning("StartNewGame: PlayerStartPositioner nie znaleziony, ładowanie sceny bezpośrednio.");
         }
     }
 
     public void StartGame()
     {
-        Debug.Log("StartGame called from Start button.");
-        StartButton.GetComponent<Button>().interactable = false;
+        // Rozpocznij grę - pokaż fabułę
+        if (StartButton != null) StartButton.GetComponent<Button>().interactable = false;
 
         if (fabula != null)
         {
             if (audioManager != null)
             {
                 audioManager.StopMenuMusic();
-                Debug.Log("Zatrzymano muzykę menu w StartGame.");
             }
             fabula.gameObject.SetActive(true);
             menu.gameObject.SetActive(false);
@@ -117,185 +126,14 @@ public class Menu : MonoBehaviour
 
     IEnumerator ShowSkipButtonAfterDelay()
     {
+        // Pokazuje przycisk pominięcia po 2 sekundach
         yield return new WaitForSeconds(2f);
-        Pomiń.SetActive(true);
-    }
-
-    IEnumerator LoadGameAndScene()
-    {
-        if (audioManager != null)
-        {
-            audioManager.StopMenuMusic();
-            Debug.Log("Zatrzymano muzykę menu przed załadowaniem zapisu gry.");
-        }
-
-        string path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "savegame.json");
-        if (!File.Exists(path))
-        {
-            Debug.LogWarning("Brak pliku zapisu gry: " + path);
-            yield break;
-        }
-
-        string json = File.ReadAllText(path);
-        GameData data = JsonUtility.FromJson<GameData>(json);
-        if (data == null || string.IsNullOrEmpty(data.levelName))
-        {
-            Debug.LogError("Invalid or missing levelName in savegame.json, loading default scene.");
-            SceneManager.LoadScene("BUILDING");
-            yield break;
-        }
-
-        PlayerPrefs.SetFloat("PlayerHealth", data.currentHP);
-        PlayerPrefs.SetFloat("MaxHealth", data.maxHP);
-        PlayerPrefs.SetFloat("PlayerShield", data.currentShield);
-        PlayerPrefs.SetFloat("MaxShield", data.maxShield);
-        PlayerPrefs.SetFloat("EnemyHealth", data.ufoHP);
-        PlayerPrefs.SetFloat("EnemyMaxHP", data.ufoMaxHP);
-        PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
-        PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
-        PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
-        PlayerPrefs.SetString("SavedScene", data.levelName);
-        PlayerPrefs.SetInt("EnemyCount", data.enemyCount);
-        PlayerPrefs.SetInt("AmmoCount", data.ammoCount);
-        PlayerPrefs.SetInt("ReserveAmmo", data.reserveAmmo);
-        PlayerPrefs.SetString("KilledEnemyIds", JsonUtility.ToJson(new Pause.KilledEnemyIdsWrapper { killedEnemyIds = data.killedEnemyIds }));
-        PlayerPrefs.SetFloat("GameTimeInMinutes", data.gameTimeInMinutes);
-        PlayerPrefs.SetFloat("TimeOfDay", data.timeOfDay);
-        PlayerPrefs.SetFloat("TimeMultiplier", data.timeMultiplier);
-        PlayerPrefs.Save();
-
-        Debug.Log($"Wczytuję zapis gry dla sceny: {data.levelName}");
-
-        if (data.levelName == "BUILDING")
-        {
-            AsyncOperation asyncLoadBuilding = SceneManager.LoadSceneAsync("BUILDING", LoadSceneMode.Single);
-            while (!asyncLoadBuilding.isDone)
-            {
-                Debug.Log($"Loading BUILDING progress: {asyncLoadBuilding.progress}");
-                yield return null;
-            }
-
-            yield return new WaitForEndOfFrame();
-
-            Pause pauseScript = FindObjectOfType<Pause>();
-            if (pauseScript != null)
-            {
-                Debug.Log("Znaleziono Pause.cs na scenie BUILDING, wywołuję LoadPlayerData.");
-                pauseScript.LoadPlayerData();
-            }
-            else
-            {
-                Debug.LogError("Nie znaleziono obiektu z Pause.cs na scenie BUILDING!");
-            }
-        }
-        else
-        {
-            AsyncOperation asyncLoadBuilding = SceneManager.LoadSceneAsync("BUILDING", LoadSceneMode.Additive);
-            while (!asyncLoadBuilding.isDone)
-            {
-                Debug.Log($"Loading BUILDING in background progress: {asyncLoadBuilding.progress}");
-                yield return null;
-            }
-
-            GameObject playerObject = GameObject.FindGameObjectWithTag("player");
-            if (playerObject == null)
-            {
-                Debug.LogWarning("Player not found in BUILDING, creating new player.");
-                playerObject = new GameObject("Player");
-                playerObject.tag = "player";
-                playerObject.AddComponent<PlayerController>();
-                DontDestroyOnLoad(playerObject);
-            }
-
-            GameObject cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
-            if (cameraObject == null)
-            {
-                Debug.LogWarning("MainCamera not found in BUILDING, creating new camera.");
-                cameraObject = new GameObject("MainCamera");
-                cameraObject.tag = "MainCamera";
-                cameraObject.AddComponent<Camera>().enabled = true;
-                DontDestroyOnLoad(cameraObject);
-            }
-
-            AsyncOperation asyncLoadTarget = SceneManager.LoadSceneAsync(data.levelName, LoadSceneMode.Single);
-            while (!asyncLoadTarget.isDone)
-            {
-                Debug.Log($"Loading {data.levelName} progress: {asyncLoadTarget.progress}");
-                yield return null;
-            }
-
-            yield return new WaitForEndOfFrame();
-
-            playerObject = GameObject.FindGameObjectWithTag("player");
-            if (playerObject == null)
-            {
-                Debug.LogWarning("Player not found after loading target scene, creating new player.");
-                playerObject = new GameObject("Player");
-                playerObject.tag = "player";
-                playerObject.AddComponent<PlayerController>();
-                DontDestroyOnLoad(playerObject);
-            }
-
-            cameraObject = GameObject.FindGameObjectWithTag("MainCamera");
-            if (cameraObject == null)
-            {
-                Debug.LogWarning("MainCamera not found after loading target scene, creating new camera.");
-                cameraObject = new GameObject("MainCamera");
-                cameraObject.tag = "MainCamera";
-                cameraObject.AddComponent<Camera>().enabled = true;
-                DontDestroyOnLoad(cameraObject);
-            }
-
-            Pause pauseScript = FindObjectOfType<Pause>();
-            if (pauseScript != null)
-            {
-                Debug.Log($"Znaleziono Pause.cs na scenie {data.levelName}, wywołuję LoadPlayerData.");
-                pauseScript.LoadPlayerData();
-            }
-            else
-            {
-                Debug.LogError($"Nie znaleziono obiektu z Pause.cs na scenie {data.levelName}!");
-            }
-        }
-    }
-
-    public void ExitGame()
-    {
-        if (audioManager != null)
-        {
-            audioManager.StopMenuMusic();
-            Debug.Log("Zatrzymano muzykę menu przed wyjściem z gry.");
-        }
-        Application.Quit();
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    }
-
-    public void OptionsGame()
-    {
-        opcjePanel.gameObject.SetActive(true);
-        menu.gameObject.SetActive(false);
-        if (audioManager != null)
-        {
-            audioManager.PlayMenuMusic();
-            Debug.Log("Odtwarzanie muzyki menu w panelu opcji.");
-        }
-    }
-
-    public void BackToMenu()
-    {
-        opcjePanel.gameObject.SetActive(false);
-        menu.gameObject.SetActive(true);
-        if (audioManager != null)
-        {
-            audioManager.PlayMenuMusic();
-            Debug.Log("Odtwarzanie muzyki menu po powrocie do menu.");
-        }
+        if (Pomiń != null) Pomiń.SetActive(true);
     }
 
     IEnumerator TypeText()
     {
+        // Animacja pisania tekstu
         if (isTyping) yield break;
         isTyping = true;
 
@@ -304,7 +142,6 @@ public class Menu : MonoBehaviour
 
         scrollRect.verticalNormalizedPosition = 1f;
         yield return new WaitForEndOfFrame();
-        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
 
         foreach (char letter in fullText)
         {
@@ -328,30 +165,30 @@ public class Menu : MonoBehaviour
 
         yield return SmoothScrollToEnd();
 
-        Rozpocznij.SetActive(true);
-        Pomiń.SetActive(false);
+        if (Rozpocznij != null) Rozpocznij.SetActive(true);
+        if (Pomiń != null) Pomiń.SetActive(false);
         isTyping = false;
         skipRequested = false;
     }
 
     public void SkipTyping()
     {
-        Debug.Log("SkipTyping called");
-        if (!isTyping) Debug.Log("But not typing now!");
+        // Pomija animację tekstu
         skipRequested = true;
-
-        Pomiń.GetComponent<Image>().color = Color.red;
+        if (Pomiń != null) Pomiń.GetComponent<Image>().color = Color.red;
         StartCoroutine(ResetButtonColor());
     }
 
     IEnumerator ResetButtonColor()
     {
+        // Resetuje kolor przycisku po pominięciu
         yield return new WaitForSeconds(0.3f);
-        Pomiń.GetComponent<Image>().color = Color.white;
+        if (Pomiń != null) Pomiń.GetComponent<Image>().color = Color.white;
     }
 
     IEnumerator SmoothScroll()
     {
+        // Płynne przewijanie tekstu
         float targetPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition - scrollSpeed, 0f, 1f);
         float duration = 0.3f;
         float elapsedTime = 0f;
@@ -368,6 +205,7 @@ public class Menu : MonoBehaviour
 
     IEnumerator SmoothScrollToEnd()
     {
+        // Przewija tekst do końca
         float duration = 0.5f;
         float elapsedTime = 0f;
         float start = scrollRect.verticalNormalizedPosition;
@@ -381,9 +219,82 @@ public class Menu : MonoBehaviour
         scrollRect.verticalNormalizedPosition = 0f;
     }
 
+    IEnumerator LoadGameAndScene()
+    {
+        // Ładuje zapisaną grę
+        if (audioManager != null)
+        {
+            audioManager.StopMenuMusic();
+        }
+
+        string path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop), "savegame.json");
+        if (!File.Exists(path))
+        {
+            Debug.LogWarning("Plik zapisu nie znaleziony: " + path);
+            yield break;
+        }
+
+        string json = File.ReadAllText(path);
+        GameData data = JsonUtility.FromJson<GameData>(json);
+
+        // Ustaw zapisane wartości w PlayerPrefs
+        PlayerPrefs.SetFloat("PlayerHealth", data.currentHP);
+        PlayerPrefs.SetFloat("MaxHealth", data.maxHP);
+        PlayerPrefs.SetFloat("PlayerShield", data.currentShield);
+        PlayerPrefs.SetFloat("MaxShield", data.maxShield);
+        PlayerPrefs.SetFloat("PlayerPosX", data.playerPosX);
+        PlayerPrefs.SetFloat("PlayerPosY", data.playerPosY);
+        PlayerPrefs.SetFloat("PlayerPosZ", data.playerPosZ);
+        PlayerPrefs.Save();
+        Debug.Log($"LoadGameAndScene: Wczytano dane gry, pozycja: ({data.playerPosX}, {data.playerPosY}, {data.playerPosZ})");
+
+        // Użyj PlayerStartPositioner do ustawienia gracza
+        PlayerStartPositioner positioner = FindObjectOfType<PlayerStartPositioner>();
+        if (positioner == null)
+        {
+            GameObject manager = new GameObject("PlayerStartPositioner");
+            positioner = manager.AddComponent<PlayerStartPositioner>();
+            Debug.Log("LoadGameAndScene: Utworzono nowy PlayerStartPositioner.");
+        }
+        positioner.PositionPlayerOnSceneLoad(data.levelName);
+    }
+
+    public void ExitGame()
+    {
+        // Wyjście z gry
+        if (audioManager != null)
+        {
+            audioManager.StopMenuMusic();
+        }
+        Application.Quit();
+    }
+
+    public void OptionsGame()
+    {
+        // Otwiera panel opcji
+        opcjePanel.gameObject.SetActive(true);
+        menu.gameObject.SetActive(false);
+        if (audioManager != null)
+        {
+            audioManager.PlayMenuMusic();
+        }
+    }
+
+    public void BackToMenu()
+    {
+        // Powrót do menu z panelu opcji
+        opcjePanel.gameObject.SetActive(false);
+        menu.gameObject.SetActive(true);
+        if (audioManager != null)
+        {
+            audioManager.PlayMenuMusic();
+        }
+    }
+
     [System.Serializable]
     public class GameData
     {
+        // Klasa do przechowywania danych zapisu gry
         public float playerPosX;
         public float playerPosY;
         public float playerPosZ;

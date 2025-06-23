@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject uiInterfejs;
     public GameObject uiPause;
     //public GameObject uiOpcje;
-    public Camera playerCamera; 
+    public Camera playerCamera;
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class PlayerManager : MonoBehaviour
                 DontDestroyOnLoad(uiPause);
 
             //if (uiOpcje != null)
-                //DontDestroyOnLoad(uiOpcje);
+            //    DontDestroyOnLoad(uiOpcje);
 
             if (playerCamera == null)
                 playerCamera = Camera.main;
@@ -38,9 +38,11 @@ public class PlayerManager : MonoBehaviour
 
             // Zarejestruj siê na zdarzenie zmiany sceny
             SceneManager.sceneLoaded += OnSceneLoaded;
+            Debug.Log("PlayerManager utworzony i ustawiony jako DontDestroyOnLoad.");
         }
         else
         {
+            Debug.LogWarning("Duplikat PlayerManager, niszczenie.");
             Destroy(gameObject);
         }
     }
@@ -48,6 +50,7 @@ public class PlayerManager : MonoBehaviour
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        Debug.Log("PlayerManager zniszczony.");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -59,14 +62,31 @@ public class PlayerManager : MonoBehaviour
 
             if (playerCamera != null)
                 DontDestroyOnLoad(playerCamera.gameObject);
+            Debug.Log("Kamera odœwie¿ona w PlayerManager.");
         }
 
         // Przenieœ gracza do StartPoint jeœli istnieje
-        GameObject startPoint = GameObject.Find("StartPoint");
+        GameObject startPoint = GameObject.FindGameObjectWithTag("StartPoint");
         if (startPoint != null && player != null)
         {
             player.transform.position = startPoint.transform.position;
             player.transform.rotation = startPoint.transform.rotation;
+            Debug.Log($"PlayerManager: Ustawiono pozycjê gracza na StartPoint: {startPoint.transform.position}, rotacja: {startPoint.transform.rotation}");
+        }
+        else
+        {
+            Vector3 defaultPosition = new Vector3(14.25f, -10.0f, 68.9f);
+            Quaternion defaultRotation = Quaternion.Euler(0, -180, 0);
+            if (player != null)
+            {
+                player.transform.position = defaultPosition;
+                player.transform.rotation = defaultRotation;
+                Debug.LogWarning($"PlayerManager: StartPoint nie znaleziony, ustawiono domyœln¹ pozycjê: {defaultPosition}, rotacja: {defaultRotation}");
+            }
+            else
+            {
+                Debug.LogError("PlayerManager: Obiekt gracza nie istnieje!");
+            }
         }
     }
 }

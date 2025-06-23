@@ -249,11 +249,11 @@ public class PanelCollision : MonoBehaviour
     {
         Debug.Log("Kod zaakceptowany! Otwieranie drzwi...");
         dooranimator.SetTrigger("Open Door");
-        /* if (loadForestScript != null)
+         if (loadForestScript != null)
              loadForestScript.enabled = true;
-         loadForestScript.canLoadScene = true;*/
+         loadForestScript.canLoadScene = true;
 
-        SceneManager.LoadScene("scenaufo");
+        //SceneManager.LoadScene("scenaufo");
 
     }
 

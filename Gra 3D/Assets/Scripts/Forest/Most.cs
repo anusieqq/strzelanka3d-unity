@@ -33,7 +33,6 @@ public class Most : MonoBehaviour
     [Header("Start Settings")]
     [SerializeField] private Transform startTile;
 
-
     private int currentStep = 0;
     private Transform[,] tilePositions = new Transform[9, 2];
     private bool bridgeActive = false;
@@ -48,7 +47,7 @@ public class Most : MonoBehaviour
         bridgeCollider = GetComponent<Collider>();
         if (bridgeCollider == null)
         {
-            Debug.LogError("Brak komponentu Collider na moœcie!", this);
+            Debug.LogError("Brak komponentu Collider na moście!", this);
             enabled = false;
             return;
         }
@@ -111,7 +110,7 @@ public class Most : MonoBehaviour
     {
         if (tiles.Length != 18)
         {
-            Debug.LogError("Wymagane jest dok³adnie 18 kafelków! Obecnie: " + tiles.Length, this);
+            Debug.LogError("Wymagane jest dokładnie 18 kafelków! Obecnie: " + tiles.Length, this);
             enabled = false;
             return;
         }
@@ -128,7 +127,7 @@ public class Most : MonoBehaviour
     {
         if (leftButton == null || rightButton == null)
         {
-            Debug.LogError("Przyciski nie s¹ przypisane!", this);
+            Debug.LogError("Przyciski nie są przypisane!", this);
             enabled = false;
             return;
         }
@@ -227,22 +226,23 @@ public class Most : MonoBehaviour
             Vector3 playerTargetPos = new Vector3(tilePos.x, tileTopY - playerBottomOffset, tilePos.z);
             player.position = playerTargetPos;
 
-            // zatrzymaj fizykê
+            // Zatrzymaj fizykę i ustaw isKinematic na true
             Rigidbody rb = player.GetComponent<Rigidbody>();
             if (rb != null)
             {
                 rb.velocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
+                rb.isKinematic = true;
             }
 
-            // przesuñ most
+            // Przesuń most
             transform.position = new Vector3(tilePos.x, tileTopY + 0.2f, tilePos.z);
 
             currentStep++;
 
             if (currentStep >= correctPath.Length)
             {
-                // Ukoñczono most
+                // Ukończono most
                 CompleteBridge();
             }
             else
@@ -252,7 +252,7 @@ public class Most : MonoBehaviour
         }
         else
         {
-            Debug.Log("Z³y wybór! Restart mostu.");
+            Debug.Log("Zły wybór! Restart mostu.");
 
             currentStep = 0;
 
@@ -266,17 +266,14 @@ public class Most : MonoBehaviour
                 Vector3 safePlayerPos = new Vector3(startTile.position.x, tileTopY - playerBottomOffset, startTile.position.z);
                 TeleportPlayer(safePlayerPos);
 
-                // Cofnij most na pozycjê startow¹
+                // Cofnij most na pozycję startową
                 transform.position = startPos;
                 transform.rotation = startRot;
 
                 UpdateButtonLabels();
             }
         }
-
-
     }
-
 
     void TeleportPlayer(Vector3 targetPosition)
     {
@@ -289,19 +286,21 @@ public class Most : MonoBehaviour
         }
 
         player.position = targetPosition;
-
-        if (rb != null)
-        {
-            rb.isKinematic = false;
-        }
     }
 
     void CompleteBridge()
     {
-        Debug.Log("Most ukoñczony pomyœlnie!", this);
+        Debug.Log("Most ukończony pomyślnie!", this);
+
+        // Przywracamy fizykę po ukończeniu mostu
+        Rigidbody rb = player.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+        }
+
         DeactivateBridge();
     }
-
 
     void DeactivateBridge()
     {
@@ -339,7 +338,7 @@ public class Most : MonoBehaviour
         if (correctPath.Length != 9)
         {
             System.Array.Resize(ref correctPath, 9);
-            Debug.LogWarning("Poprawiono d³ugoœæ tablicy correctPath na 9", this);
+            Debug.LogWarning("Poprawiono długość tablicy correctPath na 9", this);
         }
     }
 }

@@ -20,16 +20,17 @@ public class AudioManager : MonoBehaviour
 
     private AudioSource musicSource;
     private const string MIXER_Shoot = "ShootVolume";
-    private string lastSceneMusic; // Œledzi ostatni¹ odtwarzan¹ muzykê dla danej sceny
+    private string lastSceneMusic;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+
+            // <- przeniesiono tutaj
             DontDestroyOnLoad(gameObject);
 
-            // Inicjalizacja Ÿród³a muzyki
             musicSource = gameObject.AddComponent<AudioSource>();
             musicSource.loop = true;
 
@@ -46,6 +47,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+
     private void InitializeVolumeSettings()
     {
         if (!PlayerPrefs.HasKey(MIXER_Shoot))
@@ -54,7 +56,6 @@ public class AudioManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
-        // Przywróæ ustawienia g³oœnoœci
         SetShootVolume(PlayerPrefs.GetFloat(MIXER_Shoot, 1f));
     }
 
@@ -69,10 +70,8 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Zatrzymaj aktualn¹ muzykê
         StopMusic();
 
-        // Odtwarzaj muzykê na podstawie sceny
         switch (scene.name)
         {
             case "Menu":
@@ -85,14 +84,14 @@ public class AudioManager : MonoBehaviour
                 lastSceneMusic = "BUILDING";
                 Debug.Log("Odtwarzanie muzyki gry w scenie BUILDING.");
                 break;
-            case "FOREST":
+            case "Forest":
                 PlayMusic(ForestMusic);
-                lastSceneMusic = "FOREST";
+                lastSceneMusic = "Forest";
                 Debug.Log("Odtwarzanie muzyki gry w scenie FOREST.");
                 break;
-            case "UFO":
+            case "scenaufo":
                 PlayMusic(UfoMusic);
-                lastSceneMusic = "UFO";
+                lastSceneMusic = "BUILDING";
                 Debug.Log("Odtwarzanie muzyki gry w scenie UFO.");
                 break;
             default:
@@ -170,11 +169,11 @@ public class AudioManager : MonoBehaviour
                 PlayMusic(BuildingMusic);
                 Debug.Log("Odtwarzanie muzyki gry BUILDING.");
                 break;
-            case "FOREST":
+            case "Forest":
                 PlayMusic(ForestMusic);
                 Debug.Log("Odtwarzanie muzyki gry FOREST.");
                 break;
-            case "UFO":
+            case "scenaufo":
                 PlayMusic(UfoMusic);
                 Debug.Log("Odtwarzanie muzyki gry UFO.");
                 break;
@@ -197,11 +196,11 @@ public class AudioManager : MonoBehaviour
                 PlayMusic(BuildingMusic);
                 Debug.Log("Przywrócono muzykê BUILDING.");
                 break;
-            case "FOREST":
+            case "Forest":
                 PlayMusic(ForestMusic);
                 Debug.Log("Przywrócono muzykê FOREST.");
                 break;
-            case "UFO":
+            case "scenaufo":
                 PlayMusic(UfoMusic);
                 Debug.Log("Przywrócono muzykê UFO.");
                 break;

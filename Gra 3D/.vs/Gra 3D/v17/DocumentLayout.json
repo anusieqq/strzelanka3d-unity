@@ -3,52 +3,108 @@
   "WorkspaceRootPath": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|c:\\users\\kajte\\documents\\github\\strzelanka3d-unity\\gra 3d\\assets\\scripts\\ufo\\ufolight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\ufolight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|c:\\users\\kajte\\documents\\github\\strzelanka3d-unity\\gra 3d\\assets\\scripts\\interaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\interaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\pause.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\pause.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\loadforest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\loadforest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|c:\\users\\kajte\\documents\\github\\strzelanka3d-unity\\gra 3d\\assets\\scripts\\forest\\most.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\most.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\kod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\kod.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menu\\opcje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\opcje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\audiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menu\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menu\\opcje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\opcje.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menu\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playerstartpositioner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playerstartpositioner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\pause.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\pause.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\moving.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\moving.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\keyrebinding.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\keyrebinding.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\playerinputactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\playerinputactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\\u015Bcie\u017Cka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\\u015Bcie\u017Cka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\ufo\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\torch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\torch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\hp ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\hp ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\moving ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\moving ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\interaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\interaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\day.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\day.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\movingbear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\movingbear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\volume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\volume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\gun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\ufo\\pendrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\pendrive.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\moving.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\moving.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\ufo\\ufolight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\ufolight.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\loadforest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\loadforest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menu\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\menu\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\minimaplayercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -63,18 +119,6 @@
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\pendrak.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\ufo\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ufo\\boss.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\volume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\volume.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\buildingaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\buildingaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -83,63 +127,23 @@
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\loadufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\torch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\torch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\weaponswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\weaponswitcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\keyrebinding.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\keyrebinding.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\hp ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\hp ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\playerinputactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\playerinputactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\zagadkowy przedmiot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\zagadkowy przedmiot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playerstartpositioner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playerstartpositioner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\\u015Bcie\u017Cka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\\u015Bcie\u017Cka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\pochodnia.shader||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\pochodnia.shader||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\forrestaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\forrestaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\gun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gun.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\kajte\\Desktop\\savegame.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\gamedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\crosshair.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\crosshair.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\most.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\most.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\kolor\u015Bcie\u017Cki.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -148,14 +152,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\proces.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\proces.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\movingbear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\movingbear.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\moving ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\moving ufo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\serwer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -202,10 +198,6 @@
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\minimapcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\numbers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\numbers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -232,6 +224,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:assets\\scripts\\menuaudiomanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\assets\\scripts\\forest\\forrestaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EDBB3C0A-53B0-45AE-2356-61F78D8E6E62}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\forest\\forrestaudio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -241,32 +237,132 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "UfoLight.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\UfoLight.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\UfoLight.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\UfoLight.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Ufo\\UfoLight.cs",
-              "ViewState": "AQIAAE8AAAAAAAAAAAAcwHIAAAABAAAA",
+              "DocumentIndex": 7,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
+              "ViewState": "AQIAANwAAAAAAAAAAAAwwPoAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T07:15:53.786Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-15T14:25:45.611Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 5,
               "Title": "menu.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\menu.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\menu\\menu.cs",
               "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\menu.cs",
               "RelativeToolTip": "Assets\\Scripts\\menu\\menu.cs",
-              "ViewState": "AQIAAHgBAAAAAAAAAAAswJMBAAABAAAA",
+              "ViewState": "AQIAAE0AAAAAAAAAAAAgwDsBAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T16:51:23.648Z"
+              "WhenOpened": "2025-06-04T16:51:23.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Hp ufo.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Hp ufo.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Hp ufo.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Hp ufo.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Hp ufo.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAgwEUAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T10:22:02.509Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Day.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Day.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Day.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Day.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Day.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAN4AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-22T19:05:30.301Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Most.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Most.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\Most.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Most.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Forest\\Most.cs",
+              "ViewState": "AQIAAD4BAAAAAAAAAAAUwFcBAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-12T18:23:46.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Opcje.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\Opcje.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\menu\\Opcje.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\Opcje.cs",
+              "RelativeToolTip": "Assets\\Scripts\\menu\\Opcje.cs",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAQwDQAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-05T21:49:10.717Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Kod.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Kod.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Kod.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Kod.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Kod.cs",
+              "ViewState": "AQIAAOkAAAAAAAAAAAAswP8AAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-23T16:38:25.605Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PlayerManager.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerManager.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerManager.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAQwFsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T10:53:20.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PlayerStartPositioner.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerStartPositioner.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerStartPositioner.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerStartPositioner.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerStartPositioner.cs",
+              "ViewState": "AQIAAIwAAAAAAAAAAAAwwKoAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-03T16:43:44.32Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Pause.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pause.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Pause.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pause.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Pause.cs",
+              "ViewState": "AQIAAKwCAAAAAAAAAAAqwMgCAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T18:11:06.625Z"
             },
             {
               "$type": "Document",
@@ -276,86 +372,98 @@
               "RelativeDocumentMoniker": "Assets\\Scripts\\AudioManager.cs",
               "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\AudioManager.cs",
               "RelativeToolTip": "Assets\\Scripts\\AudioManager.cs",
-              "ViewState": "AQIAAMsAAAAAAAAAAAAUwAkBAAABAAAA",
+              "ViewState": "AQIAAPAAAAAAAAAAAAAIwP8AAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-16T10:53:56.209Z"
+              "WhenOpened": "2025-04-16T10:53:56.209Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "MenuAudioManager.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\MenuAudioManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\menu\\MenuAudioManager.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\MenuAudioManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\menu\\MenuAudioManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 14,
+              "Title": "Torch.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Torch.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Torch.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Torch.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Torch.cs",
+              "ViewState": "AQIAAFAAAAAAAAAAAAAowHAAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-04T16:45:00.519Z"
+              "WhenOpened": "2025-05-28T11:35:03.316Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Pause.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pause.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Pause.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pause.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Pause.cs",
-              "ViewState": "AQIAAFcBAAAAAAAAAAAuwIsCAAABAAAA",
+              "DocumentIndex": 16,
+              "Title": "Moving ufo.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving ufo.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Moving ufo.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving ufo.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Moving ufo.cs",
+              "ViewState": "AQIAAOcAAAAAAAAAAAAwwO4AAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T18:11:06.625Z"
+              "WhenOpened": "2025-03-23T21:05:55.336Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 21,
+              "Title": "Gun.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Gun.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Gun.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Gun.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Gun.cs",
+              "ViewState": "AQIAANEAAAAAAAAAAAAwwPEAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T18:06:45.194Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Moving.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Moving.cs",
               "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving.cs",
               "RelativeToolTip": "Assets\\Scripts\\Moving.cs",
-              "ViewState": "AQIAAF0BAAAAAAAAAAAswHgBAAABAAAA",
+              "ViewState": "AQIAAF4BAAAAAAAAAAAgwHwBAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-11T18:52:05.754Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Interaction.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Interaction.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Interaction.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Interaction.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Interaction.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAAwF0BAAABAAAA",
+              "DocumentIndex": 11,
+              "Title": "PlayerInputActions.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\PlayerInputActions.cs",
+              "RelativeDocumentMoniker": "Assets\\PlayerInputActions.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\PlayerInputActions.cs",
+              "RelativeToolTip": "Assets\\PlayerInputActions.cs",
+              "ViewState": "AQIAAD0CAAAAAAAAAAA/wEgCAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-19T22:19:35.721Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T09:18:15.441Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Kod.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Kod.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Kod.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Kod.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Kod.cs",
-              "ViewState": "AQIAAPYAAAAAAAAAAAAkwPsAAAAIAAAA",
+              "DocumentIndex": 10,
+              "Title": "KeyRebinding.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\KeyRebinding.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\KeyRebinding.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\KeyRebinding.cs",
+              "RelativeToolTip": "Assets\\Scripts\\KeyRebinding.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAmwFUAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-23T16:38:25.605Z"
+              "WhenOpened": "2025-05-26T09:48:58.007Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Day.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Day.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Day.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Day.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Day.cs",
-              "ViewState": "AQIAAJ4AAAAAAAAAAAAswLkAAAABAAAA",
+              "DocumentIndex": 12,
+              "Title": "\u015Acie\u017Cka.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAAAwCAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-22T19:05:30.301Z"
+              "WhenOpened": "2025-05-27T16:26:23.542Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 24,
               "Title": "LoadForest.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\LoadForest.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LoadForest.cs",
@@ -367,19 +475,91 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Opcje.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\Opcje.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\menu\\Opcje.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\Opcje.cs",
-              "RelativeToolTip": "Assets\\Scripts\\menu\\Opcje.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAYwCwAAAArAAAA",
+              "DocumentIndex": 22,
+              "Title": "Pendrive.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Pendrive.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\Pendrive.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Pendrive.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Ufo\\Pendrive.cs",
+              "ViewState": "AQIAAMMAAAAAAAAAAAAAAMMAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-05T21:49:10.717Z"
+              "WhenOpened": "2025-05-22T16:17:27.614Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
+              "Title": "Interaction.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Interaction.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Interaction.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Interaction.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Interaction.cs",
+              "ViewState": "AQIAAEIBAAAAAAAAAAAowE8BAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-19T22:19:35.721Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "MovingBear.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MovingBear.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\MovingBear.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MovingBear.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Forest\\MovingBear.cs",
+              "ViewState": "AQIAADUAAAAAAAAAAAAYwE4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-27T08:13:24.091Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Volume.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Volume.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Volume.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Volume.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Volume.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB8AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-28T16:41:31.84Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Boss.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Boss.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\Boss.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Boss.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Ufo\\Boss.cs",
+              "ViewState": "AQIAAJEAAAAAAAAAAAAowLEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-03T17:28:14.797Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "UfoLight.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\UfoLight.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\UfoLight.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\UfoLight.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Ufo\\UfoLight.cs",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAwwH0AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T07:15:53.786Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "MenuAudioManager.cs",
+              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\MenuAudioManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\menu\\MenuAudioManager.cs",
+              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu\\MenuAudioManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\menu\\MenuAudioManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T16:45:00.519Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
               "Title": "MinimapLayerController.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\MinimapLayerController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MinimapLayerController.cs",
@@ -391,19 +571,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Pendrive.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Pendrive.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\Pendrive.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Pendrive.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Ufo\\Pendrive.cs",
-              "ViewState": "AQIAAKgAAAAAAAAAAAAswMMAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-22T16:17:27.614Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 27,
               "Title": "SerwerManager.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\SerwerManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\SerwerManager.cs",
@@ -415,7 +583,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 30,
               "Title": "LoadUfo.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\LoadUfo.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\LoadUfo.cs",
@@ -427,31 +595,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Volume.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Volume.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Volume.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Volume.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Volume.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAqwBAAAAAoAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-28T16:41:31.84Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Boss.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Boss.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\Boss.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Boss.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Ufo\\Boss.cs",
-              "ViewState": "AQIAAPsAAAAAAAAAAAAqwA4BAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T17:28:14.797Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 28,
               "Title": "Pendrak.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo\\Pendrak.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo\\Pendrak.cs",
@@ -463,55 +607,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "KeyRebinding.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\KeyRebinding.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\KeyRebinding.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\KeyRebinding.cs",
-              "RelativeToolTip": "Assets\\Scripts\\KeyRebinding.cs",
-              "ViewState": "AQIAAIUAAAAAAAAAAAAiwNAAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T09:48:58.007Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "PlayerController.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerController.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
-              "ViewState": "AQIAADYAAAAAAAAAAAAYwD8AAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-15T14:25:45.611Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "Torch.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Torch.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Torch.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Torch.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Torch.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAAAAwBsAAABPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T11:35:03.316Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "\u015Acie\u017Cka.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Forest\\\u015Acie\u017Cka.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAQwCAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-27T16:26:23.542Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 29,
               "Title": "BuildingAudio.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\BuildingAudio.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\BuildingAudio.cs",
@@ -523,7 +619,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 32,
               "Title": "Zagadkowy Przedmiot.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Zagadkowy Przedmiot.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Zagadkowy Przedmiot.cs",
@@ -535,7 +631,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 31,
               "Title": "WeaponSwitcher.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\WeaponSwitcher.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\WeaponSwitcher.cs",
@@ -547,31 +643,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "Hp ufo.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Hp ufo.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Hp ufo.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Hp ufo.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Hp ufo.cs",
-              "ViewState": "AQIAADYAAAAAAAAAAAAowDsAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T10:22:02.509Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "PlayerInputActions.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\PlayerInputActions.cs",
-              "RelativeDocumentMoniker": "Assets\\PlayerInputActions.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\PlayerInputActions.cs",
-              "RelativeToolTip": "Assets\\PlayerInputActions.cs",
-              "ViewState": "AQIAAH8AAAAAAAAAAAAhwIEAAAAxAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T09:18:15.441Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 57,
+              "DocumentIndex": 55,
               "Title": "MenuAudioManager.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\MenuAudioManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MenuAudioManager.cs",
@@ -583,19 +655,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "GameData.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\GameData.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\GameData.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\GameData.cs",
-              "RelativeToolTip": "Assets\\Scripts\\GameData.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-28T14:52:34.242Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 56,
+              "DocumentIndex": 54,
               "Title": "menu.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\menu.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\menu.cs",
@@ -607,31 +667,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 33,
               "Title": "Pochodnia.shader",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pochodnia.shader",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Pochodnia.shader",
               "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Pochodnia.shader",
               "RelativeToolTip": "Assets\\Scripts\\Pochodnia.shader",
-              "ViewState": "AQIAAFEAAAAAAAAAAIBJwGQAAAAkAAAA",
+              "ViewState": "AQIAAE4AAAAAAAAAAIBZwGQAAAAkAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002777|",
               "WhenOpened": "2025-05-20T14:29:31.977Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "PlayerStartPositioner.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerStartPositioner.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerStartPositioner.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerStartPositioner.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerStartPositioner.cs",
-              "ViewState": "AQIAADEAAAAAAAAAAAAkwEYAAABCAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T16:43:44.32Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "Kolor\u015Acie\u017Cki.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Kolor\u015Acie\u017Cki.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\Kolor\u015Acie\u017Cki.cs",
@@ -643,19 +691,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "Gun.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Gun.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Gun.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Gun.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Gun.cs",
-              "ViewState": "AQIAANgAAAAAAAAAAAAcwOQAAAAXAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T18:06:45.194Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 56,
               "Title": "ForrestAudio.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\ForrestAudio.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\ForrestAudio.cs",
@@ -667,7 +703,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 34,
               "Title": "savegame.json",
               "DocumentMoniker": "C:\\Users\\kajte\\Desktop\\savegame.json",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\Desktop\\savegame.json",
@@ -679,19 +715,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "Most.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Most.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\Most.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Most.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Forest\\Most.cs",
-              "ViewState": "AQIAADQAAAAAAAAAAAAQwAwBAAAyAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-12T18:23:46.199Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 35,
               "Title": "Crosshair.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Crosshair.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Crosshair.cs",
@@ -703,7 +727,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
+              "DocumentIndex": 52,
               "Title": "GameInitializer.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\GameInitializer.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\GameInitializer.cs",
@@ -715,7 +739,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "Proces.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Proces.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\Proces.cs",
@@ -727,19 +751,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "MovingBear.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MovingBear.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\MovingBear.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MovingBear.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Forest\\MovingBear.cs",
-              "ViewState": "AQIAADoAAAAAAAAAAAAUwE4AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-27T08:13:24.091Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 48,
               "Title": "MinimapCamera.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\MinimapCamera.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\MinimapCamera.cs",
@@ -751,19 +763,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "Moving ufo.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving ufo.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Moving ufo.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Moving ufo.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Moving ufo.cs",
-              "ViewState": "AQIAAMwAAAAAAAAAAAAUwNoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-23T21:05:55.336Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 51,
               "Title": "GameManager1.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\GameManager1.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\GameManager1.cs",
@@ -775,7 +775,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 40,
               "Title": "Terminal.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Terminal.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Terminal.cs",
@@ -787,7 +787,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 38,
               "Title": "Serwer.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Serwer.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Serwer.cs",
@@ -799,7 +799,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 41,
               "Title": "NPCDialogue.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\NPCDialogue.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\NPCDialogue.cs",
@@ -811,7 +811,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 39,
               "Title": "Cyfra.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Cyfra.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Cyfra.cs",
@@ -823,7 +823,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 43,
               "Title": "Kamienie.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\Kamienie.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\Kamienie.cs",
@@ -835,7 +835,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 42,
               "Title": "MinimapTextureSwitcher.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MinimapTextureSwitcher.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\MinimapTextureSwitcher.cs",
@@ -847,7 +847,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 47,
               "Title": "MinimapCameraForrest.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Forest\\MinimapCameraForrest.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Forest\\MinimapCameraForrest.cs",
@@ -859,19 +859,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 45,
               "Title": "Light.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Light.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Light.cs",
               "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Light.cs",
               "RelativeToolTip": "Assets\\Scripts\\Light.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAzwBYAAAAFAAAA",
+              "ViewState": "AQIAABEAAAAAAAAAAAAAwBYAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-20T14:28:46.19Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 55,
+              "DocumentIndex": 53,
               "Title": "Opcje.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Opcje.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Opcje.cs",
@@ -883,19 +883,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 50,
-              "Title": "PlayerManager.cs",
-              "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerManager.cs",
-              "ToolTip": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\PlayerManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\PlayerManager.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAAwB4AAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-29T10:53:20.434Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 49,
               "Title": "Numbers.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Numbers.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Numbers.cs",
@@ -907,7 +895,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 50,
               "Title": "Ufo animation.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Ufo animation.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Ufo animation.cs",
@@ -919,7 +907,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 46,
               "Title": "NewSurfaceShader.shader",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Materials\\Materials\\NewSurfaceShader.shader",
               "RelativeDocumentMoniker": "Assets\\Materials\\Materials\\NewSurfaceShader.shader",
@@ -931,7 +919,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 44,
               "Title": "Open Box.cs",
               "DocumentMoniker": "C:\\Users\\kajte\\Documents\\GitHub\\strzelanka3d-unity\\Gra 3D\\Assets\\Scripts\\Open Box.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Open Box.cs",

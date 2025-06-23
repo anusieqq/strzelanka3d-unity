@@ -15,7 +15,7 @@ public class Pause : MonoBehaviour
     public Slider enemyHealthSlider;
     public TextMeshProUGUI gameTimeText;
     public TextMeshProUGUI multiplierText;
-    public TextMeshProUGUI saveConfirmationText; 
+    public TextMeshProUGUI saveConfirmationText;
 
     private GameObject Opcje;
     private bool isPaused = false;
